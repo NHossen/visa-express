@@ -4,7 +4,8 @@
 // e.g.   /work-visa/bangladesh-work-visa-for-canada
 
 import clientPromise from "@/app/lib/mongodb";
-import WorkVisaSlugClient from "@/components/Client/WorkVisaSlugPage/WorkVisaSlugPage";
+import WorkVisaSlugClient from "@/components/Client/WorkVisaSlugClient/WorkVisaSlugClient";
+
 
 export const revalidate = 86400; // 24-hour ISR cache
 
@@ -304,7 +305,7 @@ export default async function WorkVisaSlugSeo({ params }) {
       <JsonLd natName={natName} destData={destData} slug={slug} />
       <WorkVisaSlugClient params={resolvedParams} />
 
-   
+
     </>
   );
 }

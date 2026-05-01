@@ -303,6 +303,8 @@ export default async function WorkVisaSlugSeo({ params }) {
     <>
       <JsonLd natName={natName} destData={destData} slug={slug} />
       <WorkVisaSlugClient params={resolvedParams} />
+
+   
     </>
   );
 }

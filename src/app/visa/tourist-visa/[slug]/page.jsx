@@ -1157,7 +1157,7 @@ export default async function CountryVisaPage({ params }) {
               <div className="grid sm:grid-cols-2 gap-2.5">
                 {["United States", "United Kingdom", "Canada", "Germany", "France", "Japan", "Australia", "Malaysia", "Thailand", "Singapore"].map(name => (
                   name !== countryName && (
-                    <Link key={name} href={`/visa/tourist-visa/${createSlug(name)}-visa`}
+                    <Link key={name} href={`/visa/tourist-visa/${createSlug(name)}`}
                       className="flex items-center gap-2 p-3 rounded-xl text-sm font-semibold transition-all group"
                       style={{ background: "rgba(255,255,255,0.7)", border: "1.5px solid rgba(245,200,0,0.2)", color: "#333" }}>
                       <span className="font-black group-hover:translate-x-0.5 transition-transform" style={{ color: "#d4a800" }}>→</span>

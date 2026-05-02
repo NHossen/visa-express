@@ -192,7 +192,7 @@ export default function TouristVisa() {
                     {suggestions.map((c, i) => (
                       <Link
                         key={i}
-                        href={`/visa/tourist-visa/${createSlug(c.country)}-visa`}
+                        href={`/visa/tourist-visa/${createSlug(c.country)}`}
                         onClick={() => handleSuggestionClick(c)}
                         className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 transition-all cursor-pointer"
                       >
@@ -276,7 +276,7 @@ export default function TouristVisa() {
           {POPULAR.map(({ name, emoji }) => {
             const c = countries.find(x => x.country === name);
             return (
-              <Link key={name} href={`/visa/tourist-visa/${createSlug(name)}-visa`}
+              <Link key={name} href={`/visa/tourist-visa/${createSlug(name)}`}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-black/60 hover:text-black border border-black/5 hover:border-[#f5c800]/40 transition-all bg-gray-50 hover:bg-white shadow-sm">
                 {c?.flag
                   ? <img src={c.flag} className="w-5 h-3.5 object-cover rounded-sm" alt="" />
@@ -323,7 +323,7 @@ export default function TouristVisa() {
             {currentItems.map((c, i) => (
               <Link
                 key={`${c.code}-${i}`}
-                href={`/visa/tourist-visa/${createSlug(c.country)}-visa`}
+                href={`/visa/tourist-visa/${createSlug(c.country)}`}
                 className="group rounded-2xl overflow-hidden border border-black/5 flex flex-col bg-gray-50 hover:bg-white hover:shadow-xl transition-all duration-500"
               >
                 <div className="relative h-28 overflow-hidden bg-gray-200">
@@ -428,7 +428,7 @@ export default function TouristVisa() {
               { name: "Thailand Tourist Visa", slug: "thailand", desc: "TR visa from Bangkok Embassy, Dhaka" },
               { name: "Singapore Tourist Visa", slug: "singapore", desc: "ICA requirements, tourist pass guide" },
             ].map((link, i) => (
-              <Link key={i} href={`/visa/tourist-visa/${link.slug}-visa`}
+              <Link key={i} href={`/visa/tourist-visa/${link.slug}`}
                 className="flex items-start gap-3 p-4 rounded-xl border border-black/5 bg-white hover:border-[#f5c800]/30 hover:shadow-md transition-all group">
                 <span className="text-[#f5c800] font-black text-lg mt-0.5">→</span>
                 <div>

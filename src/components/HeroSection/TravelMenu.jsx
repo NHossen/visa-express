@@ -71,12 +71,8 @@ const TEMPLATES = [
   { icon: '🏦', label: 'Bank Statement Template',href: '/visa-resources/visa-document-generator',     badge: 'New',   color: 'bg-indigo-50 border-indigo-200 text-indigo-700' },
 ];
 
-const SCHOLARSHIP_COUNTRIES = [
-  { name: 'Canada',    flag: 'https://flagcdn.com/w80/ca.png', count: '120+ Scholarships' },
-  { name: 'UK',        flag: 'https://flagcdn.com/w80/gb.png', count: '95+ Scholarships'  },
-  { name: 'Australia', flag: 'https://flagcdn.com/w80/au.png', count: '80+ Scholarships'  },
-  { name: 'USA',       flag: 'https://flagcdn.com/w80/us.png', count: '200+ Scholarships' },
-];
+// Define which countries get the "Hot" badge (optional list)
+const hotCountries = ['canada', 'united kingdom', 'australia', 'germany'];
 
 export default function TravelMenu() {
   const [activeTab, setActiveTab]             = useState('visa');
@@ -96,7 +92,12 @@ export default function TravelMenu() {
 const [visaType, setVisaType] = useState("sticker");
   // ✅ FIX 2: Added missing dropdownOpen state
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  // Helper to create URL slugs
+const createSlug = (name) => name.toLowerCase().replace(/ /g, '-');
+// Filter logic for the search input
+const filteredScholarshipCountries = countries
+  .filter(c => c.country.toLowerCase().includes(searchTerm.toLowerCase()))
+  .slice(0, 8); // Limit to 8 for a clean menu look
   const scrollRef = useRef(null);
 
   const [recentCountries, setRecentCountries] = useState(() => {
@@ -168,7 +169,7 @@ const [visaType, setVisaType] = useState("sticker");
     processing: `/visa-processing-time-tracker/${origin.replace(/\s+/g, "-")}-national-visa-processing-time-for-${destination.replace(/\s+/g, "-")}?type=${visaType}`,
     study:       `/visa/student-visa/${createSlug(destination)}`,
     templates:   '/visa-resources',
-    scholarship: '/scholarship',
+    scholarship: '/scholarships',
   }[activeTab] ?? '/';
 
   const btnLabel = {
@@ -532,49 +533,95 @@ const [visaType, setVisaType] = useState("sticker");
             )}
 
             {/* ════════════════ SCHOLARSHIP TAB ════════════════ */}
-            {activeTab === 'scholarship' && (
-              <div className="space-y-3 w-full">
-                <h2 className="text-sm sm:text-lg font-black text-gray-800 text-center tracking-tight leading-none">
-                  Find Fully Funded Scholarships
-                </h2>
+{activeTab === 'scholarship' && (
+  <div className="space-y-3 w-full animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <h2 className="text-sm sm:text-lg font-black text-gray-800 text-center tracking-tight leading-none">
+      Find Fully Funded Scholarships
+    </h2>
 
-                <div className="relative w-full max-w-2xl mx-auto">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                  <input
-                    type="text"
-                    placeholder="Search scholarships by country…"
-                    value={searchTerm}
-                    onChange={e => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-bold outline-none focus:border-rose-400 transition-colors"
-                  />
-                </div>
+    {/* Search Input */}
+    <div className="relative w-full max-w-2xl mx-auto">
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+      <input
+        type="text"
+        placeholder="Search scholarships by country…"
+        value={searchTerm}
+        onChange={e => setSearchTerm(e.target.value)}
+        className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-bold outline-none focus:border-rose-400 transition-colors"
+      />
+    </div>
 
-                <div className="w-full max-w-4xl mx-auto">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Top Countries</p>
-                    <div className="h-[1px] flex-1 bg-slate-100 ml-4" />
-                  </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                    {SCHOLARSHIP_COUNTRIES.map(c => (
-                      <Link
-                        key={c.name}
-                        href={`/scholarship/${createSlug(c.name)}`}
-                        className="group relative bg-white border border-gray-100 rounded-xl overflow-hidden hover:border-rose-400 hover:shadow-md transition-all"
-                      >
-                        <div className="h-16 bg-gray-100 overflow-hidden">
-                          <img src={c.flag} alt={c.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <div className="p-2 text-center bg-white">
-                          <p className="text-[11px] font-black text-gray-800 truncate">{c.name}</p>
-                          <p className="text-[9px] text-rose-500 font-bold">{c.count}</p>
-                        </div>
-                        <div className="absolute top-1 right-1 bg-[#FED700] text-black text-[7px] font-black px-1.5 py-0.5 rounded-full uppercase">Hot</div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
+    <div className="w-full max-w-4xl mx-auto">
+      {/* Label / Separator */}
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">
+          {searchTerm ? 'Search Results' : 'Top Destinations'}
+        </p>
+        <div className="h-[1px] flex-1 bg-slate-100 ml-4" />
+      </div>
+
+      {/* Countries Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 max-h-[300px] overflow-y-auto custom-scrollbar p-1">
+        {(searchTerm 
+            ? countries.filter(c => c.country.toLowerCase().includes(searchTerm.toLowerCase())) 
+            : countries
+                .filter(c => ['canada', 'germany', 'united kingdom', 'australia'].includes(c.country.toLowerCase()))
+                .slice(0, 4) // Forces exactly 4 in the default view
+        ).map(c => (
+          <Link
+            key={c.code}
+            href={`/scholarships/${createSlug(c.country)}`}
+            className="group relative bg-white border border-gray-100 rounded-xl overflow-hidden hover:border-rose-400 hover:shadow-md transition-all active:scale-95"
+          >
+            {/* Flag Image */}
+            <div className="h-14 bg-slate-50 overflow-hidden">
+              <img 
+                src={c.flag} 
+                alt={c.country} 
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                onError={(e) => e.target.src = "https://flagcdn.com/w80/un.png"}
+              />
+            </div>
+
+            {/* Text Info */}
+            <div className="p-2 text-center bg-white">
+              <p className="text-[11px] font-black text-gray-800 truncate leading-tight">
+                {c.country}
+              </p>
+              <p className="text-[9px] text-rose-500 font-bold uppercase tracking-tighter mt-0.5">
+                View Programs
+              </p>
+            </div>
+
+            {/* Hot Badge logic matches the 4 target countries */}
+            {['canada', 'usa', 'united kingdom', 'australia'].includes(c.country.toLowerCase()) && (
+              <div className="absolute top-1 right-1 bg-[#FED700] text-black text-[7px] font-black px-1.5 py-0.5 rounded-full uppercase shadow-sm">
+                Hot
               </div>
             )}
+          </Link>
+        ))}
+
+        {/* Empty State */}
+        {searchTerm && countries.filter(c => c.country.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 && (
+          <div className="col-span-full py-10 text-center">
+            <p className="text-xs font-bold text-slate-400 italic">No scholarships found for "{searchTerm}"</p>
+          </div>
+        )}
+      </div>
+
+      {/* View All Footer */}
+      <div className="mt-3 text-center border-t border-slate-50 pt-2">
+        <Link 
+          href="/scholarships" 
+          className="text-[10px] font-black text-rose-400 hover:text-rose-600 transition-colors uppercase tracking-widest flex items-center justify-center gap-1"
+        >
+          Explore All Countries <span className="text-xs">→</span>
+        </Link>
+      </div>
+    </div>
+  </div>
+)}
 
           </motion.div>
         </AnimatePresence>

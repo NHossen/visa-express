@@ -1,704 +1,529 @@
 "use client";
-// /app/scholarships/[slug]/_client.jsx
-// Scholarship detail page per country — white bg, black text, yellow accents
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 
-import { useState, useMemo } from "react";
-import Link from "next/link";
-import { useParams, useSearchParams } from "next/navigation";
-import {
-  GraduationCap, ChevronRight, ArrowLeft, Calendar, Clock,
-  CheckCircle2, AlertCircle, AlertTriangle, Globe, ExternalLink,
-  Star, Award, DollarSign, BookOpen, Users, Lightbulb,
-  HelpCircle, ChevronDown, BarChart2, CheckSquare, XCircle,
-  TrendingUp, ArrowRight, Zap, MapPin, X
-} from "lucide-react";
-import {
-  SCHOLARSHIP_RULES, SCHOLARSHIP_TYPE_META,
-  getScholarshipData, makeScholarshipSlug
-} from "@/app/lib/scholarshipData";
+// ─── SEO Metadata (App Router — put in app/scholarships/[slug]/page.js) ───────
+// export async function generateMetadata({ params }) {
+//   const slug = params.slug;
+//   const res = await fetch(`https://yoursite.com/api/scholarships?country_slug=${slug}`);
+//   const data = await res.json();
+//   const countryName = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+//   const count = Array.isArray(data) ? data.length : 0;
+//   return {
+//     title: `${countryName} Scholarships 2026 – ${count} Fully Funded Programs`,
+//     description: `Explore ${count} verified scholarships in ${countryName} for 2026. Find fully funded programs with complete coverage of tuition, living costs, and travel. Updated application deadlines and official links.`,
+//     keywords: `${countryName} scholarships 2026, fully funded scholarships ${countryName}, study in ${countryName}, international students ${countryName}`,
+//     openGraph: {
+//       title: `${countryName} Scholarships 2026 – ${count} Fully Funded Programs`,
+//       description: `Find fully funded scholarships in ${countryName} for international students.`,
+//       url: `https://yoursite.com/scholarships/${slug}`,
+//       type: "website",
+//     },
+//     alternates: { canonical: `https://yoursite.com/scholarships/${slug}` },
+//   };
+// }
 
-// ── DEADLINE CALCULATOR ────────────────────────────────────────────────────
-function DeadlineCalculator({ types, activeType }) {
-  const [intakeYear, setIntakeYear] = useState("2026");
-  const rule = types[activeType];
-  const deadline = rule?.deadline || "Check official portal";
-  const currentYear = new Date().getFullYear();
+// ─── Dynamic Copy (varies per render for freshness) ──────────────────────────
+const dynamicIntros = [
+  (country, count) => `Discover ${count} rigorously verified scholarship programs available to international students in ${country} for 2026. Every listing includes official application links, exact funding scope, and current deadlines.`,
+  (country, count) => `${country} hosts ${count} of the world's most competitive scholarship programs for graduate and undergraduate students. Browse funding options covering full tuition, living costs, and travel below.`,
+  (country, count) => `Planning to study in ${country}? We've verified ${count} active scholarship programs for 2026 — from government-funded awards to university grants — with real deadlines and direct application links.`,
+];
 
-  const urgency = useMemo(() => {
-    const months = {
-      "January": 1, "February": 2, "March": 3, "April": 4,
-      "May": 5, "June": 6, "July": 7, "August": 8,
-      "September": 9, "October": 10, "November": 11, "December": 12,
+const fundingTypeDescriptions = {
+  "Fully Funded": "This is a fully funded award — covering 100% of tuition, a monthly living stipend, return airfare, and health insurance. No additional funding is needed.",
+  "Partial": "This scholarship provides partial funding. It typically covers tuition fees only; students are responsible for living costs and travel.",
+  "Tuition Waiver": "A tuition waiver covers your academic fees but does not include a living allowance. Applicants should have separate accommodation funding.",
+};
+
+const relatedLinks = [
+  { label: "All Fully Funded Scholarships", href: "/scholarships/funding/fully-funded" },
+  { label: "PhD Scholarships 2026", href: "/scholarships/degree/phd" },
+  { label: "Master's Scholarships 2026", href: "/scholarships/degree/masters" },
+  { label: "No IELTS Scholarships", href: "/scholarships/no-ielts" },
+  { label: "October Deadline Scholarships", href: "/scholarships/deadline/october" },
+];
+
+export default function CountryScholarships() {
+  const { slug } = useParams();
+  const [scholarships, setScholarships] = useState([]);
+  const [countryInfo, setCountryInfo] = useState(null);
+  const [allCountries, setAllCountries] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [introIdx] = useState(() => Math.floor(Math.random() * dynamicIntros.length));
+
+  const countryName = countryInfo?.country || slug?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [schRes, countRes] = await Promise.all([
+          fetch(`/api/scholarships?country_slug=${slug}`),
+          fetch('/api/countries'),
+        ]);
+        const schData = await schRes.json();
+        const countData = await countRes.json();
+
+        setScholarships(Array.isArray(schData) ? schData : []);
+
+        if (Array.isArray(countData)) {
+          setAllCountries(countData);
+          const current = countData.find(c =>
+            c.country.toLowerCase().replace(/ /g, '-') === slug
+          );
+          setCountryInfo(current);
+        }
+      } catch (err) {
+        console.error("Data fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
     };
-    const firstMonth = Object.keys(months).find(m => deadline.includes(m));
-    if (!firstMonth) return null;
-    const deadlineDate = new Date(parseInt(intakeYear) - 1, months[firstMonth] - 1, 15);
-    const today = new Date();
-    const daysUntil = Math.floor((deadlineDate - today) / 86400000);
-    if (daysUntil < 0)   return { label:`⚠️ This cycle has passed — prepare for ${parseInt(intakeYear)+1}`, color:"text-red-700 bg-red-50 border-red-200" };
-    if (daysUntil < 30)  return { label:`🔴 ${daysUntil} days left — apply immediately!`, color:"text-orange-700 bg-orange-50 border-orange-200" };
-    if (daysUntil < 90)  return { label:`🟡 ${daysUntil} days left — start preparing now`, color:"text-amber-700 bg-amber-50 border-amber-200" };
-    return               { label:`🟢 ${daysUntil} days left — good time to start`, color:"text-green-700 bg-green-50 border-green-200" };
-  }, [deadline, intakeYear]);
+    if (slug) fetchData();
+  }, [slug]);
 
-  return (
-    <div className="bg-black rounded-2xl p-7 text-white">
-      <div className="flex items-center gap-3 mb-5">
-        <div className="w-10 h-10 bg-yellow-400 rounded-xl flex items-center justify-center shrink-0">
-          <Calendar size={20} className="text-black" />
-        </div>
-        <div>
-          <h3 className="font-black text-base">Deadline Tracker</h3>
-          <p className="text-gray-400 text-xs">Track your application timeline</p>
-        </div>
-      </div>
-      <label className="block text-xs font-black uppercase tracking-widest text-gray-500 mb-2">Target Intake Year</label>
-      <select
-        value={intakeYear}
-        onChange={e => setIntakeYear(e.target.value)}
-        className="w-full px-4 py-3.5 bg-white/10 border-2 border-white/10 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-yellow-400 transition-all mb-4"
-      >
-        {[currentYear, currentYear+1, currentYear+2].map(y => (
-          <option key={y} value={y} className="text-black">{y} Intake</option>
-        ))}
-      </select>
-      <div className="space-y-3">
-        <div className="flex justify-between items-center bg-white/10 px-4 py-3 rounded-xl">
-          <span className="text-xs text-gray-400 font-semibold">Application Deadline</span>
-          <span className="font-black text-yellow-400 text-sm">{deadline}</span>
-        </div>
-        <div className="flex justify-between items-center bg-white/10 px-4 py-3 rounded-xl">
-          <span className="text-xs text-gray-400 font-semibold">Preparation Start</span>
-          <span className="font-black text-white text-sm">12–18 months before</span>
-        </div>
-        {urgency && (
-          <div className={`border-2 px-4 py-3 rounded-xl font-bold text-xs ${urgency.color}`}>
-            {urgency.label}
-          </div>
-        )}
-      </div>
+  if (loading) return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8FAFC]">
+      <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-blue-600 mb-4"></div>
+      <p className="text-gray-400 font-medium animate-pulse">Loading Opportunities for {slug?.replace(/-/g, ' ')}...</p>
     </div>
   );
-}
 
-// ── DOCUMENT CHECKLIST ─────────────────────────────────────────────────────
-function DocumentChecklist({ items }) {
-  const [checked, setChecked] = useState({});
-  const toggle = i => setChecked(c => ({ ...c, [i]: !c[i] }));
-  const count = Object.values(checked).filter(Boolean).length;
-  const pct = Math.round((count / items.length) * 100);
+  // ── JSON-LD structured data ──
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": `${countryName} Scholarships 2026`,
+    "description": `Fully funded and partial scholarships for international students in ${countryName}.`,
+    "url": `https://yoursite.com/scholarships/${slug}`,
+    "numberOfItems": scholarships.length,
+    "itemListElement": scholarships.slice(0, 10).map((s, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "name": s.scholarship_name,
+      "url": s.official_link || `https://yoursite.com/scholarships/${slug}/${s.slug}`,
+    })),
+  };
 
-  return (
-    <div className="bg-white border-2 border-gray-100 rounded-2xl p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-black text-sm text-black uppercase tracking-wider flex items-center gap-2">
-          <CheckSquare size={15} className="text-yellow-500" />
-          Application Checklist
-        </h3>
-        <div className="text-xs font-black text-gray-500">{count}/{items.length}</div>
-      </div>
-      <div className="h-2 bg-gray-100 rounded-full mb-4 overflow-hidden">
-        <div
-          className="h-full bg-yellow-400 rounded-full transition-all duration-500"
-          style={{ width:`${pct}%` }}
+  // ── Neighboring countries for internal linking ──
+  const neighborCountries = allCountries
+    .filter(c => c.country.toLowerCase().replace(/ /g, '-') !== slug)
+    .slice(0, 10);
+
+  // ── Fallback page when no scholarships ──
+  if (!loading && scholarships.length === 0) {
+    const fallbackCountries = allCountries.slice(0, 6);
+    return (
+      <div className="min-h-screen bg-[#F8FAFC] pb-20">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": `${countryName} Scholarships 2026`,
+            "description": `We are currently compiling and verifying the 2026 scholarship listings for ${countryName}. Browse verified programs in other countries while we update.`,
+          })}}
         />
-      </div>
-      <div className="space-y-2">
-        {items.map((item, i) => (
-          <button
-            key={i}
-            onClick={() => toggle(i)}
-            className={`w-full flex items-start gap-3 p-3 rounded-xl text-left transition-all ${
-              checked[i] ? "bg-yellow-50 border border-yellow-200" : "bg-gray-50 hover:bg-gray-100 border border-transparent"
-            }`}
-          >
-            <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${
-              checked[i] ? "bg-yellow-400 border-yellow-400" : "border-gray-300"
-            }`}>
-              {checked[i] && <CheckCircle2 size={11} className="text-black" />}
-            </div>
-            <span className={`text-xs font-semibold leading-relaxed ${checked[i] ? "text-yellow-700 line-through opacity-60" : "text-gray-700"}`}>
-              {item}
-            </span>
-          </button>
-        ))}
-      </div>
-      {count === items.length && (
-        <div className="mt-4 bg-yellow-400 text-black text-center py-3 rounded-xl font-black text-sm">
-          🎉 All documents ready — good luck!
-        </div>
-      )}
-    </div>
-  );
-}
 
-// ── FAQ ACCORDION ──────────────────────────────────────────────────────────
-function FAQAccordion({ faqs }) {
-  const [open, setOpen] = useState(null);
-  return (
-    <div className="space-y-3">
-      {faqs.map((faq, i) => (
-        <div key={i} className={`border-2 rounded-2xl overflow-hidden transition-all ${open === i ? "border-yellow-400" : "border-gray-100"}`}>
-          <button
-            onClick={() => setOpen(open === i ? null : i)}
-            className="w-full flex items-start justify-between gap-4 p-5 text-left"
-          >
-            <span className="text-sm font-black text-black leading-relaxed">{faq.q}</span>
-            <ChevronDown size={18} className={`text-gray-400 shrink-0 transition-transform mt-0.5 ${open === i ? "rotate-180 text-yellow-500" : ""}`} />
-          </button>
-          {open === i && (
-            <div className="px-5 pb-5 text-sm text-gray-600 leading-relaxed font-medium border-t border-gray-100 pt-4">
-              {faq.a}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// ── UNIVERSITY CHIPS ───────────────────────────────────────────────────────
-function UniversityChips({ unis }) {
-  return (
-    <div className="flex flex-wrap gap-2">
-      {unis.map(u => (
-        <span key={u} className="bg-gray-50 border border-gray-200 text-gray-700 text-xs font-black px-3 py-1.5 rounded-lg">
-          🎓 {u}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-// ── SCHOLARSHIP TYPE TABS ──────────────────────────────────────────────────
-function ScholarshipTypeTabs({ types, activeType, setActiveType }) {
-  return (
-    <div className="flex flex-wrap gap-2 mb-6">
-      {Object.entries(types).map(([k]) => (
-        <button
-          key={k}
-          onClick={() => setActiveType(k)}
-          className={`px-4 py-2.5 rounded-xl border-2 text-xs font-black uppercase tracking-wide transition-all
-            ${activeType === k
-              ? "bg-yellow-400 text-black border-yellow-400 shadow-sm"
-              : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"}`}
-        >
-          {SCHOLARSHIP_TYPE_META[k]?.icon} {SCHOLARSHIP_TYPE_META[k]?.label || k}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-// ── POPULAR SCHOLARSHIP TABLE ──────────────────────────────────────────────
-function PopularScholarships({ items, countrySlug }) {
-  return (
-    <div className="space-y-3">
-      {items.map((s, i) => (
-        <div key={i} className="flex items-center justify-between p-4 bg-gray-50 border border-gray-100 rounded-xl hover:border-yellow-400 hover:bg-yellow-50/50 transition-all group">
-          <div className="flex items-start gap-3">
-            <div className="w-7 h-7 bg-yellow-400/20 rounded-lg flex items-center justify-center font-black text-xs text-yellow-700 shrink-0 mt-0.5">
-              {i + 1}
-            </div>
-            <div>
-              <div className="font-black text-sm text-black">{s.name}</div>
-              <div className="flex flex-wrap gap-2 mt-1">
-                <span className="text-[10px] font-bold text-gray-500">📅 {s.deadline}</span>
-                <span className="text-[10px] font-bold text-gray-500">🎓 {s.level}</span>
+        {/* Header */}
+        <div className="bg-white border-b border-gray-100 mb-10 shadow-sm">
+          <div className="max-w-7xl mx-auto px-6 py-10">
+            <nav aria-label="Breadcrumb" className="flex gap-2 text-[10px] text-gray-400 mb-6 uppercase tracking-widest font-bold">
+              <Link href="/" className="hover:text-blue-600 transition">Home</Link>
+              <span>/</span>
+              <Link href="/scholarships" className="hover:text-blue-600 transition">Scholarships</Link>
+              <span>/</span>
+              <span className="text-blue-600">{countryName}</span>
+            </nav>
+            <div className="flex items-center gap-6">
+              {countryInfo?.flag && (
+                <div className="w-20 h-14 rounded-xl overflow-hidden shadow-lg border border-gray-100 flex-shrink-0">
+                  <img src={countryInfo.flag} className="w-full h-full object-cover" alt={`${countryName} flag`} />
+                </div>
+              )}
+              <div>
+                <h1 className="text-4xl md:text-5xl font-black text-gray-900 capitalize tracking-tight">
+                  {countryName} <span className="text-blue-600">Scholarships 2026</span>
+                </h1>
+                <p className="text-gray-500 mt-2">Listings for this country are being verified for 2026.</p>
               </div>
             </div>
           </div>
-          <div className="shrink-0 text-right">
-            <div className="text-xs font-black text-yellow-700 bg-yellow-50 border border-yellow-200 px-2 py-1 rounded-lg">{s.fund}</div>
-          </div>
         </div>
-      ))}
-    </div>
-  );
-}
 
-// ── MAIN CLIENT COMPONENT ─────────────────────────────────────────────────
-export default function ScholarshipSlugClient({ params: serverParams, searchParams: serverSearchParams }) {
-  const clientParams      = useParams();
-  const clientSearchParams = useSearchParams();
+        <div className="max-w-5xl mx-auto px-6">
+          {/* Main fallback card */}
+          <div className="bg-white rounded-[2.5rem] p-16 text-center border border-gray-200 shadow-xl shadow-gray-100 mb-16">
+            <div className="text-6xl mb-6">🔍</div>
+            <h2 className="text-3xl font-black text-gray-800 mb-3">Scholarships Being Verified</h2>
+            <p className="text-gray-500 max-w-lg mx-auto mb-2 leading-relaxed">
+              We are currently collecting and verifying the official 2026 application links, deadlines, and funding details for <strong>{countryName}</strong> scholarship programs.
+            </p>
+            <p className="text-gray-400 max-w-md mx-auto mb-8 text-sm leading-relaxed">
+              International students interested in studying in {countryName} can typically find opportunities through government-sponsored programs, university direct awards, and bilateral agreements. Check back soon — we update listings weekly.
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center">
+              <Link href="/scholarships" className="bg-blue-600 text-white px-8 py-3 rounded-full font-bold shadow-lg shadow-blue-100 hover:scale-105 transition">
+                Browse All Countries
+              </Link>
+              <Link href="/scholarships/funding/fully-funded" className="bg-gray-50 text-gray-700 px-8 py-3 rounded-full font-bold border border-gray-100 hover:bg-gray-100 transition">
+                View Fully Funded Programs
+              </Link>
+            </div>
+          </div>
 
-  const slug         = clientParams?.slug || serverParams?.slug || "";
-  const typeParam    = clientSearchParams?.get?.("type") || serverSearchParams?.type || "";
+          {/* SEO text for fallback */}
+          <div className="bg-blue-50 border border-blue-100 rounded-[2rem] p-10 mb-16">
+            <h2 className="text-2xl font-black text-gray-900 mb-4">
+              About Studying in {countryName}
+            </h2>
+            <p className="text-gray-600 leading-relaxed mb-4">
+              {countryName} is a recognized destination for international students seeking high-quality education with globally respected degrees. Scholarships in this region typically cover programs at the Bachelor's, Master's, and doctoral level, often including language learning support for non-native speakers.
+            </p>
+            <p className="text-gray-600 leading-relaxed">
+              Government-funded scholarships, university merit awards, and bilateral agreements are the three main funding categories available to students. Eligibility requirements generally include a minimum GPA of 3.0 or above, proof of language proficiency, and a completed undergraduate degree for graduate-level programs.
+            </p>
+          </div>
 
-  const countryData = useMemo(() => getScholarshipData(slug), [slug]);
-
-  const [activeType, setActiveType] = useState(() => {
-    if (typeParam && countryData?.types?.[typeParam]) return typeParam;
-    return countryData ? Object.keys(countryData.types)[0] : "fully-funded";
-  });
-
-  if (!countryData) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-6xl mb-4">🌍</div>
-          <h1 className="font-black text-2xl text-black mb-2">Country Not Found</h1>
-          <p className="text-gray-500 mb-6">We don't have scholarship data for this country yet.</p>
-          <Link href="/scholarships" className="bg-yellow-400 text-black font-black px-6 py-3 rounded-xl hover:bg-black hover:text-yellow-400 transition-all">
-            ← Back to Scholarship Finder
-          </Link>
+          {/* Alternative country suggestions */}
+          <h3 className="text-2xl font-black text-gray-900 mb-6">Explore Verified Scholarships Nearby</h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+            {fallbackCountries.map(c => (
+              <Link
+                key={c.code}
+                href={`/scholarships/${c.country.toLowerCase().replace(/ /g, '-')}`}
+                className="group flex items-center gap-4 bg-white border border-gray-100 p-5 rounded-2xl hover:border-blue-200 hover:shadow-xl transition-all"
+              >
+                <img src={c.flag} className="w-10 h-7 object-cover rounded shadow-sm" alt={`${c.country} flag`} />
+                <div>
+                  <p className="font-black text-gray-800 text-sm group-hover:text-blue-600 transition">{c.country}</p>
+                  <p className="text-[10px] text-gray-400 uppercase font-bold mt-0.5">View Scholarships →</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     );
   }
 
-  const activeRule = countryData.types[activeType];
-  const otherTypes = Object.entries(countryData.types).filter(([k]) => k !== activeType);
-
-  // All other countries for internal linking
-  const relatedCountries = countryData.relatedLinks || [];
-  const allOtherCountries = Object.entries(SCHOLARSHIP_RULES)
-    .filter(([s]) => s !== slug)
-    .slice(0, 6)
-    .map(([s, d]) => ({ slug: s, name: d.name, flag: d.flag }));
-
   return (
-    <div className="min-h-screen bg-white font-sans">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-      {/* ── TRUST BAR ────────────────────────────────────────────────────── */}
-      <div className="bg-black py-2.5 px-6 text-center">
-        <p className="text-xs text-yellow-400 font-bold">
-          ✅ Data verified from official scholarship portals &nbsp;·&nbsp;
-          🔄 Updated monthly &nbsp;·&nbsp;
-          🆓 Free — No signup required
-        </p>
-      </div>
+      <div className="min-h-screen bg-[#F8FAFC] pb-20">
+        {/* ── Premium Header ── */}
+        <div className="bg-white border-b border-gray-100 mb-10 shadow-sm">
+          <div className="max-w-7xl mx-auto px-6 py-10">
+            <nav aria-label="Breadcrumb" className="flex gap-2 text-[10px] text-gray-400 mb-6 uppercase tracking-widest font-bold">
+              <Link href="/" className="hover:text-blue-600 transition">Home</Link>
+              <span>/</span>
+              <Link href="/scholarships" className="hover:text-blue-600 transition">Scholarships</Link>
+              <span>/</span>
+              <span className="text-blue-600">{countryName}</span>
+            </nav>
 
-      {/* ── BREADCRUMB ───────────────────────────────────────────────────── */}
-      <div className="bg-gray-50 border-b border-gray-100 px-6 py-3">
-        <div className="container mx-auto max-w-6xl flex items-center gap-2 text-xs text-gray-400 font-semibold flex-wrap">
-          <Link href="/" className="hover:text-black transition-colors">Home</Link>
-          <ChevronRight size={12} />
-          <Link href="/scholarships" className="hover:text-black transition-colors">Scholarship Finder</Link>
-          <ChevronRight size={12} />
-          <span className="text-black">{countryData.name} Scholarships</span>
-        </div>
-      </div>
-
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative bg-white pt-12 pb-12 px-6 border-b border-gray-100 overflow-hidden">
-        <div className="absolute top-0 right-0 text-[200px] opacity-[0.04] select-none pointer-events-none leading-none translate-x-8">
-          {countryData.flag}
-        </div>
-        <div className="container mx-auto max-w-6xl relative z-10">
-          <Link href="/scholarships"
-            className="inline-flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-black mb-8 transition-colors">
-            <ArrowLeft size={16} /> All Countries
-          </Link>
-
-          {/* Type switcher */}
-          <ScholarshipTypeTabs
-            types={countryData.types}
-            activeType={activeType}
-            setActiveType={setActiveType}
-          />
-
-          <div className="grid md:grid-cols-2 gap-10 items-start">
-            <div>
-              {/* Country badges */}
-              <div className="flex flex-wrap gap-2 mb-5">
-                <span className="text-3xl">{countryData.flag}</span>
-                <span className="px-3 py-1.5 bg-gray-50 border border-gray-200 text-gray-600 text-xs font-black rounded-xl">{countryData.continent}</span>
-                <span className="px-3 py-1.5 bg-gray-50 border border-gray-200 text-gray-600 text-xs font-black rounded-xl">💬 {countryData.language}</span>
-                <span className="px-3 py-1.5 bg-yellow-50 border border-yellow-200 text-yellow-700 text-xs font-black rounded-xl">✅ Updated 2025</span>
+            <div className="flex flex-col md:flex-row md:items-center gap-6">
+              {countryInfo?.flag && (
+                <div className="w-20 h-14 rounded-xl overflow-hidden shadow-lg border border-gray-100 flex-shrink-0">
+                  <img src={countryInfo.flag} className="w-full h-full object-cover" alt={`${countryName} flag`} />
+                </div>
+              )}
+              <div className="flex-1">
+                <h1 className="text-4xl md:text-5xl font-black text-gray-900 capitalize tracking-tight">
+                  {countryName} <span className="text-blue-600">Scholarships 2026</span>
+                </h1>
+                <p className="text-gray-500 mt-2 text-base max-w-2xl">
+                  {dynamicIntros[introIdx](countryName, scholarships.length)}
+                </p>
               </div>
-
-              <h1 className="text-4xl md:text-5xl font-black text-black leading-tight tracking-tight mb-4">
-                {countryData.name}<br />
-                <span className="bg-yellow-400 px-2">Scholarships</span><br />
-                <span className="text-gray-400 text-3xl">{activeRule?.label}</span>
-              </h1>
-              <p className="text-gray-500 font-medium leading-relaxed mb-6 text-sm">
-                Complete guide to <strong className="text-black">{countryData.name} {activeRule?.label}</strong> for
-                international students including Bangladeshis. Coverage, deadlines, eligibility, required documents,
-                and expert application tips — verified from official sources.
-              </p>
-              {/* Top universities */}
-              <div className="mb-4">
-                <div className="text-xs font-black uppercase tracking-wider text-gray-400 mb-2">Top Universities</div>
-                <UniversityChips unis={countryData.topUniversities} />
+              {/* Quick stats */}
+              <div className="flex gap-4 flex-shrink-0">
+                <div className="text-center bg-blue-50 px-6 py-4 rounded-2xl">
+                  <p className="text-3xl font-black text-blue-600">{scholarships.length}</p>
+                  <p className="text-[10px] text-gray-400 uppercase font-black mt-1">Programs</p>
+                </div>
+                <div className="text-center bg-gray-50 px-6 py-4 rounded-2xl">
+                  <p className="text-3xl font-black text-gray-900">
+                    {scholarships.filter(s => s.funding_type === 'Fully Funded').length}
+                  </p>
+                  <p className="text-[10px] text-gray-400 uppercase font-black mt-1">Fully Funded</p>
+                </div>
               </div>
             </div>
 
-            {/* Quick stats card */}
-            <div className="bg-black rounded-2xl p-8 text-white">
-              <div className="text-xs font-black uppercase tracking-widest text-gray-500 mb-2">Scholarship Overview</div>
-
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                {[
-                  { label:"Total Scholarships", value: countryData.totalScholarships, icon:"🎓" },
-                  { label:"Avg. Award Value",   value: countryData.avgAward,          icon:"💰" },
-                  { label:"Application Deadline", value: activeRule?.deadline || "Varies", icon:"📅" },
-                  { label:"Competition Level",  value: activeRule?.competition || "High", icon:"🏆" },
-                ].map(s => (
-                  <div key={s.label} className="bg-white/10 rounded-xl p-4">
-                    <div className="text-lg mb-1">{s.icon}</div>
-                    <div className="text-[10px] text-gray-500 font-black uppercase tracking-wide mb-1">{s.label}</div>
-                    <div className="text-sm font-black text-white leading-tight">{s.value}</div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Active type details */}
-              <div className="space-y-2">
-                {[
-                  { label:"Coverage",  value: activeRule?.coverage  || "See program details" },
-                  { label:"Min. GPA",  value: activeRule?.gpa       || "Check program" },
-                  { label:"IELTS",     value: activeRule?.ielts      || "Check program" },
-                  { label:"Open To",   value: activeRule?.openTo    || "Check program" },
-                ].map(d => (
-                  <div key={d.label} className="flex items-center justify-between bg-white/5 px-4 py-2.5 rounded-xl">
-                    <span className="text-xs text-gray-500 font-semibold">{d.label}</span>
-                    <span className="text-xs font-black text-yellow-400 max-w-[60%] text-right">{d.value}</span>
-                  </div>
-                ))}
-              </div>
+            {/* Quick filter tags */}
+            <div className="flex flex-wrap gap-2 mt-6">
+              {relatedLinks.map(l => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="text-[11px] font-black uppercase tracking-wider px-4 py-2 rounded-full border border-gray-200 text-gray-500 bg-gray-50 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
+                >
+                  {l.label}
+                </Link>
+              ))}
             </div>
           </div>
         </div>
-      </section>
 
-      {/* ── MAIN CONTENT ─────────────────────────────────────────────────── */}
-      <div className="container mx-auto max-w-6xl px-6 py-16">
-        <div className="grid lg:grid-cols-3 gap-10">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row gap-10">
 
-          {/* LEFT — MAIN CONTENT */}
-          <div className="lg:col-span-2 space-y-12">
-
-            {/* Popular Scholarships */}
-            {countryData.popularScholarships && (
-              <section>
-                <h2 className="text-2xl font-black text-black mb-6 flex items-center gap-3">
-                  <div className="w-8 h-8 bg-yellow-400/20 rounded-xl flex items-center justify-center">
-                    <Star size={16} className="text-yellow-600 fill-yellow-400" />
-                  </div>
-                  Top {countryData.name} Scholarships 2025
-                </h2>
-                <PopularScholarships items={countryData.popularScholarships} countrySlug={slug} />
-              </section>
-            )}
-
-            {/* Eligibility Requirements */}
-            <section>
-              <h2 className="text-2xl font-black text-black mb-6 flex items-center gap-3">
-                <div className="w-8 h-8 bg-blue-50 rounded-xl flex items-center justify-center">
-                  <CheckCircle2 size={16} className="text-blue-600" />
-                </div>
-                Eligibility & Requirements
-              </h2>
-              <div className="space-y-3">
-                {(countryData.requirements || []).map((req, i) => (
-                  <div key={i} className="flex items-start gap-4 p-5 bg-gray-50 border border-gray-100 rounded-2xl hover:border-yellow-400/50 transition-colors">
-                    <div className="w-6 h-6 bg-yellow-400 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                      <CheckCircle2 size={13} className="text-black" />
-                    </div>
-                    <span className="text-sm text-gray-700 font-medium leading-relaxed">{req}</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Application Timeline Visual */}
-            <section>
-              <h2 className="text-2xl font-black text-black mb-6 flex items-center gap-3">
-                <div className="w-8 h-8 bg-gray-100 rounded-xl flex items-center justify-center">
-                  <BarChart2 size={16} className="text-gray-600" />
-                </div>
-                Application Timeline
-              </h2>
-              <div className="relative">
-                <div className="absolute left-5 top-6 bottom-6 w-0.5 bg-gray-100" />
-                <div className="space-y-4">
-                  {[
-                    { icon:"🔍", label:"Research & Shortlist",    when:"18 months before", color:"bg-gray-800" },
-                    { icon:"📝", label:"IELTS / Language Tests",  when:"12 months before", color:"bg-blue-600" },
-                    { icon:"✍️", label:"SOP & References",        when:"8 months before",  color:"bg-purple-600" },
-                    { icon:"📤", label:"Submit Application",       when: activeRule?.deadline || "Per program deadline", color:"bg-yellow-500" },
-                    { icon:"✅", label:"Decision & Visa",         when:"3–4 months after", color:"bg-emerald-600" },
-                  ].map((s, i) => (
-                    <div key={i} className="flex items-center gap-4 relative">
-                      <div className={`w-10 h-10 ${s.color} rounded-xl flex items-center justify-center text-sm shrink-0 z-10 shadow-sm`}>
-                        {s.icon}
-                      </div>
-                      <div className="flex-1 bg-gray-50 rounded-xl px-4 py-3 flex items-center justify-between border border-gray-100">
-                        <span className="text-sm font-semibold text-gray-700">{s.label}</span>
-                        <span className="text-xs font-black text-gray-500 bg-white px-2 py-1 rounded-lg border border-gray-100 shrink-0 ml-2">{s.when}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* Why Delayed / Common Mistakes */}
-            <section>
-              <h2 className="text-2xl font-black text-black mb-6 flex items-center gap-3">
-                <div className="w-8 h-8 bg-red-50 rounded-xl flex items-center justify-center">
-                  <AlertTriangle size={16} className="text-red-500" />
-                </div>
-                Common Mistakes That Cause Rejection
-              </h2>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {[
-                  "Weak or generic Statement of Purpose not tailored to the scholarship values",
-                  "IELTS score below the minimum — always check band-specific requirements",
-                  "Submitting without strong references from senior academics or employers",
-                  "Applying too close to the deadline with a rushed, incomplete application",
-                  "Not demonstrating clear post-study plans and ties to home country",
-                  "Ignoring scholarship-specific essay questions or word limits",
-                  "Not matching research interests with the faculty or program focus",
-                  "Missing or inconsistent supporting documents (bank statements, transcripts)",
-                ].map((reason, i) => (
-                  <div key={i} className="flex items-start gap-3 p-4 bg-red-50 border border-red-100 rounded-xl">
-                    <XCircle size={15} className="text-red-400 shrink-0 mt-0.5" />
-                    <span className="text-xs text-red-800 font-medium leading-relaxed">{reason}</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Expert Tips */}
-            <section>
-              <h2 className="text-2xl font-black text-black mb-6 flex items-center gap-3">
-                <div className="w-8 h-8 bg-yellow-50 rounded-xl flex items-center justify-center">
-                  <Lightbulb size={16} className="text-yellow-600" />
-                </div>
-                Expert Tips to Win {countryData.name} Scholarships
-              </h2>
-              <div className="space-y-3">
-                {(countryData.tips || []).map((tip, i) => (
-                  <div key={i} className="flex items-start gap-4 p-5 bg-yellow-50 border border-yellow-100 rounded-2xl hover:border-yellow-300 transition-colors">
-                    <span className="w-7 h-7 bg-yellow-400 text-black font-black text-xs rounded-lg flex items-center justify-center shrink-0">
-                      {i + 1}
+          {/* ── Main Content ── */}
+          <main className="flex-1 space-y-10" aria-label="Scholarship listings">
+            {scholarships.map((s) => (
+              <article
+                key={s.slug}
+                className="group bg-white rounded-[2.5rem] overflow-hidden shadow-2xl shadow-gray-200/50 border border-white hover:border-blue-100 transition-all duration-500"
+                aria-label={s.scholarship_name}
+              >
+                {/* Status Bar */}
+                <div className="px-8 py-5 bg-gray-50/50 flex justify-between items-center border-b border-gray-50 flex-wrap gap-3">
+                  <div className="flex gap-2 flex-wrap">
+                    <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-tighter text-white ${s.funding_type === 'Fully Funded' ? 'bg-blue-600' : s.funding_type === 'Partial' ? 'bg-amber-500' : 'bg-gray-600'}`}>
+                      {s.funding_type || "Standard"}
                     </span>
-                    <span className="text-sm text-gray-800 font-medium leading-relaxed">{tip}</span>
+                    {s.popular && (
+                      <span className="px-4 py-1.5 bg-orange-500 text-white rounded-full text-[10px] font-black uppercase tracking-tighter">
+                        🔥 Featured
+                      </span>
+                    )}
+                    {s.degree_level?.map(d => (
+                      <span key={d} className="px-4 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-[10px] font-black uppercase tracking-tighter">
+                        {d}
+                      </span>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </section>
-
-            {/* FAQ */}
-            {countryData.faqs && countryData.faqs.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-black text-black mb-6 flex items-center gap-3">
-                  <div className="w-8 h-8 bg-blue-50 rounded-xl flex items-center justify-center">
-                    <HelpCircle size={16} className="text-blue-600" />
+                  <div className="text-[10px] font-black text-gray-300 uppercase tracking-widest">
+                    REF: {s?._id?.$oid?.slice(-6).toUpperCase() || s.slug?.slice(-6).toUpperCase() || 'N/A'}
                   </div>
-                  Frequently Asked Questions
-                </h2>
-                <FAQAccordion faqs={countryData.faqs} />
-              </section>
-            )}
-
-            {/* Internal Links — Related Countries */}
-            <section>
-              <h2 className="text-2xl font-black text-black mb-6 flex items-center gap-3">
-                <div className="w-8 h-8 bg-emerald-50 rounded-xl flex items-center justify-center">
-                  <TrendingUp size={16} className="text-emerald-600" />
                 </div>
-                Compare Other Country Scholarships
-              </h2>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {relatedCountries.length > 0
-                  ? relatedCountries.map((link, i) => (
-                    <Link key={i} href={`/scholarships/${link.slug}`}
-                      className="group flex items-center justify-between p-5 bg-white border-2 border-gray-100 rounded-2xl hover:border-yellow-400 hover:shadow-md transition-all">
+
+                <div className="p-8 md:p-12">
+                  <h2 className="text-3xl font-black text-gray-900 leading-tight mb-3 group-hover:text-blue-600 transition-colors">
+                    {s.scholarship_name}
+                  </h2>
+
+                  {/* Funding type description for SEO */}
+                  {fundingTypeDescriptions[s.funding_type] && (
+                    <p className="text-sm text-gray-500 mb-8 bg-blue-50 border border-blue-100 px-5 py-3 rounded-xl leading-relaxed">
+                      ℹ️ {fundingTypeDescriptions[s.funding_type]}
+                    </p>
+                  )}
+
+                  {/* Stats Grid */}
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+                    <StatCard icon="🎓" label="Degree Level" value={s.degree_level?.join(" & ") || "Multiple"} />
+                    <StatCard icon="💰" label="Award Value" value={s.details?.award_value || "Full Coverage"} />
+                    <StatCard icon="📈" label="Min GPA" value={s.details?.min_gpa || "Varies"} />
+                    <StatCard icon="🌍" label="IELTS/TOEFL" value={s.details?.ielts || "Required"} />
+                  </div>
+
+                  {/* Additional details row */}
+                  {(s.duration || s.language || s.details?.work_experience || s.details?.open_to) && (
+                    <div className="flex flex-wrap gap-3 mb-10">
+                      {s.duration && (
+                        <span className="text-xs font-bold text-gray-600 bg-gray-50 border border-gray-100 px-4 py-2 rounded-xl">
+                          ⏱ Duration: {s.duration}
+                        </span>
+                      )}
+                      {s.language && (
+                        <span className="text-xs font-bold text-gray-600 bg-gray-50 border border-gray-100 px-4 py-2 rounded-xl">
+                          🗣 Language: {s.language}
+                        </span>
+                      )}
+                      {s.details?.work_experience && (
+                        <span className="text-xs font-bold text-gray-600 bg-gray-50 border border-gray-100 px-4 py-2 rounded-xl">
+                          💼 Work Exp: {s.details.work_experience}
+                        </span>
+                      )}
+                      {s.details?.open_to && (
+                        <span className="text-xs font-bold text-gray-600 bg-gray-50 border border-gray-100 px-4 py-2 rounded-xl">
+                          👥 Open To: {s.details.open_to}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="grid md:grid-cols-3 gap-12">
+                    <div className="md:col-span-2 space-y-8">
                       <div>
-                        <div className="font-black text-sm text-black mb-1 group-hover:text-yellow-700 transition-colors">
-                          {SCHOLARSHIP_RULES[link.slug]?.flag} {link.label}
+                        <h3 className="text-xs font-black text-blue-600 uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
+                          <span className="w-8 h-[2px] bg-blue-600 rounded-full"></span>
+                          Eligibility Requirements
+                        </h3>
+                        <p className="text-gray-600 text-base leading-relaxed font-medium">{s.details?.eligibility}</p>
+                      </div>
+
+                      {/* Country + continent context for SEO */}
+                      <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100">
+                        <h3 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-3">📍 Program Location</h3>
+                        <div className="flex flex-wrap gap-3 text-sm text-gray-700 font-bold">
+                          {s.country && <span>🌎 {s.country}</span>}
+                          {s.continent && <span>· {s.continent}</span>}
                         </div>
-                        <div className="text-xs text-gray-400 font-semibold">{SCHOLARSHIP_RULES[link.slug]?.totalScholarships} scholarships</div>
                       </div>
-                      <ChevronRight size={16} className="text-gray-300 group-hover:text-yellow-500 transition-colors" />
-                    </Link>
-                  ))
-                  : allOtherCountries.map((c, i) => (
-                    <Link key={i} href={`/scholarships/${c.slug}`}
-                      className="group flex items-center justify-between p-5 bg-white border-2 border-gray-100 rounded-2xl hover:border-yellow-400 hover:shadow-md transition-all">
-                      <div className="font-black text-sm text-black group-hover:text-yellow-700 transition-colors">
-                        {c.flag} {c.name} Scholarships
+
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-2">
+                        {s.tags?.map(t => (
+                          <Link
+                            key={t}
+                            href={`/scholarships/tag/${t}`}
+                            className="text-[10px] bg-gray-50 border border-gray-100 px-4 py-2 rounded-xl text-gray-500 font-black uppercase tracking-widest hover:bg-blue-50 hover:text-blue-600 hover:border-blue-100 transition"
+                          >
+                            #{t}
+                          </Link>
+                        ))}
                       </div>
-                      <ChevronRight size={16} className="text-gray-300 group-hover:text-yellow-500" />
-                    </Link>
-                  ))
-                }
-              </div>
-            </section>
+                    </div>
 
-            {/* SEO Article */}
-            <section className="border-t border-gray-100 pt-10">
-              <h2 className="text-2xl font-black text-black mb-4">
-                {countryData.name} Scholarships for International Students: 2025 Guide
-              </h2>
-              <div className="space-y-4 text-gray-600 text-sm leading-relaxed">
-                <p>
-                  <strong className="text-black">{countryData.name}</strong> is home to some of the world's most
-                  prestigious universities including {countryData.topUniversities.slice(0,3).join(", ")}.
-                  International students — including those from Bangladesh — can access{" "}
-                  <strong className="text-black">{countryData.totalScholarships} scholarships</strong>, with average
-                  award values of <strong className="text-black">{countryData.avgAward}</strong>.
-                </p>
-                <p>
-                  The <strong className="text-black">{activeRule?.label}</strong> is one of the most sought-after
-                  funding mechanisms for international students applying to {countryData.name}. It covers{" "}
-                  {activeRule?.coverage || "tuition and related costs"}, with applications due{" "}
-                  {activeRule?.deadline || "as per program guidelines"}.
-                  Competition is <strong className="text-black">{activeRule?.competition || "high"}</strong>,
-                  making a strong application with all required documents essential to success.
-                </p>
-                <p>
-                  The minimum academic requirement for most {countryData.name} scholarships is{" "}
-                  {activeRule?.gpa || "a strong academic record"}, and English language proficiency of{" "}
-                  {activeRule?.ielts || "IELTS 6.5+"} is typically required. Programs are open to{" "}
-                  {activeRule?.openTo || "graduate and PhD students"}.
-                </p>
-
-                <div className="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-5">
-                  <p className="text-sm font-black text-black mb-3">⚡ Quick Reference — {countryData.name} Scholarships</p>
-                  <ul className="space-y-2 text-sm text-gray-700">
-                    <li className="flex items-center gap-2"><CheckCircle2 size={14} className="text-yellow-500 shrink-0" />Scholarship count: <strong>{countryData.totalScholarships}</strong></li>
-                    <li className="flex items-center gap-2"><CheckCircle2 size={14} className="text-yellow-500 shrink-0" />Average value: <strong>{countryData.avgAward}</strong></li>
-                    <li className="flex items-center gap-2"><CheckCircle2 size={14} className="text-yellow-500 shrink-0" />Deadline ({activeRule?.label}): <strong>{activeRule?.deadline || "Varies"}</strong></li>
-                    <li className="flex items-center gap-2"><CheckCircle2 size={14} className="text-yellow-500 shrink-0" />Language: <strong>{countryData.language}</strong></li>
-                    <li className="flex items-center gap-2"><CheckCircle2 size={14} className="text-yellow-500 shrink-0" />Top universities: <strong>{countryData.topUniversities.slice(0,3).join(", ")}</strong></li>
-                  </ul>
+                    {/* Benefit Sidebar */}
+                    <div className="bg-gray-900 text-white p-8 rounded-[2rem] shadow-2xl relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600 blur-[80px] opacity-20"></div>
+                      <h3 className="text-xl font-bold mb-6 text-blue-400">What's Covered</h3>
+                      <ul className="space-y-4 mb-10" aria-label="Scholarship coverage">
+                        {s.details?.coverage?.map((c, i) => (
+                          <li key={i} className="flex gap-3 text-sm text-gray-300">
+                            <span className="text-blue-500 font-bold flex-shrink-0">✓</span> {c}
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="pt-6 border-t border-white/10">
+                        <p className="text-[10px] uppercase font-black text-gray-500 mb-1">Application Deadline</p>
+                        <p className="text-2xl font-black text-red-400 mb-2">{s.deadline}</p>
+                        {s.duration && (
+                          <p className="text-xs text-gray-500 mb-6">Duration: {s.duration}</p>
+                        )}
+                        <a
+                          href={s.official_link || "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Apply for ${s.scholarship_name} — opens official website`}
+                          className="w-full block text-center bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-2xl font-bold transition-all active:scale-95 shadow-lg shadow-blue-900/20"
+                        >
+                          Apply Now →
+                        </a>
+                        <p className="text-center text-[10px] text-gray-600 mt-3">Opens official scholarship portal</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              </article>
+            ))}
+
+            {/* ── SEO Text Block (Dynamic per Country) ── */}
+            <div className="bg-white border border-gray-100 rounded-[2.5rem] p-10 shadow-sm">
+              <h2 className="text-2xl font-black text-gray-900 mb-5">
+                About Scholarships in {countryName}
+              </h2>
+              <div className="prose prose-gray max-w-none text-gray-500 leading-relaxed text-sm space-y-4">
+                <p>
+                  {countryName} offers a wide range of scholarship opportunities for international students across all degree levels. Programs range from fully funded government awards — which cover tuition, living expenses, and travel — to university merit scholarships that offset academic costs for high-achieving applicants.
+                </p>
+                <p>
+                  Most scholarships in {countryName} for 2026 require applicants to hold a minimum GPA between 3.0 and 3.5, along with proof of English language proficiency (IELTS or TOEFL). Some programs additionally require letters of recommendation, a statement of purpose, and in certain fields, prior work or research experience.
+                </p>
+                <p>
+                  Application windows for {countryName} scholarships typically open between July and December for the following academic year. We recommend beginning your application 3–6 months before the posted deadline to allow time for document collection, translations, and institution-specific requirements.
+                </p>
               </div>
-            </section>
 
-            {/* More internal links */}
-            <section className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
-              <h3 className="font-black text-black text-lg mb-2">Explore More Scholarship Resources</h3>
-              <p className="text-gray-500 text-sm mb-5">Comprehensive guides for international students</p>
-              <div className="grid sm:grid-cols-2 gap-3">
-                {[
-                  { label:"🌍 All Country Scholarships",    href:"/scholarships" },
-                  { label:"📋 Visa Processing Time Tracker", href:"/travel-resources/visa-processing-time-tracker" },
-                  { label:"✈️ Travel Resources",            href:"/travel-resources" },
-                  { label:"💬 Talk to a Scholarship Expert", href:"https://wa.me/8801631312524" },
-                ].map((l, i) => (
-                  <Link key={i} href={l.href}
-                    className="flex items-center justify-between px-4 py-3 bg-white rounded-xl border border-gray-100 hover:border-yellow-400 text-sm font-semibold text-gray-700 hover:text-black transition-all group">
-                    {l.label}
-                    <ChevronRight size={14} className="text-gray-300 group-hover:text-yellow-500" />
-                  </Link>
-                ))}
-              </div>
-            </section>
-          </div>
-
-          {/* RIGHT SIDEBAR */}
-          <div className="space-y-6">
-            {/* Deadline calculator */}
-            <DeadlineCalculator types={countryData.types} activeType={activeType} />
-
-            {/* Document checklist */}
-            {countryData.requirements && <DocumentChecklist items={countryData.requirements} />}
-
-            {/* Other scholarship types */}
-            {otherTypes.length > 0 && (
-              <div className="bg-white border-2 border-gray-100 rounded-2xl p-6">
-                <h4 className="font-black text-sm text-black uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <GraduationCap size={14} className="text-gray-400" />
-                  Other {countryData.name} Scholarship Types
-                </h4>
-                <div className="space-y-3">
-                  {otherTypes.map(([k, v]) => (
-                    <button
-                      key={k}
-                      onClick={() => setActiveType(k)}
-                      className="w-full flex items-center justify-between p-3 rounded-xl bg-gray-50 hover:bg-yellow-50 border border-transparent hover:border-yellow-200 transition-all text-left"
+              {/* Internal links inside SEO text */}
+              <div className="mt-8 pt-8 border-t border-gray-100">
+                <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Related Scholarship Guides</p>
+                <div className="flex flex-wrap gap-3">
+                  {relatedLinks.map(l => (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      className="text-sm font-bold text-blue-600 hover:underline"
                     >
-                      <div>
-                        <div className="text-xs font-black text-black">
-                          {SCHOLARSHIP_TYPE_META[k]?.icon} {SCHOLARSHIP_TYPE_META[k]?.label || k}
-                        </div>
-                        <div className="text-[10px] text-gray-400 mt-0.5">{v.examples?.slice(0,2).join(", ")}</div>
-                      </div>
-                      <ChevronRight size={14} className="text-gray-400" />
-                    </button>
+                      → {l.label}
+                    </Link>
                   ))}
                 </div>
               </div>
-            )}
+            </div>
+          </main>
 
-            {/* All countries quick nav */}
-            <div className="bg-white border-2 border-gray-100 rounded-2xl p-6">
-              <h4 className="font-black text-sm text-black uppercase tracking-wider mb-4 flex items-center gap-2">
-                <Globe size={14} className="text-gray-400" />
-                All Country Guides
-              </h4>
-              <div className="space-y-2">
-                {Object.entries(SCHOLARSHIP_RULES).map(([s, d]) => (
-                  <Link key={s} href={`/scholarships/${s}`}
-                    className={`flex items-center gap-2 p-2.5 rounded-xl text-xs font-semibold transition-all ${
-                      s === slug
-                        ? "bg-yellow-400 text-black font-black"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-black"
-                    }`}
+          {/* ── Sidebar ── */}
+          <aside className="lg:w-80 space-y-6" aria-label="Related scholarships">
+            {/* Browse More Countries */}
+            <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/20 sticky top-10">
+              <h3 className="text-lg font-black text-gray-900 mb-6 flex items-center justify-between">
+                Browse More <span className="text-xs bg-gray-100 px-2 py-1 rounded">2026</span>
+              </h3>
+              <nav aria-label="Other country scholarships">
+                <div className="space-y-3">
+                  {neighborCountries.map((rc) => (
+                    <Link
+                      key={rc.code}
+                      href={`/scholarships/${rc.country.toLowerCase().replace(/ /g, '-')}`}
+                      title={`${rc.country} Scholarships 2026`}
+                      className="flex items-center gap-3 group p-2 hover:bg-blue-50 rounded-xl transition"
+                    >
+                      <img src={rc.flag} className="w-8 h-5 object-cover rounded shadow-sm flex-shrink-0" alt={`${rc.country} flag`} />
+                      <span className="text-sm font-bold text-gray-500 group-hover:text-blue-600 transition leading-tight">{rc.country}</span>
+                      <span className="ml-auto text-gray-300 group-hover:text-blue-400 text-xs">→</span>
+                    </Link>
+                  ))}
+                </div>
+              </nav>
+              <Link href="/scholarships" className="mt-8 block text-center text-[10px] font-black text-blue-600 uppercase border-t pt-6 hover:tracking-widest transition-all">
+                View All 264 Countries
+              </Link>
+            </div>
+
+            {/* Filter by Degree */}
+            <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm">
+              <h3 className="text-base font-black text-gray-900 mb-5">Filter by Degree</h3>
+              <div className="space-y-3">
+                {[
+                  { label: "Bachelor's Scholarships", href: "/scholarships/degree/bachelors", icon: "📚" },
+                  { label: "Master's Scholarships", href: "/scholarships/degree/masters", icon: "🎓" },
+                  { label: "PhD Scholarships", href: "/scholarships/degree/phd", icon: "🔬" },
+                  { label: "Short Courses", href: "/scholarships/degree/short-course", icon: "📋" },
+                ].map(d => (
+                  <Link
+                    key={d.href}
+                    href={d.href}
+                    className="flex items-center gap-3 group p-3 hover:bg-indigo-50 rounded-xl transition"
                   >
-                    <span>{d.flag}</span> {d.name}
-                    {s === slug && <span className="ml-auto text-[10px] font-black">← You are here</span>}
+                    <span className="text-lg">{d.icon}</span>
+                    <span className="text-sm font-bold text-gray-500 group-hover:text-indigo-600 transition">{d.label}</span>
                   </Link>
                 ))}
               </div>
             </div>
 
-            {/* CTA */}
-            <div className="bg-black rounded-2xl p-7 text-white text-center">
-              <div className="text-3xl mb-3">🧑‍💼</div>
-              <h4 className="font-black text-lg mb-2">Get Expert Help</h4>
-              <p className="text-gray-400 text-xs leading-relaxed mb-5">
-                Our consultants handle your {countryData.name} scholarship application from SOP writing to final submission.
+            {/* Deadline Alert */}
+            <div className="bg-gradient-to-br from-red-50 to-orange-50 border border-red-100 p-6 rounded-[2rem]">
+              <p className="text-xs font-black text-red-500 uppercase tracking-widest mb-2">⚠️ Deadline Alert</p>
+              <p className="text-sm font-bold text-gray-700 mb-3 leading-snug">
+                Many {countryName} scholarships close between October–December 2025 for 2026 intake.
               </p>
-              <a href="https://wa.me/8801631312524" target="_blank" rel="noopener noreferrer"
-                className="block w-full py-4 bg-yellow-400 text-black font-black rounded-xl hover:bg-white transition-all text-sm mb-3">
-                💬 WhatsApp Now →
-              </a>
-              <div className="flex items-center justify-center gap-4 text-[10px] text-gray-600 font-semibold">
-                <span>✅ Free assessment</span>
-                <span>⚡ Fast reply</span>
-              </div>
+              <Link href="/scholarships/deadline/october" className="text-xs font-black text-red-600 hover:underline uppercase tracking-widest">
+                View October Deadlines →
+              </Link>
             </div>
-
-            {/* Disclaimer */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4">
-              <div className="flex items-start gap-2">
-                <AlertCircle size={14} className="text-yellow-600 shrink-0 mt-0.5" />
-                <p className="text-xs text-yellow-800 leading-relaxed">
-                  Scholarship details are verified from official sources and updated monthly.
-                  Always confirm deadlines and requirements on the official scholarship portal before applying.
-                </p>
-              </div>
-            </div>
-          </div>
+          </aside>
         </div>
       </div>
+    </>
+  );
+}
 
-      {/* ── BACK CTA ─────────────────────────────────────────────────────── */}
-      <section className="bg-black py-16 px-6 text-center">
-        <div className="container mx-auto max-w-3xl">
-          <h2 className="text-3xl font-black text-white mb-4">Explore More Countries</h2>
-          <p className="text-gray-400 font-medium mb-8">
-            Compare scholarships across 15+ countries — fully funded to partial awards, government to university grants.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link href="/scholarships"
-              className="inline-flex items-center gap-3 bg-yellow-400 text-black px-10 py-5 rounded-2xl font-black hover:bg-white transition-all shadow-xl text-sm">
-              <GraduationCap size={20} /> Browse All Countries
-            </Link>
-            <a href="https://wa.me/8801631312524" target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 bg-white/10 text-white px-8 py-5 rounded-2xl font-black hover:bg-white/20 transition-all text-sm">
-              💬 Talk to Expert
-            </a>
-          </div>
-        </div>
-      </section>
+function StatCard({ icon, label, value }) {
+  return (
+    <div className="bg-gray-50/50 border border-gray-100 p-5 rounded-2xl hover:bg-white hover:shadow-xl hover:shadow-blue-100/50 transition-all group/card">
+      <div className="text-2xl mb-2 group-hover/card:scale-110 transition-transform">{icon}</div>
+      <p className="text-[10px] uppercase font-black text-gray-400 tracking-wider mb-1">{label}</p>
+      <p className="text-sm font-bold text-gray-900 truncate">{value}</p>
     </div>
   );
 }

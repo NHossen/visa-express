@@ -1,5 +1,6 @@
 import HeroSection from '@/components/HeroSection/HeroSection'
 import QuickAccessCards from '@/components/SearchMenu/QuickAccessCards/QuickAccessCards'
+import ScholarshipSearch from '@/components/SearchMenu/ScholarshipSearch/ScholarshipSearch';
 import VisaProcessingTime from '@/components/SearchMenu/VisaProcessingTime/VisaProcessingTime'
 import React from 'react'
 
@@ -37,6 +38,7 @@ export default function page() {
     <div>
       <HeroSection />
       <VisaProcessingTime />
+      <ScholarshipSearch />
       <QuickAccessCards />
     </div>
   )

@@ -327,8 +327,8 @@ function CountrySelect({ label, value, onChange, placeholder, countries, isLoadi
 function DestCard({ slug, data, nationality }) {
   const diff = DIFF_CONFIG[data.difficulty] || DIFF_CONFIG.Medium;
   const href = nationality
-    ? `/work-visa/${makeSlug(nationality, data.name)}`
-    : `/work-visa/${slug}-work-visa-guide`;
+    ? `/visa/work-visa/${makeSlug(nationality, data.name)}`
+    : `/visa/work-visa/${slug}`;
 
   return (
     <Link href={href}
@@ -401,7 +401,7 @@ export default function WorkVisaMainPage() {
     if (!destination) { setError("Please select a destination country."); return; }
     if (nationality === destination) { setError("Nationality and destination cannot be the same."); return; }
     setError("");
-    router.push(`/work-visa/${makeSlug(nationality, destination)}`);
+    router.push(`/visa/work-visa/${makeSlug(nationality, destination)}`);
   };
 
   const filteredDests = useMemo(() =>
@@ -698,11 +698,11 @@ export default function WorkVisaMainPage() {
             </p>
             <p>
               The most in-demand work visa destinations for South Asian and African applicants in 2025 are{" "}
-              <Link href="/work-visa/bangladesh-work-visa-for-canada" className="text-blue-600 hover:text-blue-800 font-semibold">Canada</Link>,{" "}
-              <Link href="/work-visa/bangladesh-work-visa-for-united-kingdom" className="text-blue-600 hover:text-blue-800 font-semibold">United Kingdom</Link>,{" "}
-              <Link href="/work-visa/bangladesh-work-visa-for-germany" className="text-blue-600 hover:text-blue-800 font-semibold">Germany</Link>,{" "}
-              <Link href="/work-visa/bangladesh-work-visa-for-australia" className="text-blue-600 hover:text-blue-800 font-semibold">Australia</Link>, and the{" "}
-              <Link href="/work-visa/bangladesh-work-visa-for-united-arab-emirates" className="text-blue-600 hover:text-blue-800 font-semibold">United Arab Emirates</Link>.
+              <Link href="/visa/work-visa/bangladesh-work-visa-for-canada" className="text-blue-600 hover:text-blue-800 font-semibold">Canada</Link>,{" "}
+              <Link href="/visa/work-visa/bangladesh-work-visa-for-united-kingdom" className="text-blue-600 hover:text-blue-800 font-semibold">United Kingdom</Link>,{" "}
+              <Link href="/visa/work-visa/bangladesh-work-visa-for-germany" className="text-blue-600 hover:text-blue-800 font-semibold">Germany</Link>,{" "}
+              <Link href="/visa/work-visa/bangladesh-work-visa-for-australia" className="text-blue-600 hover:text-blue-800 font-semibold">Australia</Link>, and the{" "}
+              <Link href="/visa/work-visa/bangladesh-work-visa-for-united-arab-emirates" className="text-blue-600 hover:text-blue-800 font-semibold">United Arab Emirates</Link>.
               Each country has distinct minimum salary thresholds, occupation lists, and employer licensing requirements.
             </p>
             <h3 className="text-lg font-black text-slate-900 mt-6 mb-3">Minimum Salary Requirements by Country (2025)</h3>
@@ -711,7 +711,7 @@ export default function WorkVisaMainPage() {
                 <div key={slug} className="flex items-center justify-between p-3 bg-white border border-slate-100 rounded-xl">
                   <div className="flex items-center gap-2">
                     <span className="text-lg">{d.flag}</span>
-                    <Link href={`/work-visa/${slug}-work-visa-guide`} className="text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors">{d.name}</Link>
+                    <Link href={`/visa/work-visa/${slug}`} className="text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors">{d.name}</Link>
                   </div>
                   <span className="text-xs font-black text-slate-500">{d.minSalary}</span>
                 </div>
@@ -731,7 +731,7 @@ export default function WorkVisaMainPage() {
                   <CheckCircle2 size={14} className="text-blue-500 flex-shrink-0" />
                   <span>
                     <strong className="text-slate-700">{d.name}:</strong>{" "}
-                    <Link href={`/work-visa/${slug}-work-visa-guide`} className="text-blue-600 hover:text-blue-800">{d.visaName}</Link>{" "}
+                    <Link href={`/visa/work-visa/${slug}`} className="text-blue-600 hover:text-blue-800">{d.visaName}</Link>{" "}
                     — {d.processingTime} · {d.approvalRate}% approval rate
                   </span>
                 </li>

@@ -1,27 +1,23 @@
 // /app/api/scholarships/route.js
-import { NextResponse } from 'next/server';
-import { MongoClient } from 'mongodb';
+// Fetches all scholarships from MongoDB — same pattern as /api/countries
 
-const uri = process.env.MONGODB_URI;
+import { NextResponse } from 'next/server';
+import clientPromise from '@/app/lib/mongodb';
+
+export const revalidate = 3600; // cache 1 hour
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  const countrySlug = searchParams.get('country_slug');
-  const popular = searchParams.get('popular');
-
-  const client = new MongoClient(uri, {
-    serverSelectionTimeoutMS: 5000,
-    connectTimeoutMS: 10000,
-    family: 4,
-  });
+  const countrySlug = searchParams.get('country_slug'); // optional filter
+  const slug        = searchParams.get('slug');          // optional single fetch
 
   try {
-    await client.connect();
-    const db = client.db('Eammu-Holidays');
+    const client = await clientPromise;
+    const db     = client.db('Eammu-Holidays');
 
     const query = {};
     if (countrySlug) query.country_slug = countrySlug;
-    if (popular === 'true') query.popular = true;
+    if (slug)        query.slug         = slug;
 
     const scholarships = await db
       .collection('scholarships')
@@ -33,7 +29,5 @@ export async function GET(request) {
     return NextResponse.json(scholarships);
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });
-  } finally {
-    await client.close();
   }
 }

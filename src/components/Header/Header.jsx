@@ -30,11 +30,11 @@ const NAV_ITEMS = [
   {
     label: 'Scholarships',
     dropdown: [
-      { icon: '🇨🇦', label: 'Canada Scholarships',    href: '/scholarship/canada' },
-      { icon: '🇬🇧', label: 'UK Scholarships',        href: '/scholarship/uk' },
-      { icon: '🇦🇺', label: 'Australia Scholarships', href: '/scholarship/australia' },
-      { icon: '🇺🇸', label: 'USA Scholarships',       href: '/scholarship/usa' },
-      { icon: '🏆', label: 'Fully Funded List',       href: '/scholarship/fully-funded' },
+      { icon: '🇨🇦', label: 'Canada Scholarships',    href: '/scholarships/canada' },
+      { icon: '🇬🇧', label: 'UK Scholarships',        href: '/scholarships/united-kingdom' },
+      { icon: '🇦🇺', label: 'Australia Scholarships', href: '/scholarships/australia' },
+      { icon: '🇺🇸', label: 'USA Scholarships',       href: '/scholarships/united-states' },
+      { icon: '🏆', label: 'Fully Funded List',       href: '/scholarships' },
     ],
   },
   { label: 'News', href: '/news' },

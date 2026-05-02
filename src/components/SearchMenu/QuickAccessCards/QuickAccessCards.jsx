@@ -118,7 +118,7 @@ const QuickAccessCards = () => {
         </div>
       </div>
      <div class="max-w-7xl mx-auto mt-8">
-  <p class="text-sm leading-relaxed tracking-wide text-gray-700 font-medium text-justify">
+  <p class="text-sm leading-relaxed tracking-wide text-gray-700 font-medium text-justify px-2">
     <span class="font-bold text-[#FED700]">Visa Express Hub</span> offers a 
     <strong> Visa Document Generator</strong> for expert-approved <strong> NOC templates</strong>, 
     <strong>SOPs</strong>, and <strong> Salary Certificates</strong>. Whether you're tracking 

@@ -189,7 +189,7 @@ const Footer = () => {
             </nav>
           </div>
 
-          {/* Column 3 — Social Media */}
+          {/* Column 3 — Socioal Media */}
           <div>
             <h3 className="text-[15px] font-bold text-black mb-4 pb-2 border-b-2 border-[#FED700] inline-block">
               Social Media

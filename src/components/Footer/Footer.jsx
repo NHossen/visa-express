@@ -149,7 +149,7 @@ const Footer = () => {
                 { label: 'Apply for a Visa',             href: '/visa/tourist-visa' },
                 { label: 'Schengen Visa Information',    href: '/schengen-visa' },
                 { label: 'Visa Rejection Checker',       href: '/visa-rejection' },
-                { label: 'Scholarships',                 href: '/scholarship' },
+                { label: 'Scholarships',                 href: '/scholarships' },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -174,8 +174,8 @@ const Footer = () => {
                 { label: 'Visa Document Checklist',        href: '/visa-resources/visa-checklist-generator' },
                 { label: 'Privacy Policy',                 href: '/privacy-policy' },
                 { label: 'Travel Resources',               href: '/visa-resources' },
-                { label: 'News Feeds',                     href: '/news' },
-                { label: 'Travel API',                     href: '/travel-api' },
+                { label: 'News Feeds',                     href: '/visa-news' },
+                { label: 'Travel API',                     href: '/visa-api' },
               ].map((link) => (
                 <Link
                   key={link.href}

@@ -37,22 +37,22 @@ const NAV_ITEMS = [
       { icon: '🏆', label: 'Fully Funded List',       href: '/scholarships' },
     ],
   },
-  { label: 'News', href: '/news' },
+  { label: 'News', href: '/visa-news' },
 ]
 
 const MOBILE_LINKS = [
   { icon: '✅', label: 'Check Visa',          href: '/visa' },
-  { icon: '⏱️', label: 'Processing Tracker', href: '/visa-processing-time' },
+  { icon: '⏱️', label: 'Processing Tracker', href: '/visa-processing-time-tracker' },
   { icon: '✈️', label: 'Tourist Visa',        href: '/visa/tourist-visa' },
   { icon: '🎓', label: 'Student Visa',        href: '/visa/student-visa' },
   { icon: '💼', label: 'Work Visa',           href: '/visa/work-visa' },
   { icon: '🔄', label: 'Transit Visa',        href: '/visa/transit-visa' },
-  { icon: '📝', label: 'SOP Template',        href: '/sop-template' },
-  { icon: '📄', label: 'NOC Letter',          href: '/noc-template' },
+  { icon: '📝', label: 'SOP Template',        href: '/visa-resources/visa-document-generator' },
+  { icon: '📄', label: 'NOC Letter',          href: '/visa-resources/visa-document-generator' },
   { icon: '❌', label: 'Rejection Checker',   href: '/visa-rejection' },
   { icon: '🌍', label: 'Schengen Info',       href: '/schengen-visa' },
-  { icon: '🏆', label: 'Scholarships',        href: '/scholarship' },
-  { icon: '📰', label: 'News Feeds',          href: '/news' },
+  { icon: '🏆', label: 'Scholarships',        href: '/scholarships' },
+  { icon: '📰', label: 'News Feeds',          href: '/visa-news' },
 ]
 
 const MARQUEE_ITEMS = [
@@ -88,7 +88,7 @@ function DropdownItem({ item }) {
           relative px-4 py-2 rounded-xl text-sm font-semibold text-gray-800
           transition-all duration-200 hover:bg-[#FFFBE6] hover:text-[#b89a00]
           after:absolute after:bottom-1 after:left-1/2 after:right-1/2
-          after:h-[2.5px] after:bg-[#FED700] after:rounded-full
+          after:h-[2.5px] after:bg-amber-400 after:rounded-full
           after:transition-all after:duration-200
           hover:after:left-3 hover:after:right-3
         "
@@ -113,7 +113,7 @@ function DropdownItem({ item }) {
           text-sm font-semibold text-gray-800 border-none cursor-pointer
           transition-all duration-200
           after:absolute after:bottom-1 after:left-1/2 after:right-1/2
-          after:h-[2.5px] after:bg-[#FED700] after:rounded-full
+          after:h-[2.5px] after:bg-amber-400 after:rounded-full
           after:transition-all after:duration-200
           hover:after:left-3 hover:after:right-3
           ${open ? 'bg-[#FFFBE6] text-[#b89a00]' : 'bg-transparent hover:bg-[#FFFBE6] hover:text-[#b89a00]'}
@@ -121,7 +121,7 @@ function DropdownItem({ item }) {
       >
         {item.label}
         <svg
-          className={`w-3 h-3 text-[#FED700] transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
+          className={`w-3 h-3 text-amber-400 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
           fill="currentColor" viewBox="0 0 20 20"
         >
           <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
@@ -242,7 +242,7 @@ export default function Header() {
             scrolled ? 'border-b-2 border-[#FED700]' : 'border-b border-gray-100'
           }`}
         >
-          <div className="flex items-center justify-around px-4 md:px-6 lg:px-8 h-[70px] lg:h-[78px] gap-2">
+          <div className="flex items-center justify-around px-4 md:px-6 lg:px-8 h-[55px] lg:h-[70px] gap-2">
 
             {/* ── LOGO ── */}
             <Link
@@ -396,9 +396,9 @@ export default function Header() {
                 href="/login"
                 className="
                   flex-1 py-3 text-sm font-bold text-center text-black
-                  border-2 border-black rounded-xl no-underline
+                  border-2 border-amber-400 rounded-xl no-underline
                   transition-all duration-180
-                  hover:border-[#FED700] hover:bg-[#FFFBE6]
+                  hover:border-amber-400 hover:bg-[#FFFBE6]
                 "
               >Log in</Link>
 
@@ -406,7 +406,7 @@ export default function Header() {
                 href="/signup"
                 className="
                   flex-1 py-3 text-sm font-extrabold text-center text-black
-                  bg-[#FED700] border-2 border-[#FED700] rounded-xl no-underline
+                  bg-amber-400 border-2 border-[#FED700] rounded-xl no-underline
                   flex items-center justify-center gap-1.5
                   transition-all duration-180
                   hover:bg-[#e0be00] hover:border-[#e0be00]

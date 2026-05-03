@@ -86,14 +86,14 @@ const Footer = () => {
                   className="object-contain grayscale hover:grayscale-0 transition-all duration-200"
                 />
                 <img
-                  src="/Trustpilot_eammu_holidays.png"
+                  src="https://www.rentokil-initial.com/~/media/Images/R/Rentokil/content-images/awards/Trustpilotv3.jpg?h=430&iar=0&w=797"
                   alt="Trustpilot Verified"
                   width={90} height={90}
                   className="object-contain grayscale hover:grayscale-0 transition-all duration-200"
                   onError={(e) => { e.currentTarget.style.display = 'none' }}
                 />
                 <img
-                  src="/google_verfied_eammu_holidays.jpg"
+                  src="https://revelation.agency/wp-content/uploads/2019/08/Google-My-Business-logo.jpg"
                   alt="Google Verified"
                   width={90} height={90}
                   className="object-contain grayscale hover:grayscale-0 transition-all duration-200"

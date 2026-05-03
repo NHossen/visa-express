@@ -1,9 +1,58 @@
 import React from 'react';
 import Link from 'next/link';
 
+const flagUrl = (code) => `https://flagcdn.com/w80/${code.toLowerCase()}.png`;
 const cap = (str) => str.replace(/\b\w/g, (l) => l.toUpperCase());
-const flagUrl = (name) =>
-  `https://flagcdn.com/w80/${name.toLowerCase().replace(/\s+/g, '-')}.png`;
+
+const VISA_TYPES = [
+  { label: "Business Visa", href: "/visa/business-visa" },
+  { label: "Work Visa", href: "/visa/work-visa" },
+  { label: "Student Visa", href: "/visa/student-visa" },
+  { label: "Tourist Visa", href: "/visa/tourist-visa" },
+  { label: "Transit Visa", href: "/visa/transit-visa", active: true },
+];
+
+const DOCUMENTS = [
+  { icon: "🛂", title: "Valid Passport", detail: "Valid for at least 6 months beyond your final destination arrival date. Hub-specific minimums may vary.", mandatory: true },
+  { icon: "✈️", title: "Full Flight Itinerary", detail: "Printed or digital — all legs including connection through the transit hub and confirmed onward booking.", mandatory: true },
+  { icon: "📋", title: "Visa for Final Destination", detail: "Valid visa or entry authorisation for your ultimate destination. Airlines check this at departure check-in.", mandatory: true },
+  { icon: "🪪", title: "Transit Visa / ATV", detail: "Airport Transit Visa or transit permit if your specific nationality requires one at this hub.", mandatory: false },
+  { icon: "🎫", title: "Confirmed Onward Ticket", detail: "Proof you will be departing the transit country on a confirmed booking within the permitted transit window.", mandatory: true },
+  { icon: "🏦", title: "Proof of Sufficient Funds", detail: "Bank statement or accessible funds showing you can cover your stay if requested by immigration or border control.", mandatory: false },
+];
+
+const TRANSIT_STEPS = [
+  {
+    t: "Check If You Need a Transit Visa",
+    timing: "Before booking flights",
+    d: (nat, hub) => `Before purchasing any flights, ${nat} passport holders must verify whether a transit visa or Airport Transit Visa (ATV) is required at ${hub}. This depends on your specific passport, the layover duration, and whether you intend to stay airside or enter the country. Use your airline's TIMATIC tool or the official ${hub} immigration authority's website to confirm requirements — do not rely on third-party guides alone, as rules change frequently.`
+  },
+  {
+    t: "Understand Airside vs Landside Transit",
+    timing: "Before travel",
+    d: (nat, hub) => `Airside transit means you remain inside the international departure zone of ${hub} airport at all times, without passing through immigration or customs. Most ${nat} travellers on short connections can transit airside without a visa if they stay under 24 hours. Landside transit — for example, staying overnight outside the airport or if your bags are not checked through — typically requires a transit visa or valid ${hub} entry permit for ${nat} nationals.`
+  },
+  {
+    t: "Confirm Your Baggage Arrangement",
+    timing: "At booking and check-in",
+    d: (nat, hub) => `One of the most common reasons ${nat} travellers need to enter ${hub} during a layover is because their bags are not checked through to their final destination. If your two flights are on separate bookings, you will almost certainly need to collect your luggage and re-check it, passing through immigration at ${hub}. This requires a transit visa or entry permit. Always book your full journey on a single itinerary where possible to avoid this requirement.`
+  },
+  {
+    t: "Apply for Transit Visa If Required",
+    timing: "4–6 weeks before travel",
+    d: (nat, hub) => `If your nationality requires a transit visa for ${hub}, apply as early as possible — ideally 4–6 weeks before travel. Many hubs now offer online e-visa applications for transit purposes. You will typically need your confirmed flight itinerary, valid passport, a passport-size photograph, and a valid visa for your final destination. Check whether ${hub} offers a visa on arrival or e-visa option for ${nat} nationals before visiting an embassy in person.`
+  },
+  {
+    t: "Prepare and Organise Documents",
+    timing: "Before departure",
+    d: (nat, hub) => `Carry printed and digital copies of your complete flight itinerary, confirmed onward ticket, valid visa for your final destination, and your ${nat} passport. At ${hub} check-in or immigration, you may be asked to show all of these simultaneously. Some airports also require proof of sufficient funds. Keep all documents accessible — searching through bags at a busy transit counter causes unnecessary delays and anxiety.`
+  },
+  {
+    t: "Know Your Time Limits and Stay Compliant",
+    timing: "At the airport",
+    d: (nat, hub) => `Every transit arrangement at ${hub} has a permitted time window. Airside transit is typically limited to 24 hours. Landside transit visas may allow 48–96 hours. Overstaying your permitted transit period — even by a few hours — can result in fines, detention, or a future entry ban at ${hub}. Set reminders for your departure time. If a flight delay threatens to push you over your limit, notify airline staff immediately — they are responsible for liaising with immigration in genuine operational disruptions.`
+  },
+];
 
 const RELATED_NATIONALITIES = [
   { name: "Indian", code: "in" },
@@ -12,8 +61,6 @@ const RELATED_NATIONALITIES = [
   { name: "Bangladeshi", code: "bd" },
   { name: "Nigerian", code: "ng" },
   { name: "Kenyan", code: "ke" },
-  { name: "Sri Lankan", code: "lk" },
-  { name: "Nepali", code: "np" },
 ];
 
 const RELATED_HUBS = [
@@ -23,253 +70,160 @@ const RELATED_HUBS = [
   { name: "United Kingdom", code: "gb", airport: "London LHR" },
   { name: "Germany", code: "de", airport: "Frankfurt FRA" },
   { name: "Qatar", code: "qa", airport: "Doha DOH" },
-  { name: "Netherlands", code: "nl", airport: "Amsterdam AMS" },
-  { name: "Hong Kong", code: "hk", airport: "Hong Kong HKG" },
 ];
 
-const TRANSIT_STEPS = [
-  {
-    num: "01",
-    title: "Check If You Need a Transit Visa",
-    duration: "Before booking",
-    content: (nat, hub) =>
-      `Before purchasing any flights, ${nat} passport holders must verify whether a transit visa is required at ${hub}. This depends on your specific passport, the airport, the duration of your layover, and whether you intend to stay airside (inside the international zone) or landside (clearing immigration to enter the country). Use the official ${hub} immigration authority website or your airline's TIMATIC database to confirm requirements specific to your nationality.`,
-  },
-  {
-    num: "02",
-    title: "Understand Airside vs Landside",
-    duration: "Before travel",
-    content: (nat, hub) =>
-      `Airside transit means you remain in the international departure zone of ${hub} airport at all times — you do not pass through immigration or customs. Most ${nat} travellers on short connections can transit airside without a visa if they stay under 24 hours. Landside transit — for example, if your bags are not checked through, or you need to stay overnight in a hotel outside the airport — typically requires a transit visa or entry permit for ${hub}.`,
-  },
-  {
-    num: "03",
-    title: "Confirm Your Baggage Arrangement",
-    duration: "At check-in",
-    content: (nat, hub) =>
-      `One of the most common reasons travellers need to enter ${hub} during a layover is because their bags are not checked through to their final destination. If your two flights are on separate bookings, you will almost certainly need to collect your luggage, re-check it, and pass through immigration in ${hub} — which requires a transit visa or entry permit. Book your full journey on a single itinerary wherever possible to avoid this.`,
-  },
-  {
-    num: "04",
-    title: "Apply for Transit Visa If Required",
-    duration: "4–6 weeks before travel",
-    content: (nat, hub) =>
-      `If your nationality requires a transit visa for ${hub}, apply as early as possible — ideally 4–6 weeks before your travel date. Many countries offer online e-visa applications for transit purposes. You will typically need your confirmed flight itinerary, valid passport, passport-size photograph, and a visa or entry authorisation for your final destination. Check whether ${hub} offers a visa on arrival or e-visa option for your nationality before visiting an embassy.`,
-  },
-  {
-    num: "05",
-    title: "Prepare Required Documents",
-    duration: "Before departure",
-    content: (nat, hub) =>
-      `Carry printed and digital copies of your complete flight itinerary, confirmed onward ticket, valid visa for your final destination, and your ${nat} passport. At ${hub} immigration or airline check-in, you may be asked to show all of these. Some airports also require proof of sufficient funds. Keep your documents organised and accessible — rummaging through bags at a busy transit desk causes unnecessary delays.`,
-  },
-  {
-    num: "06",
-    title: "Know Your Time Limits",
-    duration: "At the airport",
-    content: (nat, hub) =>
-      `Every transit arrangement at ${hub} has a time limit. Airside transit is typically limited to 24 hours. Landside transit or transit visas may allow 48–96 hours. Overstaying your permitted transit period — even by a few hours — can result in fines, detention, or a ban from re-entering ${hub}. Set reminders for your departure time and do not assume your original flight delay creates extra permitted time automatically.`,
-  },
+const TRUSTED_PORTALS = [
+  { name: "TIMATIC (IATA)", url: "https://www.iatatravelcentre.com", desc: "Definitive airline industry transit visa checker by nationality and hub" },
+  { name: "Dubai ICA e-Services", url: "https://smartservices.ica.gov.ae", desc: "UAE transit visa and immigration services portal" },
+  { name: "UK Visas & Immigration", url: "https://www.gov.uk/transit-visa", desc: "Direct Airside Transit Visa applications for UK airports" },
+  { name: "Singapore ICA", url: "https://www.ica.gov.sg", desc: "Visa-Free Transit Facility and Destination Passage Visa" },
 ];
 
-const FAQ = (nat, hub) => [
-  {
-    q: `Do ${nat} passport holders need a transit visa at ${hub}?`,
-    a: `Whether ${nat} nationals require a transit visa at ${hub} depends on the duration of the layover, whether you remain airside or enter the country, and specific bilateral agreements between ${nat} and ${hub}. Always verify using the TIMATIC tool on your airline's website or the official ${hub} immigration authority portal before booking. Requirements can change without notice.`,
-  },
-  {
-    q: `Can I leave the airport during a layover in ${hub}?`,
-    a: `Leaving the airport in ${hub} — even briefly — means entering the country and requires a valid entry visa or transit permit for ${nat} nationals. Some transit hubs offer a free or reduced-fee transit visa for short periods (e.g. Dubai 96-hr transit visa, Singapore VFTF). Confirm eligibility before making plans to explore the city during your layover.`,
-  },
-  {
-    q: `What is an Airport Transit Visa (ATV) and does ${nat} need one?`,
-    a: `An Airport Transit Visa (ATV) is a visa that allows you to pass through the international transit zone of an airport in certain countries without formally entering them. The EU Schengen area, the UK, and several other countries require an ATV from specific nationalities — including some ${nat} passport holders — even for connections under a few hours. Check the specific country's list of ATV-required nationalities.`,
-  },
-  {
-    q: `My connecting flight is on a separate ticket — what happens in ${hub}?`,
-    a: `If your two flights are on separate bookings, you will almost certainly need to collect your luggage and re-check it for your next flight. This means passing through immigration in ${hub}, which typically requires a transit or entry visa for ${nat} nationals. This is one of the most common causes of denied boarding. Always book connecting flights on a single itinerary where possible, or ensure you have the correct visa before buying separate tickets.`,
-  },
-  {
-    q: `What happens if my layover in ${hub} is delayed and I overstay?`,
-    a: `If a flight delay causes you to exceed your permitted transit time in ${hub}, this is generally treated as an irregular situation outside your control. Notify airline staff immediately — they are typically responsible for liaising with immigration authorities in cases of operational delays. However, if you chose to extend your stay voluntarily beyond the permitted period, you may face penalties. Never leave the transit area without confirming it is legally permitted first.`,
-  },
-];
-
-export default async function TransitSlugPage({ params, searchParams }) {
+export default async function TransitVisaSlugPage({ params, searchParams }) {
   const { slug } = await params;
   const { nFlag, dFlag } = await searchParams;
 
   const parts = decodeURIComponent(slug).split("-transit-at-");
-  const nationality = cap(parts[0]?.replace(/-/g, ' ') || "Your Nationality");
-  const hub = cap(parts[1]?.replace(/-/g, ' ') || "Transit Hub");
+  const nationality = parts[0]?.replace(/-/g, ' ') || "Your Nationality";
+  const hub = parts[1]?.replace(/-/g, ' ') || "Transit Hub";
+  const natCap = cap(nationality);
+  const hubCap = cap(hub);
+
+  // Determine Schengen hubs for ATV context
+  const schengenHubs = ["germany", "netherlands", "france", "belgium", "austria", "sweden", "denmark", "finland", "norway", "switzerland"];
+  const isSchengen = schengenHubs.some(h => hub.toLowerCase().includes(h));
+  const isUK = hub.toLowerCase().includes("united kingdom") || hub.toLowerCase().includes("uk");
+  const isDubai = hub.toLowerCase().includes("united arab emirates") || hub.toLowerCase().includes("uae") || hub.toLowerCase().includes("dubai");
+
+  const atvNote = isSchengen
+    ? "Schengen Airport Transit Visa (ATV) may be required for your nationality even for airside connections."
+    : isUK
+    ? "UK Direct Airside Transit Visa (DATV) may be required for many nationalities — even for very short connections."
+    : isDubai
+    ? "UAE airside transit is visa-free for most nationalities under 24 hours. Longer stays require a transit visa."
+    : "Transit visa requirements vary by nationality and layover duration. Always verify before booking.";
 
   return (
-    <div className="min-h-screen bg-white text-black font-sans">
+    <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
 
       {/* BREADCRUMB */}
-      <div className="border-b border-gray-100 px-6 py-3 bg-gray-50">
-        <div className="max-w-6xl mx-auto flex items-center gap-2 text-[10px] font-bold uppercase text-gray-400">
-          <Link href="/" className="hover:text-black transition-colors">Home</Link>
-          <span>/</span>
-          <Link href="/visa/transit-visa" className="hover:text-black transition-colors">Transit Visa</Link>
-          <span>/</span>
-          <span className="text-black">{nationality} Transit at {hub}</span>
+      <div className="bg-white border-b border-slate-100 px-6 py-3">
+        <div className="max-w-6xl mx-auto flex items-center gap-2 text-xs text-slate-400 font-medium">
+          <Link href="/" className="hover:text-amber-600 transition-colors">Home</Link>
+          <span>›</span>
+          <Link href="/visa" className="hover:text-amber-600 transition-colors">Visa Guides</Link>
+          <span>›</span>
+          <Link href="/visa/transit-visa" className="hover:text-amber-600 transition-colors">Transit Visa</Link>
+          <span>›</span>
+          <span className="text-slate-600 font-semibold">{natCap} Transit at {hubCap}</span>
         </div>
       </div>
 
-      {/* HERO */}
-      <header className="border-b-8 border-black py-14 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10">
+      {/* TOP BANNER */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="max-w-6xl mx-auto px-6 py-10">
 
-            <div className="flex-1">
-              <p className="text-[10px] font-black uppercase tracking-widest text-yellow-500 mb-4">
-                Transit Visa Guide — Updated May 2026
-              </p>
+          {/* Visa type pills */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {VISA_TYPES.map((v) => (
+              <Link
+                key={v.label}
+                href={v.href}
+                className={`px-4 py-1.5 rounded-full text-[11px] font-bold border transition-all ${v.active
+                  ? 'bg-amber-400 text-slate-900 border-amber-400'
+                  : 'border-slate-200 text-slate-500 hover:border-amber-300 hover:text-amber-700'
+                }`}
+              >
+                {v.label}
+              </Link>
+            ))}
+          </div>
 
-              <div className="flex items-center gap-4 mb-6">
-                <div className="flex -space-x-3">
-                  <img
-                    src={nFlag || ''}
-                    className="w-14 h-10 border-2 border-black z-10 object-cover"
-                    alt={`${nationality} passport`}
-                  />
-                  <img
-                    src={dFlag || ''}
-                    className="w-14 h-10 border-2 border-black z-20 object-cover"
-                    alt={`${hub} airport`}
-                  />
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div>
+              <div className="flex items-center gap-4 mb-3">
+                <div className="flex items-center -space-x-3">
+                  <img src={nFlag || flagUrl('in')} className="w-12 h-8 rounded shadow-md border-2 border-white z-10 object-cover" alt={natCap} />
+                  <img src={dFlag || flagUrl('ae')} className="w-12 h-8 rounded shadow-md border-2 border-white z-20 object-cover" alt={hubCap} />
                 </div>
-                <span className="font-black text-3xl text-yellow-400">→</span>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Transit Visa Guide</p>
+                  <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900">
+                    {natCap} <span className="text-amber-500">→</span> {hubCap}
+                  </h1>
+                </div>
               </div>
-
-              <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none mb-5">
-                {nationality}<br />
-                <span className="text-yellow-400">Transit</span><br />
-                at {hub}
-              </h1>
-
-              <p className="text-lg text-gray-600 font-medium max-w-xl leading-relaxed">
-                Complete transit visa and layover guide for {nationality} passport holders
-                connecting through {hub} — visa requirements, documents, time limits, and what to do at the airport.
+              <p className="text-sm text-slate-500 max-w-xl">
+                Complete transit visa and layover guide for {natCap} passport holders connecting through {hubCap} — visa requirements, documents, time limits, and what to do at the airport.
               </p>
-
-              <div className="grid grid-cols-3 gap-4 mt-8 max-w-lg">
-                {[
-                  { label: "Guide Status", value: "Active 2026" },
-                  { label: "Stages Covered", value: "6 Steps" },
-                  { label: "Layover Types", value: "Air & Land" },
-                ].map((s) => (
-                  <div key={s.label} className="border-2 border-black p-3 text-center">
-                    <p className="text-[9px] font-black uppercase text-gray-400 tracking-widest mb-1">{s.label}</p>
-                    <p className="font-black text-sm uppercase">{s.value}</p>
-                  </div>
-                ))}
-              </div>
             </div>
-
-            {/* Sidebar CTA */}
-            <div className="lg:w-80">
-              <div className="border-4 border-black p-7 bg-black text-white shadow-[10px_10px_0px_0px_rgba(250,204,21,1)]">
-                <p className="text-[9px] font-black uppercase tracking-widest text-yellow-400 mb-2">Start Here</p>
-                <h3 className="font-black text-xl uppercase italic mb-2">Get the Checklist</h3>
-                <p className="text-xs text-gray-400 leading-relaxed mb-6">
-                  Download the {nationality} → {hub} transit document checklist to prepare your documents.
-                </p>
-                <Link
-                  href="/visa-resources/visa-checklist-generator"
-                  className="block w-full bg-yellow-400 text-black text-center py-4 font-black uppercase text-xs tracking-widest hover:bg-white transition-all border-2 border-yellow-400 mb-3"
-                >
-                  Download Checklist →
-                </Link>
-                <Link
-                  href="/visa/transit-visa"
-                  className="block w-full text-center py-3 font-black uppercase text-xs tracking-widest border border-gray-700 text-yellow-400 hover:text-white transition-all"
-                >
-                  Search Another Route
-                </Link>
-              </div>
+            <div className="flex flex-col items-end gap-2 shrink-0">
+              <span className="px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-xs font-bold border border-amber-200 uppercase tracking-wider">
+                {isSchengen ? "Schengen ATV Rules" : isUK ? "DATV Rules" : "Transit Visa"}
+              </span>
+              <p className="text-[10px] text-slate-400">Updated May 2026</p>
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
-      {/* ANCHOR BAR */}
-      <section className="border-b-4 border-black py-5 px-6 bg-yellow-400">
-        <div className="max-w-6xl mx-auto flex flex-wrap items-center gap-x-8 gap-y-2">
-          <span className="text-[10px] font-black uppercase tracking-widest text-black">On This Page:</span>
-          {[
-            ["#overview", "Overview"],
-            ["#transit-steps", "6-Step Guide"],
-            ["#documents", "Documents"],
-            ["#faq", "FAQ"],
-            ["#related-guides", "Related Guides"],
-          ].map(([href, label]) => (
-            <a key={href} href={href} className="text-[10px] font-black uppercase tracking-widest text-black hover:underline underline-offset-4">
-              {label}
-            </a>
-          ))}
-        </div>
-      </section>
+      <div className="max-w-6xl mx-auto px-6 mt-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
-      {/* MAIN GRID */}
-      <div className="max-w-6xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-
-          {/* MAIN COLUMN */}
-          <main className="lg:col-span-8 space-y-20">
+          {/* ─── MAIN CONTENT ─── */}
+          <div className="lg:col-span-2 space-y-8">
 
             {/* OVERVIEW */}
-            <section id="overview">
-              <h2 className="text-3xl font-black uppercase italic mb-6 border-l-8 border-yellow-400 pl-6">
-                {nationality} Transit at {hub} — Overview
-              </h2>
-              <div className="space-y-4 text-gray-700 text-sm leading-relaxed">
-                <p>
-                  As a <strong>{nationality}</strong> passport holder transiting through <strong>{hub}</strong>, you need to understand whether your nationality requires a formal transit visa, airport transit visa (ATV), or whether you can connect freely in the airside international zone.
-                </p>
-                <p>
-                  Transit rules at {hub} depend on three main factors: how long your layover is, whether your bags are checked through to your final destination, and whether you intend to leave the airport. Most {nationality} travellers on short airside connections of under 24 hours do not require a transit visa at {hub}, but this varies — always confirm before travel.
-                </p>
-                <p>
-                  If your connection exceeds 24 hours, or if you need to leave the airport (for example, to stay in a hotel overnight), you will typically need a transit visa or a valid {hub} entry visa. Some hubs like Dubai, Qatar, and Singapore offer free or low-cost transit visas for eligible nationalities.
-                </p>
+            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
+              <h2 className="text-xl font-bold mb-4">Transit Overview</h2>
+              <p className="text-slate-600 leading-relaxed text-sm mb-4">
+                As a <strong>{natCap}</strong> passport holder transiting through <strong>{hubCap}</strong>, you need to understand whether your nationality requires a formal transit visa, Airport Transit Visa (ATV), or whether you can connect freely in the airside international zone without any additional documentation.
+              </p>
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-4">
+                <p className="text-sm font-bold text-amber-800 mb-1">ℹ️ Hub-Specific Note</p>
+                <p className="text-xs text-amber-700 leading-relaxed">{atvNote}</p>
               </div>
-
-              <div className="mt-8 border-2 border-black bg-yellow-50 p-6">
-                <p className="text-[10px] font-black uppercase tracking-widest text-yellow-600 mb-2">
-                  ⚠ Always Verify Before Travel
-                </p>
-                <p className="text-sm font-bold text-gray-800">
-                  Transit visa requirements change frequently. Always confirm your specific requirements using your airline's TIMATIC system or the official {hub} immigration authority website before booking flights.
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                <p className="text-xs text-slate-500 leading-relaxed italic">
+                  ⚠️ Transit rules change frequently. Always verify using your airline's TIMATIC tool or the official {hubCap} immigration authority website before booking. This guide reflects information available as of May 2026. For work or business travel, see our <Link href="/visa/work-visa" className="text-amber-600 font-semibold hover:underline">Work Visa Guide →</Link> or <Link href="/visa/business-visa" className="text-amber-600 font-semibold hover:underline">Business Visa Guide →</Link>
                 </p>
               </div>
             </section>
 
+            {/* AT A GLANCE */}
+            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
+              <h2 className="text-xl font-bold mb-6">At a Glance</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[
+                  { label: "Max Airside Stay", value: "Up to 24 hrs" },
+                  { label: "Landside Transit", value: "Visa Required" },
+                  { label: "ATV Requirement", value: "Nationality-Dependent" },
+                  { label: "Verify Via", value: "TIMATIC / Airline" },
+                ].map((item) => (
+                  <div key={item.label} className="bg-slate-50 rounded-xl p-4 text-center border border-slate-100">
+                    <p className="text-base font-extrabold text-slate-900 mb-1">{item.value}</p>
+                    <p className="text-[10px] uppercase font-bold text-slate-400 tracking-widest">{item.label}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
             {/* 6-STEP GUIDE */}
-            <section id="transit-steps">
-              <h2 className="text-3xl font-black uppercase italic mb-2 border-l-8 border-yellow-400 pl-6">
-                6-Step Transit Guide
-              </h2>
-              <p className="text-sm text-gray-500 mb-10 font-medium">
-                Written specifically for {nationality} passport holders transiting through {hub}.
-              </p>
-              <div className="space-y-6">
-                {TRANSIT_STEPS.map((step) => (
-                  <div key={step.num} className="border-2 border-black">
-                    <div className="bg-black text-white p-4 flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <span className="text-yellow-400 font-black text-sm">{step.num}</span>
-                        <h3 className="font-black text-sm uppercase">{step.title}</h3>
-                      </div>
-                      <span className="text-[9px] font-black text-gray-400 uppercase hidden md:block">
-                        ⏱ {step.duration}
-                      </span>
+            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
+              <h2 className="text-xl font-bold mb-2">6-Step Transit Guide</h2>
+              <p className="text-sm text-slate-500 mb-6">Written specifically for {natCap} passport holders transiting through {hubCap}.</p>
+              <div className="space-y-5">
+                {TRANSIT_STEPS.map((step, index) => (
+                  <div key={index} className="flex gap-5">
+                    <div className="shrink-0 w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-black text-sm">
+                      {String(index + 1).padStart(2, '0')}
                     </div>
-                    <div className="p-6 bg-white">
-                      <p className="text-sm text-gray-700 leading-relaxed">
-                        {step.content(nationality, hub)}
-                      </p>
+                    <div className="pt-1 border-b border-slate-100 pb-5 flex-1 last:border-0 last:pb-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h4 className="font-bold text-sm text-slate-900">{step.t}</h4>
+                        <span className="text-[9px] font-bold uppercase text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full shrink-0">{step.timing}</span>
+                      </div>
+                      <p className="text-slate-500 text-xs leading-relaxed">{step.d(natCap, hubCap)}</p>
                     </div>
                   </div>
                 ))}
@@ -277,271 +231,285 @@ export default async function TransitSlugPage({ params, searchParams }) {
             </section>
 
             {/* DOCUMENTS */}
-            <section id="documents">
-              <h2 className="text-3xl font-black uppercase italic mb-2 border-l-8 border-yellow-400 pl-6">
-                Documents to Carry at {hub}
-              </h2>
-              <p className="text-sm text-gray-500 mb-8 font-medium">
-                {nationality} passport holders should have these documents ready at {hub} transit.
-              </p>
-              <div className="border-4 border-black bg-black text-white p-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {[
-                    {
-                      title: "Valid Passport",
-                      detail: `${nationality} passport valid for at least 6 months beyond your final destination arrival date.`,
-                      req: true,
-                    },
-                    {
-                      title: "Full Flight Itinerary",
-                      detail: `Printed or digital copy of all flights including your connection through ${hub} and your onward booking.`,
-                      req: true,
-                    },
-                    {
-                      title: "Visa for Final Destination",
-                      detail: "Valid visa or entry authorisation for the country you are ultimately travelling to.",
-                      req: true,
-                    },
-                    {
-                      title: "Transit Visa for Hub (if required)",
-                      detail: `Airport Transit Visa or transit permit for ${hub} if your ${nationality} passport requires one.`,
-                      req: false,
-                    },
-                    {
-                      title: "Confirmed Return or Onward Ticket",
-                      detail: "Some transit hubs ask for proof that you will be leaving their territory on a confirmed booking.",
-                      req: true,
-                    },
-                    {
-                      title: "Proof of Funds",
-                      detail: `Bank statement or cash evidence showing you can cover your stay in ${hub} if asked by immigration.`,
-                      req: false,
-                    },
-                  ].map((doc) => (
-                    <div key={doc.title} className="border-b border-gray-700 pb-4 last:border-b-0">
+            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
+              <h2 className="text-xl font-bold mb-2">Documents to Carry at {hubCap}</h2>
+              <p className="text-sm text-slate-500 mb-6">For {natCap} passport holders transiting through {hubCap}.</p>
+              <div className="space-y-3">
+                {DOCUMENTS.map((doc) => (
+                  <div key={doc.title} className="flex items-start gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-amber-200 transition-colors">
+                    <span className="text-xl shrink-0 mt-0.5">{doc.icon}</span>
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className={`text-[8px] font-black uppercase px-2 py-0.5 ${doc.req ? 'bg-yellow-400 text-black' : 'bg-gray-700 text-gray-300'}`}>
-                          {doc.req ? 'Mandatory' : 'May Be Required'}
+                        <h4 className="font-bold text-sm text-slate-900">{doc.title}</h4>
+                        <span className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded-full shrink-0 ${doc.mandatory ? 'bg-amber-100 text-amber-700' : 'bg-slate-200 text-slate-500'}`}>
+                          {doc.mandatory ? 'Required' : 'May Be Needed'}
                         </span>
                       </div>
-                      <h5 className="font-black text-sm uppercase text-white mb-1">{doc.title}</h5>
-                      <p className="text-[11px] text-gray-400 leading-relaxed">{doc.detail}</p>
+                      <p className="text-xs text-slate-500 leading-relaxed">{doc.detail}</p>
                     </div>
-                  ))}
-                </div>
-                <div className="mt-8 text-center">
-                  <Link
-                    href="/visa-resources/visa-checklist-generator"
-                    className="inline-block border-2 border-yellow-400 text-yellow-400 px-8 py-3 font-black uppercase text-xs tracking-widest hover:bg-yellow-400 hover:text-black transition-all"
-                  >
-                    Download as PDF Checklist →
-                  </Link>
-                </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6">
+                <Link
+                  href="/visa-resources/visa-checklist-generator"
+                  className="inline-flex items-center gap-2 bg-amber-400 text-slate-900 px-6 py-3 rounded-xl font-bold text-sm hover:bg-amber-500 transition-all"
+                >
+                  Download Transit Checklist for {hubCap} →
+                </Link>
               </div>
             </section>
 
             {/* FAQ */}
-            <section id="faq">
-              <h2 className="text-3xl font-black uppercase italic mb-8 border-l-8 border-yellow-400 pl-6">
-                Frequently Asked Questions — {nationality} at {hub}
-              </h2>
-              <div className="space-y-4">
-                {FAQ(nationality, hub).map((item) => (
-                  <details key={item.q} className="border-2 border-black group">
-                    <summary className="p-5 font-black uppercase text-sm cursor-pointer select-none list-none flex items-center justify-between hover:bg-gray-50">
-                      {item.q}
-                      <span className="text-gray-400 group-open:rotate-180 transition-transform text-lg font-black shrink-0 ml-4">↓</span>
-                    </summary>
-                    <div className="border-t-2 border-black bg-gray-50 p-5">
-                      <p className="text-sm text-gray-700 leading-relaxed">{item.a}</p>
-                    </div>
-                  </details>
+            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
+              <h2 className="text-xl font-bold mb-6">Frequently Asked Questions</h2>
+              <div className="space-y-5">
+                {[
+                  {
+                    q: `Do ${natCap} passport holders need a transit visa at ${hubCap}?`,
+                    a: `Whether ${natCap} nationals require a transit visa at ${hubCap} depends on the layover duration, whether you remain airside, and bilateral agreements between your home country and ${hubCap}. Always verify via the TIMATIC tool on your airline's website or the official ${hubCap} immigration authority portal before booking flights. Requirements can change without notice.`
+                  },
+                  {
+                    q: `Can I leave the airport during a layover in ${hubCap}?`,
+                    a: `Leaving the airport in ${hubCap} — even briefly — means entering the country and requires a valid entry visa or transit permit for ${natCap} nationals. Some transit hubs offer a free or reduced-fee transit visa for short periods (e.g. Dubai 96-hr transit visa, Singapore VFTF). Confirm your eligibility before making plans to explore the city during your layover.`
+                  },
+                  {
+                    q: `What is an Airport Transit Visa (ATV) and does ${natCap} need one?`,
+                    a: `An Airport Transit Visa allows you to pass through the international transit zone of an airport in certain countries without formally entering them. ${isSchengen ? `All 27 Schengen area airports require an ATV from specific nationalities for airside connections. Check whether your ${natCap} passport is on the ATV-required list for ${hubCap} before booking.` : isUK ? `The UK requires a Direct Airside Transit Visa (DATV) from many nationalities — including some ${natCap} passport holders — even for connections under two hours. Check the UK Home Office list of nationalities requiring a DATV.` : `Check whether your ${natCap} passport is on the ${hubCap} ATV-required nationality list before booking flights.`}`
+                  },
+                  {
+                    q: `My connecting flight is on a separate ticket — what happens at ${hubCap}?`,
+                    a: `If your two flights are on separate bookings, you will almost certainly need to collect your luggage and re-check it for your next flight. This means passing through immigration at ${hubCap}, which typically requires a transit or entry visa for ${natCap} nationals. This is one of the most common causes of denied boarding. Always book connecting flights on a single itinerary where possible.`
+                  },
+                  {
+                    q: `What happens if my layover at ${hubCap} is delayed and I overstay?`,
+                    a: `If a flight delay causes you to exceed your permitted transit time, this is generally treated as an irregular situation outside your control. Notify airline staff immediately — they are typically responsible for liaising with immigration authorities in operational delay cases. If you voluntarily extend your stay beyond the permitted window, you may face fines or future entry bans. Never leave the transit area without confirming it is legally permitted.`
+                  },
+                ].map((item, i) => (
+                  <div key={i} className="border-b border-slate-100 last:border-0 pb-5 last:pb-0">
+                    <h4 className="font-bold text-sm text-slate-900 mb-2">Q: {item.q}</h4>
+                    <p className="text-xs text-slate-500 leading-relaxed">{item.a}</p>
+                  </div>
                 ))}
               </div>
             </section>
 
-            {/* WORK VISA LINK */}
-            <div className="border-4 border-black bg-yellow-400 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-              <div>
-                <p className="text-[9px] font-black uppercase tracking-widest mb-1">Also on WorkPass.Guide</p>
-                <h4 className="font-black text-xl uppercase">Need a Work Permit Too?</h4>
-                <p className="text-sm mt-1 text-black/70">
-                  Full work visa guides for {nationality} nationals across 40+ destination countries.
-                </p>
-              </div>
-              <Link
-                href="/visa/work-visa"
-                className="shrink-0 bg-black text-white px-8 py-4 font-black uppercase text-xs tracking-widest hover:bg-white hover:text-black transition-all border-2 border-black"
-              >
-                Work Visa Guides →
-              </Link>
-            </div>
-
-          </main>
-
-          {/* SIDEBAR */}
-          <aside className="lg:col-span-4">
-            <div className="sticky top-24 space-y-6">
-
-              <div className="border-4 border-black p-7 shadow-[8px_8px_0px_0px_rgba(250,204,21,1)]">
-                <p className="text-[9px] font-black uppercase tracking-widest text-yellow-500 mb-1">Checklist</p>
-                <h3 className="font-black text-lg uppercase italic mb-2">{nationality} Transit at {hub}</h3>
-                <p className="text-xs text-gray-500 mb-5">
-                  Personalised document list for your specific transit route.
-                </p>
-                <Link
-                  href="/visa-resources/visa-checklist-generator"
-                  className="block w-full bg-black text-white text-center py-4 font-black uppercase text-xs tracking-widest hover:bg-yellow-400 hover:text-black transition-all border-2 border-black mb-3"
-                >
-                  Download Checklist
-                </Link>
-                <Link
-                  href="/visa/transit-visa"
-                  className="block w-full text-center py-3 font-black uppercase text-xs tracking-widest border-2 border-gray-200 hover:border-black transition-all"
-                >
-                  Search Another Route
-                </Link>
-              </div>
-
-              <div className="border-2 border-black p-6">
-                <h4 className="font-black uppercase text-sm mb-5 border-b-2 border-black pb-3">
-                  Quick Facts — {hub}
-                </h4>
-                <div className="space-y-4">
-                  {[
-                    { label: "Transit Type", value: "Airside & Landside" },
-                    { label: "ATV May Be Required", value: "Nationality-Dependent" },
-                    { label: "Max Airside Stay", value: "Typically 24 Hours" },
-                    { label: "Exit Allowed", value: "Requires Transit Visa" },
-                    { label: "Verify Via", value: "TIMATIC / Airline" },
-                    { label: "Official Portal", value: `${hub} Immigration` },
-                  ].map((f) => (
-                    <div key={f.label} className="flex flex-col">
-                      <span className="text-[9px] font-black uppercase text-gray-400 tracking-widest">{f.label}</span>
-                      <span className="text-sm font-black">{f.value}</span>
+            {/* OFFICIAL PORTALS */}
+            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
+              <h2 className="text-xl font-bold mb-2">Official Verification Portals</h2>
+              <p className="text-sm text-slate-500 mb-6">Always verify transit requirements through official sources before booking flights.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {TRUSTED_PORTALS.map((p) => (
+                  <a
+                    key={p.name}
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-start justify-between gap-4 p-4 bg-slate-50 border border-slate-100 rounded-xl hover:border-amber-300 hover:shadow-sm group transition-all"
+                  >
+                    <div>
+                      <h5 className="font-bold text-sm text-slate-900 mb-1">{p.name}</h5>
+                      <p className="text-xs text-slate-500">{p.desc}</p>
                     </div>
-                  ))}
+                    <span className="text-slate-300 group-hover:text-amber-500 font-bold transition-colors text-lg shrink-0">↗</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+
+            {/* RELATED ROUTES */}
+            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
+              <h2 className="text-xl font-bold mb-2">Related Transit Guides</h2>
+              <p className="text-sm text-slate-500 mb-6">Other popular transit routes you may find useful.</p>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">Same Passport — Other Hubs</p>
+                  <div className="space-y-2">
+                    {RELATED_HUBS
+                      .filter(h => h.name.toLowerCase() !== hub.toLowerCase())
+                      .slice(0, 5)
+                      .map((h) => {
+                        const sl = `${nationality.toLowerCase()}-transit-at-${h.name.toLowerCase().replace(/\s+/g, '-')}`;
+                        const df = flagUrl(h.code);
+                        return (
+                          <Link
+                            key={h.code}
+                            href={`/visa/transit-visa/${sl}?nFlag=${encodeURIComponent(nFlag || '')}&dFlag=${encodeURIComponent(df)}`}
+                            className="flex items-center gap-3 p-3 border border-slate-200 rounded-xl hover:border-amber-300 hover:shadow-sm group transition-all"
+                          >
+                            <img src={df} className="w-7 h-5 rounded object-cover shadow-sm" alt={h.name} />
+                            <span className="text-xs font-bold text-slate-700">{natCap} → {h.airport}</span>
+                            <span className="ml-auto text-slate-300 group-hover:text-amber-500 font-bold">›</span>
+                          </Link>
+                        );
+                      })}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">Same Hub — Other Nationalities</p>
+                  <div className="space-y-2">
+                    {RELATED_NATIONALITIES
+                      .filter(n => n.name.toLowerCase() !== natCap.toLowerCase())
+                      .slice(0, 5)
+                      .map((nat) => {
+                        const sl = `${nat.name.toLowerCase()}-transit-at-${hub.toLowerCase().replace(/\s+/g, '-')}`;
+                        const nf = flagUrl(nat.code);
+                        return (
+                          <Link
+                            key={nat.code}
+                            href={`/visa/transit-visa/${sl}?nFlag=${encodeURIComponent(nf)}&dFlag=${encodeURIComponent(dFlag || '')}`}
+                            className="flex items-center gap-3 p-3 border border-slate-200 rounded-xl hover:border-amber-300 hover:shadow-sm group transition-all"
+                          >
+                            <img src={nf} className="w-7 h-5 rounded object-cover shadow-sm" alt={nat.name} />
+                            <span className="text-xs font-bold text-slate-700">{nat.name} → {hubCap}</span>
+                            <span className="ml-auto text-slate-300 group-hover:text-amber-500 font-bold">›</span>
+                          </Link>
+                        );
+                      })}
+                  </div>
                 </div>
               </div>
+            </section>
 
-              <div className="border-2 border-black p-6">
-                <h4 className="font-black uppercase text-xs mb-4 text-gray-400 tracking-widest">On This Page</h4>
-                <div className="space-y-2">
-                  {[
-                    ["#overview", "Overview"],
-                    ["#transit-steps", "6-Step Transit Guide"],
-                    ["#documents", "Required Documents"],
-                    ["#faq", "FAQ"],
-                    ["#related-guides", "Related Guides"],
-                  ].map(([href, label]) => (
-                    <a
-                      key={href}
-                      href={href}
-                      className="block text-xs font-bold uppercase text-gray-500 hover:text-black border-l-2 border-transparent hover:border-yellow-400 pl-2 transition-all"
-                    >
-                      {label}
-                    </a>
-                  ))}
-                </div>
+            {/* OTHER VISA TYPES */}
+            <section className="bg-amber-400 rounded-2xl p-8">
+              <h2 className="text-xl font-bold text-slate-900 mb-2">Explore Other Visa Types</h2>
+              <p className="text-sm text-amber-900 mb-6">Just passing through? Or planning a longer stay? Find the right visa category.</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {[
+                  { label: "Business Visa", desc: "Meetings & conferences", href: "/visa/business-visa", icon: "💼" },
+                  { label: "Work Visa", desc: "Employment & sponsorship", href: "/visa/work-visa", icon: "🏢" },
+                  { label: "Student Visa", desc: "Study & university", href: "/visa/student-visa", icon: "🎓" },
+                  { label: "Tourist Visa", desc: "Leisure & tourism", href: "/visa/tourist-visa", icon: "🌴" },
+                ].map((v) => (
+                  <Link
+                    key={v.label}
+                    href={v.href}
+                    className="bg-white rounded-xl p-4 hover:shadow-md transition-all group"
+                  >
+                    <span className="text-2xl block mb-2">{v.icon}</span>
+                    <p className="font-bold text-sm text-slate-900 group-hover:text-amber-700 transition-colors">{v.label}</p>
+                    <p className="text-[10px] text-slate-400 mt-0.5">{v.desc}</p>
+                  </Link>
+                ))}
               </div>
+            </section>
 
+          </div>
+
+          {/* ─── SIDEBAR ─── */}
+          <aside className="space-y-5">
+            <div className="bg-slate-900 rounded-2xl p-7 text-white sticky top-10">
+              <h3 className="text-lg font-bold mb-2">Get Your Transit Checklist</h3>
+              <p className="text-slate-400 text-xs mb-6 leading-relaxed">
+                Personalised document checklist for {natCap} passport holders transiting through {hubCap}. Free download.
+              </p>
+              <Link
+                href="/visa-resources/visa-checklist-generator"
+                className="block w-full bg-amber-400 hover:bg-amber-300 text-slate-900 text-center py-3.5 rounded-xl font-bold transition-all text-sm"
+              >
+                Download Checklist (PDF)
+              </Link>
+
+              <div className="mt-6 border-t border-slate-800 pt-5 space-y-3">
+                {[
+                  { label: "Max Airside Stay", value: "Up to 24 hrs" },
+                  { label: "Landside Transit", value: "Visa Required" },
+                  { label: "ATV Requirement", value: "Check Nationality" },
+                  { label: "Separate Tickets", value: "Visa Likely Needed" },
+                  { label: "Verify Via", value: "TIMATIC / Airline" },
+                ].map((row) => (
+                  <div key={row.label} className="flex justify-between text-xs">
+                    <span className="text-slate-500">{row.label}</span>
+                    <span className="text-slate-200 font-bold text-right max-w-[55%]">{row.value}</span>
+                  </div>
+                ))}
+              </div>
             </div>
+
+            {/* Other visa types */}
+            <div className="bg-white rounded-2xl p-6 border border-slate-200">
+              <h3 className="text-sm font-bold text-slate-900 mb-4">Other Visa Types</h3>
+              <div className="space-y-2">
+                {[
+                  { label: "Business Visa Guides", href: "/visa/business-visa", icon: "💼" },
+                  { label: "Work Visa Guides", href: "/visa/work-visa", icon: "🏢" },
+                  { label: "Student Visa Guides", href: "/visa/student-visa", icon: "🎓" },
+                  { label: "Tourist Visa Guides", href: "/visa/tourist-visa", icon: "🌴" },
+                ].map((v) => (
+                  <Link
+                    key={v.label}
+                    href={v.href}
+                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-amber-50 hover:border-amber-200 border border-transparent transition-all"
+                  >
+                    <span className="text-lg">{v.icon}</span>
+                    <span className="text-sm font-semibold text-slate-700 hover:text-amber-700">{v.label}</span>
+                    <span className="ml-auto text-slate-300 text-sm">›</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* TIMATIC warning */}
+            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6">
+              <h3 className="text-sm font-bold text-amber-900 mb-2">⚠️ Always Verify Before Booking</h3>
+              <p className="text-xs text-amber-800 leading-relaxed mb-3">
+                Transit visa rules change frequently. Always check via your airline's TIMATIC tool or the official immigration authority before purchasing flights.
+              </p>
+              <a
+                href="https://www.iatatravelcentre.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-bold text-amber-700 hover:underline underline-offset-4"
+              >
+                Open TIMATIC →
+              </a>
+            </div>
+
+            {/* Resources */}
+            <div className="bg-white border border-slate-200 rounded-2xl p-6">
+              <h3 className="text-sm font-bold text-slate-900 mb-2">🔧 Visa Resources</h3>
+              <div className="space-y-2">
+                {[
+                  { label: "Visa Checklist Generator", href: "/visa-resources/visa-checklist-generator" },
+                  { label: "Embassy Directory", href: "/visa-resources/embassy-directory" },
+                  { label: "Processing Time Tracker", href: "/visa-resources/processing-times" },
+                  { label: "Transit Hub Directory", href: "/visa-resources/transit-hubs" },
+                  { label: "TIMATIC Visa Checker", href: "https://www.iatatravelcentre.com" },
+                ].map((r) => (
+                  <Link key={r.label} href={r.href} className="block text-xs font-semibold text-slate-500 hover:text-amber-600 hover:underline underline-offset-4 py-1 transition-colors">
+                    {r.label} →
+                  </Link>
+                ))}
+              </div>
+            </div>
+
           </aside>
         </div>
       </div>
 
-      {/* RELATED GUIDES */}
-      <section className="border-t-8 border-black py-20 px-6 bg-gray-50" id="related-guides">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-
-            {/* Same nationality, other hubs */}
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-yellow-500 mb-3">Same Passport</p>
-              <h3 className="text-2xl font-black uppercase mb-8">
-                Other {nationality} Transit Guides
-              </h3>
-              <div className="space-y-3">
-                {RELATED_HUBS
-                  .filter((h) => h.name.toLowerCase() !== hub.toLowerCase())
-                  .slice(0, 6)
-                  .map((h) => {
-                    const slugLink = `${nationality.toLowerCase()}-transit-at-${h.name.toLowerCase()}`.replace(/\s+/g, '-');
-                    const nFlagLink = nFlag || '';
-                    const dFlagLink = flagUrl(h.code);
-                    return (
-                      <Link
-                        key={h.code}
-                        href={`/visa/transit-visa/${slugLink}?nFlag=${encodeURIComponent(nFlagLink)}&dFlag=${encodeURIComponent(dFlagLink)}`}
-                        className="flex items-center gap-4 border-2 border-black p-4 hover:bg-yellow-400 group transition-all"
-                      >
-                        <img src={dFlagLink} className="w-10 h-7 object-cover border border-black" alt={h.name} />
-                        <div className="flex-1">
-                          <p className="font-black text-sm uppercase">{nationality} Transit at {h.airport}</p>
-                          <p className="text-[10px] text-gray-500 group-hover:text-black font-bold uppercase">Transit Guide →</p>
-                        </div>
-                        <span className="text-gray-200 group-hover:text-black font-black text-xl">›</span>
-                      </Link>
-                    );
-                  })}
-              </div>
-            </div>
-
-            {/* Same hub, other nationalities */}
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-yellow-500 mb-3">Same Hub</p>
-              <h3 className="text-2xl font-black uppercase mb-8">
-                Other Nationalities Transiting {hub}
-              </h3>
-              <div className="space-y-3">
-                {RELATED_NATIONALITIES
-                  .filter((n) => n.name.toLowerCase() !== nationality.toLowerCase())
-                  .slice(0, 6)
-                  .map((nat) => {
-                    const slugLink = `${nat.name.toLowerCase()}-transit-at-${hub.toLowerCase()}`.replace(/\s+/g, '-');
-                    const nFlagLink = flagUrl(nat.code);
-                    const dFlagLink = dFlag || '';
-                    return (
-                      <Link
-                        key={nat.code}
-                        href={`/visa/transit-visa/${slugLink}?nFlag=${encodeURIComponent(nFlagLink)}&dFlag=${encodeURIComponent(dFlagLink)}`}
-                        className="flex items-center gap-4 border-2 border-black p-4 hover:bg-yellow-400 group transition-all"
-                      >
-                        <img src={nFlagLink} className="w-10 h-7 object-cover border border-black" alt={nat.name} />
-                        <div className="flex-1">
-                          <p className="font-black text-sm uppercase">{nat.name} Transit at {hub}</p>
-                          <p className="text-[10px] text-gray-500 group-hover:text-black font-bold uppercase">Transit Guide →</p>
-                        </div>
-                        <span className="text-gray-200 group-hover:text-black font-black text-xl">›</span>
-                      </Link>
-                    );
-                  })}
-              </div>
-            </div>
-          </div>
-
-          {/* Cross-link to Work Visa */}
-          <div className="mt-16 border-4 border-black p-8 flex flex-col md:flex-row items-center justify-between gap-6 bg-white">
-            <div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Explore More Guides</p>
-              <h4 className="font-black text-2xl uppercase">
-                {nationality} Work Visa Guides
-              </h4>
-              <p className="text-sm text-gray-500 mt-1">
-                Step-by-step work permit guides for {nationality} nationals in Canada, UAE, UK, Germany, and more.
-              </p>
-            </div>
+      {/* BOTTOM SEARCH CTA */}
+      <div className="max-w-6xl mx-auto px-6 mt-12">
+        <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">Search Another Route</p>
+          <h3 className="text-2xl font-extrabold text-slate-900 mb-3">Need a Different Transit Guide?</h3>
+          <p className="text-sm text-slate-500 mb-6">Check transit visa rules for any nationality and hub combination instantly.</p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              href="/visa/transit-visa#search"
+              className="inline-block bg-amber-400 text-slate-900 px-10 py-4 rounded-xl font-bold hover:bg-amber-500 transition-all shadow-lg shadow-amber-100 text-sm"
+            >
+              Search Transit Visa Requirements →
+            </Link>
             <Link
               href="/visa/work-visa"
-              className="shrink-0 bg-yellow-400 text-black px-10 py-4 font-black uppercase text-xs tracking-widest hover:bg-black hover:text-white transition-all border-2 border-black"
+              className="inline-block bg-white text-slate-700 px-8 py-4 rounded-xl font-bold hover:bg-slate-50 transition-all border border-slate-200 text-sm"
             >
               Work Visa Guides →
             </Link>
           </div>
         </div>
-      </section>
-
-
+      </div>
 
     </div>
   );

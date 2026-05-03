@@ -213,26 +213,26 @@ const EXTRA = {
 // CATEGORY META
 // ─────────────────────────────────────────────────────────────
 const CAT_META = {
-  Identity:             { dot:"#3b82f6",  bg:"#eff6ff",  text:"#1d4ed8",  icon:"🪪" },
-  Academic:             { dot:"#8b5cf6",  bg:"#f5f3ff",  text:"#6d28d9",  icon:"📚" },
-  Financial:            { dot:"#16a34a",  bg:"#f0fdf4",  text:"#15803d",  icon:"💰" },
-  Application:          { dot:"#d97706",  bg:"#fffbeb",  text:"#b45309",  icon:"📝" },
-  Health:               { dot:"#dc2626",  bg:"#fef2f2",  text:"#dc2626",  icon:"🏥" },
-  Background:           { dot:"#0891b2",  bg:"#ecfeff",  text:"#0e7490",  icon:"🔍" },
-  Travel:               { dot:"#0d9488",  bg:"#f0fdfa",  text:"#0f766e",  icon:"✈️" },
-  Employment:           { dot:"#65a30d",  bg:"#f7fee7",  text:"#4d7c0f",  icon:"💼" },
-  Business:             { dot:"#ea580c",  bg:"#fff7ed",  text:"#c2410c",  icon:"🤝" },
-  "US Specific":        { dot:"#b91c1c",  bg:"#fef2f2",  text:"#b91c1c",  icon:"🇺🇸" },
-  "UK Specific":        { dot:"#1d4ed8",  bg:"#eff6ff",  text:"#1e40af",  icon:"🇬🇧" },
-  "Canada Specific":    { dot:"#b91c1c",  bg:"#fef2f2",  text:"#991b1b",  icon:"🇨🇦" },
-  "Australia Specific": { dot:"#15803d",  bg:"#f0fdf4",  text:"#166534",  icon:"🇦🇺" },
-  "UAE Specific":       { dot:"#7c3aed",  bg:"#f5f3ff",  text:"#6d28d9",  icon:"🇦🇪" },
-  "Saudi Specific":     { dot:"#15803d",  bg:"#f0fdf4",  text:"#166534",  icon:"🇸🇦" },
-  "Singapore Specific": { dot:"#0284c7",  bg:"#f0f9ff",  text:"#0369a1",  icon:"🇸🇬" },
-  "Japan Specific":     { dot:"#be123c",  bg:"#fff1f2",  text:"#be123c",  icon:"🇯🇵" },
-  "France Specific":    { dot:"#1e40af",  bg:"#eff6ff",  text:"#1e40af",  icon:"🇫🇷" },
-  Schengen:             { dot:"#0d9488",  bg:"#f0fdfa",  text:"#0f766e",  icon:"🇪🇺" },
-  Custom:               { dot:"#6b7280",  bg:"#f9fafb",  text:"#374151",  icon:"⭐" },
+  Identity:             { dot:"#1e40af", bg:"#eff6ff",  text:"#1d4ed8",  icon:"🪪",  letter:"A" },
+  Academic:             { dot:"#6d28d9", bg:"#f5f3ff",  text:"#6d28d9",  icon:"📚",  letter:"B" },
+  Financial:            { dot:"#15803d", bg:"#f0fdf4",  text:"#15803d",  icon:"💰",  letter:"C" },
+  Application:          { dot:"#b45309", bg:"#fffbeb",  text:"#b45309",  icon:"📝",  letter:"D" },
+  Health:               { dot:"#dc2626", bg:"#fef2f2",  text:"#dc2626",  icon:"🏥",  letter:"E" },
+  Background:           { dot:"#0e7490", bg:"#ecfeff",  text:"#0e7490",  icon:"🔍",  letter:"F" },
+  Travel:               { dot:"#0f766e", bg:"#f0fdfa",  text:"#0f766e",  icon:"✈️",  letter:"G" },
+  Employment:           { dot:"#4d7c0f", bg:"#f7fee7",  text:"#4d7c0f",  icon:"💼",  letter:"H" },
+  Business:             { dot:"#c2410c", bg:"#fff7ed",  text:"#c2410c",  icon:"🤝",  letter:"I" },
+  "US Specific":        { dot:"#b91c1c", bg:"#fef2f2",  text:"#b91c1c",  icon:"🇺🇸", letter:"J" },
+  "UK Specific":        { dot:"#1e40af", bg:"#eff6ff",  text:"#1e40af",  icon:"🇬🇧", letter:"K" },
+  "Canada Specific":    { dot:"#991b1b", bg:"#fef2f2",  text:"#991b1b",  icon:"🇨🇦", letter:"L" },
+  "Australia Specific": { dot:"#166534", bg:"#f0fdf4",  text:"#166534",  icon:"🇦🇺", letter:"M" },
+  "UAE Specific":       { dot:"#6d28d9", bg:"#f5f3ff",  text:"#6d28d9",  icon:"🇦🇪", letter:"N" },
+  "Saudi Specific":     { dot:"#166534", bg:"#f0fdf4",  text:"#166534",  icon:"🇸🇦", letter:"O" },
+  "Singapore Specific": { dot:"#0369a1", bg:"#f0f9ff",  text:"#0369a1",  icon:"🇸🇬", letter:"P" },
+  "Japan Specific":     { dot:"#be123c", bg:"#fff1f2",  text:"#be123c",  icon:"🇯🇵", letter:"Q" },
+  "France Specific":    { dot:"#1e40af", bg:"#eff6ff",  text:"#1e40af",  icon:"🇫🇷", letter:"R" },
+  Schengen:             { dot:"#0f766e", bg:"#f0fdfa",  text:"#0f766e",  icon:"🇪🇺", letter:"S" },
+  Custom:               { dot:"#374151", bg:"#f9fafb",  text:"#374151",  icon:"⭐",  letter:"Z" },
 };
 const ALL_CATEGORIES = Object.keys(CAT_META);
 
@@ -240,65 +240,62 @@ const ALL_CATEGORIES = Object.keys(CAT_META);
 // LOCAL-STORAGE KEY
 // ─────────────────────────────────────────────────────────────
 const LS_KEY = "eammu_checklist_v3";
-
-function saveToLS(data) {
-  try { localStorage.setItem(LS_KEY, JSON.stringify(data)); } catch {}
-}
-function loadFromLS() {
-  try { return JSON.parse(localStorage.getItem(LS_KEY) || "null"); } catch { return null; }
-}
+function saveToLS(data) { try { localStorage.setItem(LS_KEY, JSON.stringify(data)); } catch {} }
+function loadFromLS() { try { return JSON.parse(localStorage.getItem(LS_KEY) || "null"); } catch { return null; } }
 
 // ─────────────────────────────────────────────────────────────
-// PREMIUM PDF GENERATOR
+// PDF GENERATOR — matches the design in the screenshot
+// Fixed: Visa Express Hub header & Eammu Holidays footer
+// Dynamic: flags, countries, visa type, checklist sections
 // ─────────────────────────────────────────────────────────────
 function generatePDF({ fromCountry, toCountry, visaType, checklist, grouped, checked, progress, checkedCount }) {
-  const visaInfo = VISA_TYPES.find(v => v.id === visaType) || {};
-  const dateStr  = new Date().toLocaleDateString("en-GB", { day:"numeric", month:"long", year:"numeric" });
-  const refNo    = `VEH-${Date.now().toString().slice(-8)}`;
-  const total    = checklist.length;
+  const visaInfo  = VISA_TYPES.find(v => v.id === visaType) || {};
+  const dateStr   = new Date().toLocaleDateString("en-GB", { day:"numeric", month:"long", year:"numeric" });
+  const shortDate = new Date().toLocaleDateString("en-GB", { day:"2-digit", month:"short", year:"numeric" });
+  const refNo     = `VEH-${Date.now().toString().slice(-8)}`;
+  const total     = checklist.length;
   const remaining = total - checkedCount;
 
-  const categoriesHTML = Object.entries(grouped).map(([cat, items]) => {
-    const meta   = CAT_META[cat] || CAT_META.Custom;
-    const catDone = items.filter(i => checked[i.id]).length;
-    const pct    = Math.round((catDone / items.length) * 100);
-
-    const itemsHTML = items.map((item, idx) => {
+  // Build category sections — one section per category (A, B, C… labels)
+  const catKeys   = Object.keys(grouped);
+  const sectionsHTML = catKeys.map((cat, catIdx) => {
+    const items  = grouped[cat];
+    const letter = String.fromCharCode(65 + catIdx); // A, B, C…
+    const itemsHTML = items.map(item => {
       const done = !!checked[item.id];
       return `
-        <tr class="${done ? "row-done" : "row-pending"}" style="${idx % 2 === 0 ? "" : "background:rgba(0,0,0,0.015)"}">
-          <td class="td-cb">
-            <div class="cb ${done ? "cb-done" : "cb-empty"}">
-              ${done ? `<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>` : ""}
+        <tr>
+          <td style="width:22px;padding:7px 6px 7px 0;vertical-align:top;">
+            <div style="width:14px;height:14px;border:1.5px solid ${done ? "#1e40af" : "#9ca3af"};border-radius:3px;background:${done ? "#1e40af" : "#fff"};display:flex;align-items:center;justify-content:center;margin-top:1px;flex-shrink:0;">
+              ${done ? `<svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3L3 5L7 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ""}
             </div>
           </td>
-          <td class="td-text ${done ? "text-done" : ""}">${item.text}</td>
-          <td class="td-badge">
-            <span class="badge ${item.required ? "badge-req" : "badge-opt"}">${item.required ? "Required" : "Optional"}</span>
-            ${item.custom ? `<span class="badge badge-custom">Custom</span>` : ""}
+          <td style="padding:7px 12px 7px 4px;font-size:11.5px;color:${done ? "#9ca3af" : "#1f2937"};font-weight:500;line-height:1.45;${done ? "text-decoration:line-through;" : ""}vertical-align:top;">
+            ${item.text}
           </td>
-          <td class="td-status">${done ? `<span class="status-done">✓ Done</span>` : `<span class="status-pending">Pending</span>`}</td>
+          <td style="padding:7px 0 7px 4px;white-space:nowrap;vertical-align:top;text-align:right;">
+            ${item.required
+              ? `<span style="font-size:9px;font-weight:700;color:#dc2626;background:#fef2f2;border:1px solid #fecaca;border-radius:4px;padding:2px 7px;">Required</span>`
+              : `<span style="font-size:9px;font-weight:600;color:#9ca3af;background:#f9fafb;border:1px solid #e5e7eb;border-radius:4px;padding:2px 7px;">Optional</span>`
+            }
+          </td>
         </tr>`;
     }).join("");
 
     return `
-      <div class="section">
-        <div class="section-header" style="border-left: 4px solid ${meta.dot}; background: linear-gradient(90deg, ${meta.bg}, #fff);">
-          <div style="display:flex; align-items:center; gap:10px; flex:1">
-            <span class="cat-icon">${meta.icon}</span>
-            <div>
-              <div class="cat-name">${cat}</div>
-              <div class="cat-sub">${catDone} of ${items.length} documents collected</div>
-            </div>
-          </div>
-          <div style="text-align:right; flex-shrink:0">
-            <div class="pct-num" style="color:${meta.dot}">${pct}%</div>
-            <div class="pct-bar-track"><div class="pct-bar-fill" style="width:${pct}%; background:${meta.dot}"></div></div>
-          </div>
+      <div style="margin-bottom:16px;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;break-inside:avoid;">
+        <!-- Section header -->
+        <div style="background:#f8fafc;border-bottom:1px solid #e5e7eb;padding:9px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="width:26px;height:26px;background:#1e3a5f;color:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;">${letter}</div>
+          <div style="font-size:12px;font-weight:800;color:#1e3a5f;text-transform:uppercase;letter-spacing:0.8px;flex:1;">${cat}</div>
+          <div style="font-size:10px;color:#6b7280;font-weight:600;">${items.filter(i=>checked[i.id]).length}/${items.length} collected</div>
         </div>
-        <table class="doc-table">
-          <tbody>${itemsHTML}</tbody>
-        </table>
+        <!-- Items table -->
+        <div style="padding:4px 16px 4px;">
+          <table style="width:100%;border-collapse:collapse;">
+            <tbody>${itemsHTML}</tbody>
+          </table>
+        </div>
       </div>`;
   }).join("");
 
@@ -306,108 +303,12 @@ function generatePDF({ fromCountry, toCountry, visaType, checklist, grouped, che
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<title>Visa Checklist — Visa Express Hub</title>
+<title>${toCountry.country} Visa Checklist — Visa Express Hub</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Plus Jakarta Sans','Segoe UI',sans-serif;background:#f1f5f9;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
-  .page{max-width:850px;margin:0 auto;background:#fff;box-shadow:0 0 60px rgba(0,0,0,0.12);}
-
-  /* ── HERO HEADER ── */
-  .hero{background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#1e40af 100%);padding:0;overflow:hidden;position:relative;}
-  .hero-accent{position:absolute;top:-120px;right:-80px;width:340px;height:340px;background:radial-gradient(circle, rgba(251,191,36,0.15) 0%, transparent 70%);}
-  .hero-accent2{position:absolute;bottom:-60px;left:60px;width:200px;height:200px;background:radial-gradient(circle, rgba(96,165,250,0.12) 0%, transparent 70%);}
-  .hero-top{display:flex;align-items:center;justify-content:space-between;padding:28px 44px 0;position:relative;z-index:1;}
-  .logo-wrap{display:flex;align-items:center;gap:10px;}
-  .logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#fbbf24,#f59e0b);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-  .logo-text{font-size:15px;font-weight:900;color:#fff;letter-spacing:-0.3px;}
-  .logo-sub{font-size:10px;color:rgba(255,255,255,0.5);font-weight:500;margin-top:-2px;}
-  .hero-meta{text-align:right;}
-  .hero-ref{font-size:10px;color:rgba(255,255,255,0.45);font-weight:600;letter-spacing:0.5px;}
-  .hero-date{font-size:11px;color:rgba(255,255,255,0.7);font-weight:700;margin-top:2px;}
-  .hero-body{padding:28px 44px 32px;position:relative;z-index:1;}
-  .hero-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-  .eyebrow-pill{background:rgba(251,191,36,0.2);border:1px solid rgba(251,191,36,0.35);border-radius:100px;padding:4px 12px;font-size:10px;font-weight:800;color:#fbbf24;text-transform:uppercase;letter-spacing:1px;}
-  .hero-title{font-size:32px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:6px;letter-spacing:-0.8px;}
-  .hero-title span{color:#fbbf24;}
-  .hero-subtitle{font-size:12.5px;color:rgba(255,255,255,0.55);font-weight:400;max-width:420px;line-height:1.5;}
-  .trip-bar{display:flex;align-items:center;gap:0;margin-top:24px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:16px 20px;flex-wrap:wrap;gap:12px;}
-  .trip-segment{display:flex;align-items:center;gap:10px;}
-  .trip-flag{width:32px;height:22px;object-fit:contain;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.3);}
-  .trip-info{display:flex;flex-direction:column;}
-  .trip-label{font-size:9px;color:rgba(255,255,255,0.45);font-weight:700;text-transform:uppercase;letter-spacing:0.8px;}
-  .trip-country{font-size:13px;color:#fff;font-weight:800;}
-  .trip-arrow{color:rgba(255,255,255,0.35);font-size:18px;margin:0 4px;}
-  .visa-chip{display:flex;align-items:center;gap:8px;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);border-radius:100px;padding:8px 16px;margin-left:auto;}
-  .visa-chip-icon{font-size:16px;}
-  .visa-chip-text{font-size:11.5px;font-weight:800;color:#fbbf24;}
-
-  /* ── PROGRESS BAND ── */
-  .progress-band{padding:20px 44px;background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-bottom:1px solid #e2e8f0;}
-  .progress-row{display:flex;align-items:center;gap:20px;}
-  .progress-main{flex:1;}
-  .progress-labels{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-  .progress-title{font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;}
-  .progress-pct{font-size:22px;font-weight:900;color:#1e40af;}
-  .progress-track{height:10px;background:#e2e8f0;border-radius:100px;overflow:hidden;}
-  .progress-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,#1e40af,#60a5fa);transition:width 0.3s;}
-  .stat-cards{display:flex;gap:12px;flex-shrink:0;}
-  .stat-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:12px 16px;text-align:center;min-width:72px;}
-  .stat-val{font-size:20px;font-weight:900;color:#0f172a;line-height:1;}
-  .stat-lbl{font-size:9px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px;}
-  .stat-card.stat-green{border-color:#bbf7d0;} .stat-card.stat-green .stat-val{color:#16a34a;}
-  .stat-card.stat-amber{border-color:#fed7aa;} .stat-card.stat-amber .stat-val{color:#ea580c;}
-  .complete-bar{margin-top:14px;background:linear-gradient(90deg,#dcfce7,#f0fdf4);border:1.5px solid #86efac;border-radius:10px;padding:10px 18px;display:flex;align-items:center;gap:10px;}
-  .complete-bar span{font-size:12px;font-weight:800;color:#16a34a;}
-
-  /* ── BODY ── */
-  .body{padding:28px 44px 36px;}
-  .section{margin-bottom:20px;border-radius:14px;overflow:hidden;border:1.5px solid #e2e8f0;break-inside:avoid;}
-  .section-header{display:flex;align-items:center;padding:14px 18px;gap:12px;}
-  .cat-icon{font-size:20px;flex-shrink:0;}
-  .cat-name{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1.2px;color:#374151;}
-  .cat-sub{font-size:10px;color:#9ca3af;font-weight:500;margin-top:1px;}
-  .pct-num{font-size:15px;font-weight:900;line-height:1;}
-  .pct-bar-track{width:80px;height:5px;background:#e5e7eb;border-radius:100px;overflow:hidden;margin-top:5px;}
-  .pct-bar-fill{height:100%;border-radius:100px;}
-
-  /* ── TABLE ── */
-  .doc-table{width:100%;border-collapse:collapse;}
-  .doc-table tbody tr{border-top:1px solid #f3f4f6;}
-  .row-done{background:#fafffe;}
-  .row-pending{background:#fff;}
-  .td-cb{width:48px;padding:12px 8px 12px 18px;vertical-align:middle;}
-  .cb{width:18px;height:18px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .cb-done{background:#2563eb;border:2px solid #2563eb;}
-  .cb-empty{border:2px solid #d1d5db;background:#fff;}
-  .td-text{padding:12px 8px;font-size:12px;font-weight:600;color:#374151;line-height:1.4;vertical-align:middle;}
-  .text-done{text-decoration:line-through;color:#9ca3af;}
-  .td-badge{padding:12px 8px;vertical-align:middle;white-space:nowrap;}
-  .badge{font-size:9.5px;font-weight:800;border-radius:5px;padding:3px 9px;border:1px solid transparent;}
-  .badge-req{background:#fef2f2;color:#dc2626;border-color:#fecaca;}
-  .badge-opt{background:#f9fafb;color:#9ca3af;border-color:#e5e7eb;}
-  .badge-custom{background:#eff6ff;color:#2563eb;border-color:#bfdbfe;margin-left:4px;}
-  .td-status{padding:12px 18px 12px 8px;vertical-align:middle;text-align:right;white-space:nowrap;}
-  .status-done{font-size:10px;font-weight:800;color:#16a34a;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:100px;padding:3px 10px;}
-  .status-pending{font-size:10px;font-weight:700;color:#94a3b8;background:#f9fafb;border:1px solid #e5e7eb;border-radius:100px;padding:3px 10px;}
-
-  /* ── DISCLAIMER ── */
-  .disclaimer{background:#fffbeb;border:1.5px solid #fde68a;border-radius:12px;padding:14px 18px;margin-bottom:24px;display:flex;gap:12px;}
-  .disclaimer-icon{font-size:20px;flex-shrink:0;}
-  .disclaimer-text{font-size:10.5px;color:#92400e;line-height:1.6;font-weight:500;}
-  .disclaimer-title{font-weight:800;font-size:11px;color:#78350f;margin-bottom:3px;}
-
-  /* ── FOOTER ── */
-  .footer{background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 60%,#1e40af 100%);padding:24px 44px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
-  .footer-brand{display:flex;align-items:center;gap:10px;}
-  .footer-logo-icon{width:30px;height:30px;background:linear-gradient(135deg,#fbbf24,#f59e0b);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;}
-  .footer-logo-text{font-size:13px;font-weight:900;color:#fff;}
-  .footer-logo-sub{font-size:9.5px;color:rgba(255,255,255,0.45);margin-top:-1px;}
-  .footer-info{text-align:right;}
-  .footer-line{font-size:10px;color:rgba(255,255,255,0.45);line-height:1.8;}
-  .footer-url{color:#fbbf24;font-weight:700;}
-  .footer-disclaimer{font-size:9px;color:rgba(255,255,255,0.3);margin-top:2px;}
-
+  body{font-family:'Plus Jakarta Sans','Segoe UI',sans-serif;background:#f3f4f6;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  .page{max-width:794px;margin:0 auto;background:#fff;min-height:100vh;display:flex;flex-direction:column;}
   @page{margin:0;size:A4;}
   @media print{body{background:#fff;}.page{box-shadow:none;max-width:100%;}}
 </style>
@@ -415,114 +316,173 @@ function generatePDF({ fromCountry, toCountry, visaType, checklist, grouped, che
 <body>
 <div class="page">
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-accent"></div>
-    <div class="hero-accent2"></div>
-    <div class="hero-top">
-      <div class="logo-wrap">
-        <div class="logo-icon">🌐</div>
+  <!-- ══════════════════════════════════════
+       FIXED HEADER — Visa Express Hub style
+  ══════════════════════════════════════ -->
+  <div style="background:#fff;border-bottom:2px solid #e5e7eb;padding:16px 32px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <!-- Logo left -->
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:42px;height:42px;background:linear-gradient(135deg,#1e3a5f,#1e40af);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🌐</div>
         <div>
-          <div class="logo-text">Visa Express Hub | Sponsored by Eammu Holidays</div>
-          <div class="logo-sub">Trusted Visa Experts · Dubai, UAE</div>
+          <div style="font-size:18px;font-weight:900;color:#1e3a5f;line-height:1;letter-spacing:-0.5px;">Visa Express<span style="color:#1e40af;"> Hub</span></div>
+          <div style="font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:1.2px;margin-top:2px;">Trusted Visa Experts</div>
         </div>
       </div>
-      <div class="hero-meta">
-        <div class="hero-ref">Ref: ${refNo}</div>
-        <div class="hero-date">📅 ${dateStr}</div>
+
+      <!-- Flags + visa type — dynamic -->
+      <div style="display:flex;align-items:center;gap:10px;">
+        <img src="${fromCountry.flag}" width="32" height="22" style="object-fit:contain;border-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,0.2);" alt="${fromCountry.country}"/>
+        <span style="font-size:20px;color:#9ca3af;font-weight:300;">&amp;</span>
+        <img src="${toCountry.flag}" width="32" height="22" style="object-fit:contain;border-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,0.2);" alt="${toCountry.country}"/>
+        <div style="width:1px;height:28px;background:#e5e7eb;margin:0 6px;"></div>
+        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:5px 12px;display:flex;align-items:center;gap:6px;">
+          <span style="font-size:14px;">${visaInfo.icon || "📄"}</span>
+          <span style="font-size:11px;font-weight:800;color:#1e40af;">${visaInfo.label || visaType}</span>
+        </div>
+      </div>
+
+      <!-- Powered by right -->
+      <div style="text-align:right;">
+        <div style="font-size:9px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:0.8px;">Powered by</div>
+        <div style="font-size:14px;font-weight:900;color:#1e3a5f;margin-top:1px;">Eammu Holidays</div>
+        <div style="display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-top:2px;">
+          <div style="width:16px;height:16px;background:#c0392b;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+            <div style="width:6px;height:6px;background:#fff;border-radius:50%;"></div>
+          </div>
+          <span style="font-size:9px;font-weight:800;color:#c0392b;letter-spacing:0.5px;">IATA</span>
+        </div>
       </div>
     </div>
-    <div class="hero-body">
-      <div class="hero-eyebrow">
-        <span class="eyebrow-pill">📋 Official Document Checklist</span>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       TITLE BAR — dynamic per checklist
+  ══════════════════════════════════════ -->
+  <div style="padding:20px 32px 16px;border-bottom:1px solid #f3f4f6;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;">
+      <div>
+        <div style="font-size:22px;font-weight:900;color:#1e3a5f;letter-spacing:-0.5px;line-height:1.1;">
+          ${toCountry.country} Visa Checklist
+          <span style="font-size:13px;font-weight:700;color:#6b7280;margin-left:6px;">— ${visaInfo.label}</span>
+        </div>
+        <div style="margin-top:5px;display:flex;align-items:center;gap:16px;">
+          <span style="font-size:11px;color:#6b7280;font-weight:500;">
+            📍 From: <strong style="color:#1e3a5f;">${fromCountry.country}</strong>
+            &nbsp;→&nbsp;
+            <strong style="color:#1e3a5f;">${toCountry.country}</strong>
+          </span>
+          <span style="font-size:9px;font-weight:600;color:#9ca3af;background:#f9fafb;border:1px solid #e5e7eb;border-radius:20px;padding:2px 10px;">Ref: ${refNo}</span>
+        </div>
       </div>
-      <div class="hero-title">Visa Document<br/><span>Checklist</span></div>
-      <div class="hero-subtitle">Personalized document requirements generated for your specific trip. Verify all requirements with the official embassy before submission.</div>
-      <div class="trip-bar">
-        <div class="trip-segment">
-          <img class="trip-flag" src="${fromCountry.flag}" alt="${fromCountry.country}" />
-          <div class="trip-info">
-            <span class="trip-label">From</span>
-            <span class="trip-country">${fromCountry.country}</span>
+      <div style="text-align:right;">
+        <div style="font-size:10px;color:#6b7280;font-weight:600;">Generated on</div>
+        <div style="font-size:12px;font-weight:800;color:#1e3a5f;">${shortDate}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PROGRESS SUMMARY BAR — dynamic
+  ══════════════════════════════════════ -->
+  <div style="padding:12px 32px;background:#f8fafc;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:20px;">
+    <!-- Progress bar -->
+    <div style="flex:1;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+        <span style="font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:0.8px;">Document Progress</span>
+        <span style="font-size:13px;font-weight:900;color:#1e40af;">${progress}%</span>
+      </div>
+      <div style="height:7px;background:#e5e7eb;border-radius:100px;overflow:hidden;">
+        <div style="height:100%;width:${progress}%;background:linear-gradient(90deg,#1e40af,#3b82f6);border-radius:100px;"></div>
+      </div>
+    </div>
+    <!-- Stats -->
+    <div style="display:flex;gap:10px;flex-shrink:0;">
+      ${[
+        { v:total,       l:"Total",     c:"#1e3a5f", b:"#f1f5f9", bd:"#e2e8f0" },
+        { v:checkedCount,l:"Collected", c:"#15803d", b:"#f0fdf4", bd:"#bbf7d0" },
+        { v:remaining,   l:"Remaining", c:"#c2410c", b:"#fff7ed", bd:"#fed7aa" },
+      ].map(s=>`
+        <div style="background:${s.b};border:1px solid ${s.bd};border-radius:8px;padding:6px 14px;text-align:center;">
+          <div style="font-size:18px;font-weight:900;color:${s.c};line-height:1;">${s.v}</div>
+          <div style="font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;margin-top:2px;">${s.l}</div>
+        </div>`).join("")}
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       DISCLAIMER
+  ══════════════════════════════════════ -->
+  <div style="margin:16px 32px 0;background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:11px 16px;display:flex;gap:10px;">
+    <div style="font-size:16px;flex-shrink:0;margin-top:1px;">⚠️</div>
+    <div style="font-size:10.5px;color:#92400e;font-weight:500;line-height:1.6;">
+      <strong style="font-weight:800;">Important Notice:</strong>
+      This checklist is a general guide based on standard requirements. Consulate requirements may vary. Always verify the complete and current document list directly with the official embassy or consulate of <strong>${toCountry.country}</strong> before submitting your application. Visa Express Hub and Eammu Holidays are not responsible for any changes in official requirements.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       CHECKLIST SECTIONS — fully dynamic
+  ══════════════════════════════════════ -->
+  <div style="padding:16px 32px 24px;flex:1;">
+    ${sectionsHTML}
+    ${progress === 100 ? `
+    <div style="background:linear-gradient(90deg,#f0fdf4,#dcfce7);border:1.5px solid #86efac;border-radius:10px;padding:12px 18px;display:flex;align-items:center;gap:10px;margin-top:4px;">
+      <span style="font-size:18px;">🎉</span>
+      <span style="font-size:12px;font-weight:800;color:#15803d;">All documents collected — you are ready to submit your visa application!</span>
+    </div>` : ""}
+  </div>
+
+  <!-- ══════════════════════════════════════
+       FIXED FOOTER — Eammu Holidays / Visa Express Hub
+  ══════════════════════════════════════ -->
+  <div style="background:#1e3a5f;padding:20px 32px;margin-top:auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <!-- Brand left -->
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:36px;height:36px;background:linear-gradient(135deg,#fbbf24,#f59e0b);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;">🌐</div>
+        <div>
+          <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:-0.3px;">Visa Express Hub</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.5);font-weight:600;margin-top:1px;text-transform:uppercase;letter-spacing:0.8px;">Sponsored by Eammu Holidays</div>
+        </div>
+      </div>
+
+      <!-- Links center -->
+      <div style="text-align:center;">
+        <div style="font-size:10.5px;color:rgba(255,255,255,0.7);font-weight:600;">Dubai, UAE &nbsp;·&nbsp; Dhaka &nbsp;·&nbsp; Global</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:3px;">
+          <span style="color:#fbbf24;font-weight:700;">www.visaexpresshub.com</span>
+          &nbsp;·&nbsp; info@visaexpresshub.com
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px;">Phone: +971-4-XXX-XXXX</div>
+      </div>
+
+      <!-- Right: IATA badge + ref -->
+      <div style="text-align:right;">
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:7px 14px;">
+          <div style="width:24px;height:24px;background:#c0392b;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+            <div style="width:9px;height:9px;background:#fff;border-radius:50%;"></div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:900;color:#fff;">IATA</div>
+            <div style="font-size:8px;color:rgba(255,255,255,0.5);font-weight:600;">Accredited Partner</div>
           </div>
         </div>
-        <span class="trip-arrow">→</span>
-        <div class="trip-segment">
-          <img class="trip-flag" src="${toCountry.flag}" alt="${toCountry.country}" />
-          <div class="trip-info">
-            <span class="trip-label">To</span>
-            <span class="trip-country">${toCountry.country}</span>
-          </div>
-        </div>
-        <div class="visa-chip">
-          <span class="visa-chip-icon">${visaInfo.icon || "📄"}</span>
-          <span class="visa-chip-text">${visaInfo.label || visaType}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PROGRESS -->
-  <div class="progress-band">
-    <div class="progress-row">
-      <div class="progress-main">
-        <div class="progress-labels">
-          <span class="progress-title">Overall Completion</span>
-          <span class="progress-pct">${progress}%</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" style="width:${progress}%"></div>
-        </div>
-      </div>
-      <div class="stat-cards">
-        <div class="stat-card">
-          <div class="stat-val">${total}</div>
-          <div class="stat-lbl">Total</div>
-        </div>
-        <div class="stat-card stat-green">
-          <div class="stat-val">${checkedCount}</div>
-          <div class="stat-lbl">Done</div>
-        </div>
-        <div class="stat-card stat-amber">
-          <div class="stat-val">${remaining}</div>
-          <div class="stat-lbl">Left</div>
-        </div>
-      </div>
-    </div>
-    ${progress === 100 ? `<div class="complete-bar"><span>🎉 All documents collected — you are ready to submit your visa application!</span></div>` : ""}
-  </div>
-
-  <!-- BODY -->
-  <div class="body">
-    <div class="disclaimer">
-      <div class="disclaimer-icon">⚠️</div>
-      <div>
-        <div class="disclaimer-title">Important Notice</div>
-        <div class="disclaimer-text">This checklist is a general guide based on standard requirements. Consulate requirements may vary. Always verify the complete and current document list directly with the official embassy or consulate of <strong>${toCountry.country}</strong> before submitting your application. Visa Express Hub is not responsible for changes in official requirements.</div>
+        <div style="margin-top:6px;font-size:9px;color:rgba(255,255,255,0.3);">Generated ${dateStr} · Ref ${refNo}</div>
       </div>
     </div>
 
-    ${categoriesHTML}
-  </div>
-
-  <!-- FOOTER -->
-  <div class="footer">
-    <div class="footer-brand">
-      <div class="footer-logo-icon">🌐</div>
-      <div>
-        <div class="footer-logo-text">Visa Express Hub Sponsorred By Eammu Holidays</div>
-        <div class="footer-logo-sub">Expert Visa Assistance</div>
+    <!-- Bottom strip -->
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div style="display:flex;gap:12px;">
+        ${["Company","Resources","Partners","Legal & Contact"].map(l=>`<span style="font-size:9.5px;color:rgba(255,255,255,0.4);font-weight:600;">${l}</span>`).join(`<span style="color:rgba(255,255,255,0.2);">·</span>`)}
       </div>
-    </div>
-    <div class="footer-info">
-      <div class="footer-line">Dubai, UAE · <span class="footer-url">www.visaexpresshub.com</span></div>
-      <div class="footer-line">info@visaexpresshub.com</div>
-      <div class="footer-disclaimer">Generated ${dateStr} · Ref ${refNo} · For personal use only</div>
+      <div style="font-size:9px;color:rgba(255,255,255,0.3);">© ${new Date().getFullYear()} Visa Express Hub · For personal use only</div>
     </div>
   </div>
 
 </div>
-<script>window.addEventListener('load', () => setTimeout(() => window.print(), 600));</script>
+<script>window.addEventListener('load', () => setTimeout(() => window.print(), 700));</script>
 </body>
 </html>`;
 
@@ -538,14 +498,14 @@ function generatePDF({ fromCountry, toCountry, visaType, checklist, grouped, che
 function downloadTXT({ fromCountry, toCountry, visaType, grouped, checked, checklist, checkedCount, progress }) {
   if (!fromCountry || !toCountry || !visaType) return;
   const visaLabel = VISA_TYPES.find(v => v.id === visaType)?.label || visaType;
-  let txt = `VISA DOCUMENT CHECKLIST\n${"═".repeat(56)}\nFrom: ${fromCountry.country}\nTo:   ${toCountry.country}\nType: ${visaLabel}\nDate: ${new Date().toLocaleDateString()}\nSite: visaexpresshub.ae\n${"═".repeat(56)}\n`;
+  let txt = `VISA DOCUMENT CHECKLIST\n${"═".repeat(56)}\nFrom: ${fromCountry.country}\nTo:   ${toCountry.country}\nType: ${visaLabel}\nDate: ${new Date().toLocaleDateString()}\nSite: visaexpresshub.com\n${"═".repeat(56)}\n`;
   Object.entries(grouped).forEach(([cat, items]) => {
     txt += `\n▸ ${cat.toUpperCase()}\n${"─".repeat(40)}\n`;
     items.forEach(i => {
       txt += `  ${checked[i.id] ? "[✓]" : "[ ]"}  ${i.text}${i.required ? "  ★" : ""}\n`;
     });
   });
-  txt += `\n${"═".repeat(56)}\nProgress: ${checkedCount}/${checklist.length} (${progress}%)\n★ = Required\n\nFor expert help: visaexpresshub.ae\n`;
+  txt += `\n${"═".repeat(56)}\nProgress: ${checkedCount}/${checklist.length} (${progress}%)\n★ = Required\n\nFor expert help: visaexpresshub.com\n`;
   const blob = new Blob([txt], { type:"text/plain;charset=utf-8" });
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement("a");
@@ -554,7 +514,7 @@ function downloadTXT({ fromCountry, toCountry, visaType, grouped, checked, check
 }
 
 // ─────────────────────────────────────────────────────────────
-// COUNTRY DROPDOWN  — fetch from /api/countries
+// COUNTRY DROPDOWN
 // ─────────────────────────────────────────────────────────────
 function CountryDropdown({ label, value, onChange, placeholder, countries, loading }) {
   const [search, setSearch] = useState("");
@@ -718,10 +678,9 @@ function StepIndicator({ current }) {
 // MAIN COMPONENT
 // ─────────────────────────────────────────────────────────────
 export default function VisaChecklistGenerator() {
-  // ── country data from MongoDB ──
-  const [countries,     setCountries]     = useState([]);
-  const [countriesLoading, setCountriesLoading] = useState(true);
-  const [countriesError,   setCountriesError]   = useState(null);
+  const [countries,         setCountries]         = useState([]);
+  const [countriesLoading,  setCountriesLoading]  = useState(true);
+  const [countriesError,    setCountriesError]    = useState(null);
 
   useEffect(() => {
     async function fetchCountries() {
@@ -739,13 +698,11 @@ export default function VisaChecklistGenerator() {
     fetchCountries();
   }, []);
 
-  // ── form state ──
   const [fromCountry, setFromCountry] = useState(null);
   const [toCountry,   setToCountry]   = useState(null);
   const [visaType,    setVisaType]    = useState(null);
   const [step,        setStep]        = useState(1);
 
-  // ── checklist state ──
   const [checked,     setChecked]     = useState({});
   const [customItems, setCustomItems] = useState([]);
   const [editedItems, setEditedItems] = useState({});
@@ -758,7 +715,6 @@ export default function VisaChecklistGenerator() {
   const [filterCat,   setFilterCat]   = useState("All");
   const [showOnlyPending, setShowOnlyPending] = useState(false);
 
-  // ── build checklist ──
   const checklist = useMemo(() => {
     if (!visaType) return [];
     const apply = (items) => items.map(i => editedItems[i.id] ? { ...i, ...editedItems[i.id] } : i);
@@ -779,7 +735,6 @@ export default function VisaChecklistGenerator() {
   const checkedCount = Object.values(checked).filter(Boolean).length;
   const progress     = checklist.length ? Math.round((checkedCount / checklist.length) * 100) : 0;
 
-  // ── save / restore ──
   const saveState = useCallback(() => {
     if (!fromCountry || !toCountry || !visaType) return;
     saveToLS({ fromCountry, toCountry, visaType, checked, customItems, editedItems });
@@ -839,20 +794,14 @@ export default function VisaChecklistGenerator() {
   };
 
   const isReady = fromCountry && toCountry && visaType;
+  const uiStep  = step === 2 ? 3 : fromCountry && toCountry ? 2 : 1;
 
-  // ── determine UI step (1–3 for indicator) ──
-  const uiStep = step === 2 ? 3 : fromCountry && toCountry ? 2 : 1;
-
-  // ── filtered grouped ──
   const filteredGrouped = useMemo(() => {
     if (filterCat === "All" && !showOnlyPending) return grouped;
     return Object.fromEntries(
       Object.entries(grouped)
         .filter(([cat]) => filterCat === "All" || cat === filterCat)
-        .map(([cat, items]) => [
-          cat,
-          showOnlyPending ? items.filter(i => !checked[i.id]) : items
-        ])
+        .map(([cat, items]) => [cat, showOnlyPending ? items.filter(i => !checked[i.id]) : items])
         .filter(([, items]) => items.length > 0)
     );
   }, [grouped, filterCat, showOnlyPending, checked]);
@@ -863,7 +812,7 @@ export default function VisaChecklistGenerator() {
 
       <div className="max-w-2xl mx-auto">
 
-        {/* ── HEADER ── */}
+        {/* HEADER */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest px-5 py-2 rounded-full mb-5 shadow-lg shadow-blue-200">
             <span>✈️</span> Free Tool · Visa Express Hub
@@ -879,12 +828,9 @@ export default function VisaChecklistGenerator() {
           </p>
         </div>
 
-        {/* ── STEP INDICATOR ── */}
         <StepIndicator current={uiStep} />
 
-        {/* ════════════════════════════════════════
-            STEP 1 — FORM
-        ════════════════════════════════════════ */}
+        {/* STEP 1 — FORM */}
         {step === 1 && (
           <div>
             {countriesError && (
@@ -895,27 +841,11 @@ export default function VisaChecklistGenerator() {
 
             <div className="bg-white border border-slate-100 rounded-3xl p-7 shadow-xl shadow-slate-100/80 mb-5">
               <div className="space-y-6">
-                {/* Countries */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <CountryDropdown
-                    label="Your Nationality"
-                    value={fromCountry}
-                    onChange={setFromCountry}
-                    placeholder="Select your country…"
-                    countries={countries}
-                    loading={countriesLoading}
-                  />
-                  <CountryDropdown
-                    label="Destination Country"
-                    value={toCountry}
-                    onChange={setToCountry}
-                    placeholder="Select destination…"
-                    countries={countries}
-                    loading={countriesLoading}
-                  />
+                  <CountryDropdown label="Your Nationality"    value={fromCountry} onChange={setFromCountry} placeholder="Select your country…"  countries={countries} loading={countriesLoading} />
+                  <CountryDropdown label="Destination Country" value={toCountry}   onChange={setToCountry}   placeholder="Select destination…"    countries={countries} loading={countriesLoading} />
                 </div>
 
-                {/* Selected countries preview */}
                 {(fromCountry || toCountry) && (
                   <div className="flex items-center gap-3 px-4 py-3 bg-slate-50 rounded-2xl border border-slate-100">
                     {fromCountry ? (
@@ -934,16 +864,13 @@ export default function VisaChecklistGenerator() {
                   </div>
                 )}
 
-                {/* Visa type */}
                 <div>
                   <label className="block text-[11px] font-black text-slate-400 uppercase tracking-[0.1em] mb-3">Visa Type</label>
                   <div className="grid grid-cols-2 gap-3">
                     {VISA_TYPES.map(v => (
                       <button key={v.id} type="button" onClick={() => setVisaType(v.id)}
                         className={`flex items-start gap-3 px-4 py-4 rounded-2xl border-2 text-left transition-all ${
-                          visaType === v.id
-                            ? "border-blue-500 bg-blue-50 shadow-lg shadow-blue-100"
-                            : "border-slate-200 bg-white hover:border-blue-300 hover:bg-slate-50"
+                          visaType === v.id ? "border-blue-500 bg-blue-50 shadow-lg shadow-blue-100" : "border-slate-200 bg-white hover:border-blue-300 hover:bg-slate-50"
                         }`}
                       >
                         <span className="text-2xl leading-none mt-0.5">{v.icon}</span>
@@ -953,9 +880,7 @@ export default function VisaChecklistGenerator() {
                         </div>
                         {visaType === v.id && (
                           <div className="ml-auto w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                              <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
+                            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                           </div>
                         )}
                       </button>
@@ -963,12 +888,9 @@ export default function VisaChecklistGenerator() {
                   </div>
                 </div>
 
-                {/* Generate button */}
                 <button type="button" onClick={handleGenerate} disabled={!isReady || countriesLoading}
                   className={`w-full py-4 rounded-2xl font-black text-base transition-all ${
-                    isReady && !countriesLoading
-                      ? "bg-blue-600 hover:bg-blue-700 text-white shadow-xl shadow-blue-200 hover:shadow-blue-300 active:scale-[0.99]"
-                      : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                    isReady && !countriesLoading ? "bg-blue-600 hover:bg-blue-700 text-white shadow-xl shadow-blue-200 hover:shadow-blue-300 active:scale-[0.99]" : "bg-slate-100 text-slate-400 cursor-not-allowed"
                   }`}
                 >
                   {countriesLoading ? "Loading countries…" : isReady ? "Generate My Checklist →" : "Fill all fields to continue"}
@@ -976,12 +898,11 @@ export default function VisaChecklistGenerator() {
               </div>
             </div>
 
-            {/* Features */}
             <div className="grid grid-cols-3 gap-3">
               {[
                 { icon:"🌍", t:"Live Country Data", s:"From our database" },
-                { icon:"✏️", t:"Fully Editable",    s:"Add & customise" },
-                { icon:"📄", t:"Premium PDF",        s:"Print-ready" },
+                { icon:"✏️", t:"Fully Editable",    s:"Add & customise"   },
+                { icon:"📄", t:"Premium PDF",        s:"Print-ready"       },
               ].map((c, i) => (
                 <div key={i} className="bg-white border border-slate-100 rounded-2xl p-4 text-center shadow-sm">
                   <div className="text-2xl mb-2">{c.icon}</div>
@@ -993,14 +914,11 @@ export default function VisaChecklistGenerator() {
           </div>
         )}
 
-        {/* ════════════════════════════════════════
-            STEP 2 — CHECKLIST
-        ════════════════════════════════════════ */}
+        {/* STEP 2 — CHECKLIST */}
         {step === 2 && (
           <div>
-            {/* ── Summary card ── */}
+            {/* Summary card */}
             <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-xl shadow-slate-100/80 mb-4">
-              {/* Trip bar */}
               <div className="flex items-center gap-3 flex-wrap mb-5">
                 <div className="flex items-center gap-2.5 bg-slate-50 rounded-2xl px-4 py-2.5 border border-slate-100 flex-1 min-w-0">
                   <img src={fromCountry.flag} width={24} height={17} className="object-contain rounded shadow-sm flex-shrink-0" alt="" />
@@ -1017,7 +935,7 @@ export default function VisaChecklistGenerator() {
                 </button>
               </div>
 
-              {/* Progress ring area */}
+              {/* Progress ring */}
               <div className="flex items-center gap-5 mb-5">
                 <div className="relative w-20 h-20 flex-shrink-0">
                   <svg viewBox="0 0 80 80" className="w-full h-full -rotate-90">
@@ -1061,11 +979,11 @@ export default function VisaChecklistGenerator() {
                 </div>
               </div>
 
-              {/* Action buttons */}
+              {/* Actions */}
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => generatePDF({ fromCountry, toCountry, visaType, checklist, grouped, checked, progress, checkedCount })}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-black text-sm rounded-2xl transition-all shadow-lg shadow-blue-200 hover:shadow-blue-300"
+                  className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-black text-sm rounded-2xl transition-all shadow-lg shadow-blue-200"
                 >
                   📄 Download PDF
                 </button>
@@ -1087,25 +1005,17 @@ export default function VisaChecklistGenerator() {
               </div>
             </div>
 
-            {/* ── Filters ── */}
+            {/* Filters */}
             <div className="bg-white border border-slate-100 rounded-2xl px-5 py-4 mb-4 shadow-sm flex items-center gap-3 flex-wrap">
               <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest flex-shrink-0">Filter:</span>
               <div className="flex gap-2 flex-wrap flex-1">
-                <button
-                  onClick={() => setFilterCat("All")}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${filterCat === "All" ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"}`}
-                >
-                  All
-                </button>
+                <button onClick={() => setFilterCat("All")} className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${filterCat === "All" ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"}`}>All</button>
                 {Object.keys(grouped).map(cat => {
                   const meta   = CAT_META[cat] || CAT_META.Custom;
                   const active = filterCat === cat;
                   return (
-                    <button key={cat}
-                      onClick={() => setFilterCat(active ? "All" : cat)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1 ${
-                        active ? "text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"
-                      }`}
+                    <button key={cat} onClick={() => setFilterCat(active ? "All" : cat)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1 ${active ? "text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"}`}
                       style={active ? {background:meta.dot} : {}}
                     >
                       <span>{meta.icon}</span> {cat}
@@ -1113,35 +1023,26 @@ export default function VisaChecklistGenerator() {
                   );
                 })}
               </div>
-              <button
-                onClick={() => setShowOnlyPending(v => !v)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex-shrink-0 ${showOnlyPending ? "bg-orange-100 text-orange-700 border border-orange-200" : "bg-slate-100 text-slate-500 hover:bg-slate-200"}`}
-              >
+              <button onClick={() => setShowOnlyPending(v => !v)}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex-shrink-0 ${showOnlyPending ? "bg-orange-100 text-orange-700 border border-orange-200" : "bg-slate-100 text-slate-500 hover:bg-slate-200"}`}>
                 ⏳ {showOnlyPending ? "Showing pending" : "Show pending"}
               </button>
             </div>
 
-            {/* ── Category cards ── */}
+            {/* Category cards */}
             {Object.entries(filteredGrouped).map(([cat, items]) => {
               const meta    = CAT_META[cat] || CAT_META.Custom;
               const catDone = items.filter(i => checked[i.id]).length;
               const catPct  = Math.round((catDone / items.length) * 100);
               return (
                 <div key={cat} className="bg-white border border-slate-100 rounded-2xl mb-3 overflow-hidden shadow-sm">
-                  {/* Category header */}
-                  <div
-                    className="flex items-center gap-3 px-5 py-4"
-                    style={{ borderLeft:`4px solid ${meta.dot}`, background:`linear-gradient(90deg, ${meta.bg}80, #fff)` }}
-                  >
+                  <div className="flex items-center gap-3 px-5 py-4" style={{ borderLeft:`4px solid ${meta.dot}`, background:`linear-gradient(90deg, ${meta.bg}80, #fff)` }}>
                     <span className="text-xl flex-shrink-0">{meta.icon}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-xs font-black uppercase tracking-widest text-slate-600">{cat}</span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background:meta.bg, color:meta.text }}>
-                          {catDone}/{items.length}
-                        </span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background:meta.bg, color:meta.text }}>{catDone}/{items.length}</span>
                       </div>
-                      {/* mini progress */}
                       <div className="mt-2 h-1.5 bg-slate-100 rounded-full overflow-hidden w-32">
                         <div className="h-full rounded-full transition-all duration-500" style={{ width:`${catPct}%`, background:meta.dot }} />
                       </div>
@@ -1149,53 +1050,29 @@ export default function VisaChecklistGenerator() {
                     <span className="text-sm font-black flex-shrink-0" style={{color:meta.dot}}>{catPct}%</span>
                   </div>
 
-                  {/* Items */}
                   {items.map((item, idx) => (
                     <div
                       key={item.id}
                       onClick={() => setChecked(p => ({ ...p, [item.id]: !p[item.id] }))}
-                      className={`group flex items-center gap-3 px-5 py-4 cursor-pointer transition-all ${
-                        idx < items.length - 1 ? "border-b border-slate-50" : ""
-                      } ${checked[item.id] ? "bg-blue-50/50 hover:bg-blue-50" : "hover:bg-slate-50"}`}
+                      className={`group flex items-center gap-3 px-5 py-4 cursor-pointer transition-all ${idx < items.length - 1 ? "border-b border-slate-50" : ""} ${checked[item.id] ? "bg-blue-50/50 hover:bg-blue-50" : "hover:bg-slate-50"}`}
                     >
-                      {/* Checkbox */}
-                      <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center flex-shrink-0 transition-all duration-150 ${
-                        checked[item.id] ? "bg-blue-600 border-blue-600" : "border-slate-300 bg-white group-hover:border-blue-400"
-                      }`}>
+                      <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center flex-shrink-0 transition-all duration-150 ${checked[item.id] ? "bg-blue-600 border-blue-600" : "border-slate-300 bg-white group-hover:border-blue-400"}`}>
                         {checked[item.id] && (
-                          <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                            <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
+                          <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                         )}
                       </div>
-
-                      {/* Text */}
-                      <span className={`flex-1 text-sm font-semibold leading-snug transition-all ${
-                        checked[item.id] ? "line-through text-slate-400" : "text-slate-800"
-                      }`}>
+                      <span className={`flex-1 text-sm font-semibold leading-snug transition-all ${checked[item.id] ? "line-through text-slate-400" : "text-slate-800"}`}>
                         {item.text}
                       </span>
-
-                      {/* Badges + actions */}
                       <div className="flex items-center gap-2 flex-shrink-0">
                         {item.required
                           ? <span className="text-[10px] font-black px-2 py-0.5 bg-red-50 text-red-600 border border-red-200 rounded-lg">Required</span>
                           : <span className="text-[10px] font-bold px-2 py-0.5 bg-slate-50 text-slate-400 border border-slate-200 rounded-lg">Optional</span>
                         }
+                        {item.custom && <span className="text-[10px] font-black px-2 py-0.5 bg-blue-50 text-blue-600 border border-blue-200 rounded-lg">Custom</span>}
+                        <button onClick={e => { e.stopPropagation(); setEditingItem(item); }} className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-600 transition-all text-xs" title="Edit">✏️</button>
                         {item.custom && (
-                          <span className="text-[10px] font-black px-2 py-0.5 bg-blue-50 text-blue-600 border border-blue-200 rounded-lg">Custom</span>
-                        )}
-                        <button
-                          onClick={e => { e.stopPropagation(); setEditingItem(item); }}
-                          className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-600 transition-all text-xs"
-                          title="Edit"
-                        >✏️</button>
-                        {item.custom && (
-                          <button
-                            onClick={e => { e.stopPropagation(); removeItem(item.id); }}
-                            className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-red-100 text-slate-400 hover:text-red-500 transition-all text-xs"
-                            title="Remove"
-                          >✕</button>
+                          <button onClick={e => { e.stopPropagation(); removeItem(item.id); }} className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-red-100 text-slate-400 hover:text-red-500 transition-all text-xs" title="Remove">✕</button>
                         )}
                       </div>
                     </div>
@@ -1204,11 +1081,10 @@ export default function VisaChecklistGenerator() {
               );
             })}
 
-            {/* ── Add Custom ── */}
+            {/* Add Custom */}
             <div className={`bg-white border-2 rounded-2xl mb-4 overflow-hidden transition-all ${addingItem ? "border-blue-400 shadow-lg shadow-blue-100" : "border-dashed border-slate-300"}`}>
               {!addingItem ? (
-                <button type="button" onClick={() => setAddingItem(true)}
-                  className="w-full py-4 flex items-center justify-center gap-2 text-blue-600 font-black text-sm hover:bg-blue-50 rounded-2xl transition-all">
+                <button type="button" onClick={() => setAddingItem(true)} className="w-full py-4 flex items-center justify-center gap-2 text-blue-600 font-black text-sm hover:bg-blue-50 rounded-2xl transition-all">
                   <span className="text-xl font-black w-7 h-7 bg-blue-100 rounded-full flex items-center justify-center leading-none">+</span>
                   Add Custom Document
                 </button>
@@ -1219,45 +1095,31 @@ export default function VisaChecklistGenerator() {
                     <p className="text-sm font-black text-slate-900">Add Custom Document</p>
                   </div>
                   <div className="space-y-3">
-                    <input
-                      autoFocus value={newText}
-                      onChange={e => setNewText(e.target.value)}
-                      onKeyDown={e => e.key === "Enter" && addCustomItem()}
+                    <input autoFocus value={newText} onChange={e => setNewText(e.target.value)} onKeyDown={e => e.key === "Enter" && addCustomItem()}
                       placeholder="e.g. NOC from employer, Bank guarantee letter…"
                       className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 focus:border-blue-500 focus:bg-white rounded-2xl text-sm outline-none transition-all font-medium"
                     />
                     <div className="flex gap-3 items-center">
-                      <select value={newCat} onChange={e => setNewCat(e.target.value)}
-                        className="flex-1 px-4 py-3 bg-slate-50 border-2 border-slate-200 focus:border-blue-500 focus:bg-white rounded-2xl text-sm outline-none transition-all">
+                      <select value={newCat} onChange={e => setNewCat(e.target.value)} className="flex-1 px-4 py-3 bg-slate-50 border-2 border-slate-200 focus:border-blue-500 focus:bg-white rounded-2xl text-sm outline-none transition-all">
                         {ALL_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                       </select>
                       <label className="flex items-center gap-2 flex-shrink-0 cursor-pointer select-none">
                         <span className="text-xs font-bold text-slate-600">Required</span>
-                        <button
-                          type="button"
-                          onClick={() => setNewReq(r => !r)}
-                          className={`w-11 h-6 rounded-full relative transition-all duration-200 flex-shrink-0 ${newReq ? "bg-blue-600" : "bg-slate-300"}`}
-                        >
+                        <button type="button" onClick={() => setNewReq(r => !r)} className={`w-11 h-6 rounded-full relative transition-all duration-200 flex-shrink-0 ${newReq ? "bg-blue-600" : "bg-slate-300"}`}>
                           <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow-md transition-all duration-200 ${newReq ? "left-6" : "left-1"}`} />
                         </button>
                       </label>
                     </div>
                     <div className="flex gap-2">
-                      <button onClick={addCustomItem}
-                        className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white font-black text-sm rounded-2xl transition-all shadow-lg shadow-blue-100">
-                        Add Document
-                      </button>
-                      <button onClick={() => { setAddingItem(false); setNewText(""); setNewReq(false); }}
-                        className="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-sm rounded-2xl transition-all">
-                        Cancel
-                      </button>
+                      <button onClick={addCustomItem} className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white font-black text-sm rounded-2xl transition-all shadow-lg shadow-blue-100">Add Document</button>
+                      <button onClick={() => { setAddingItem(false); setNewText(""); setNewReq(false); }} className="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-sm rounded-2xl transition-all">Cancel</button>
                     </div>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* ── CTA Banner ── */}
+            {/* CTA Banner */}
             <div className="rounded-3xl p-7 text-center overflow-hidden relative" style={{background:"linear-gradient(135deg,#0f172a 0%,#1e3a5f 55%,#1e40af 100%)"}}>
               <div className="absolute top-0 right-0 w-48 h-48 rounded-full opacity-10" style={{background:"radial-gradient(circle,#fbbf24,transparent)",transform:"translate(30%,-30%)"}} />
               <div className="relative z-10">
@@ -1268,8 +1130,7 @@ export default function VisaChecklistGenerator() {
                 <p className="text-blue-300 text-sm mb-5 max-w-xs mx-auto leading-relaxed">
                   Our experts guide you from documents to approval — stress-free and fast.
                 </p>
-                <a href="/contact"
-                  className="inline-flex items-center gap-2 px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-black text-sm rounded-2xl transition-all shadow-xl shadow-amber-900/30">
+                <a href="/contact" className="inline-flex items-center gap-2 px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-black text-sm rounded-2xl transition-all shadow-xl shadow-amber-900/30">
                   Get Free Consultation →
                 </a>
               </div>

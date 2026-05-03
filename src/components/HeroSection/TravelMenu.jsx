@@ -99,6 +99,8 @@ const filteredScholarshipCountries = countries
   .filter(c => c.country.toLowerCase().includes(searchTerm.toLowerCase()))
   .slice(0, 8); // Limit to 8 for a clean menu look
   const scrollRef = useRef(null);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+const searchRef = useRef(null);
 
   const [recentCountries, setRecentCountries] = useState(() => {
     try { return JSON.parse(localStorage.getItem('recentStudyCountries') || '[]'); }
@@ -138,6 +140,17 @@ const filteredScholarshipCountries = countries
         setLoadingCountries(false);
       });
   }, []);
+
+  // Close dropdown on outside click
+useEffect(() => {
+  const handler = (e) => {
+    if (searchRef.current && !searchRef.current.contains(e.target)) {
+      setShowSuggestions(false);
+    }
+  };
+  document.addEventListener('mousedown', handler);
+  return () => document.removeEventListener('mousedown', handler);
+}, []);
 
   const scroll = (direction) => {
     if (scrollRef.current) {
@@ -539,81 +552,109 @@ const filteredScholarshipCountries = countries
       Find Fully Funded Scholarships
     </h2>
 
-    {/* Search Input */}
-    <div className="relative w-full max-w-2xl mx-auto">
+    {/* Search Input with Dropdown Suggestions */}
+    <div className="relative w-full max-w-2xl mx-auto" ref={searchRef}>
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
       <input
         type="text"
         placeholder="Search scholarships by country…"
         value={searchTerm}
-        onChange={e => setSearchTerm(e.target.value)}
+        onChange={e => { setSearchTerm(e.target.value); setShowSuggestions(true); }}
+        onFocus={() => searchTerm && setShowSuggestions(true)}
         className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-[13px] font-bold outline-none focus:border-rose-400 transition-colors"
       />
+
+      {/* Dropdown Suggestions */}
+      {showSuggestions && searchTerm && (() => {
+        const results = countries.filter(c =>
+          c.country.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        return results.length > 0 ? (
+          <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-100 rounded-xl shadow-lg z-50 overflow-hidden max-h-[220px] overflow-y-auto custom-scrollbar">
+            {results.slice(0, 6).map(c => (
+              <Link
+                key={c.code}
+                href={`/scholarships/${createSlug(c.country)}`}
+                onClick={() => { setSearchTerm(''); setShowSuggestions(false); }}
+                className="flex items-center gap-3 px-4 py-2.5 hover:bg-rose-50 transition-colors group"
+              >
+                <img
+                  src={c.flag}
+                  alt={c.country}
+                  className="w-7 h-5 object-cover rounded-sm border border-slate-100 shrink-0"
+                  onError={(e) => e.target.src = "https://flagcdn.com/w80/un.png"}
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="text-[12px] font-black text-gray-800 truncate">{c.country}</p>
+                  <p className="text-[10px] text-slate-400 font-semibold">Fully funded programs available</p>
+                </div>
+                <span className="text-[10px] text-rose-400 font-black uppercase tracking-tight opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                  View →
+                </span>
+              </Link>
+            ))}
+            {results.length > 6 && (
+              <div className="px-4 py-2 bg-slate-50 border-t border-slate-100">
+                <Link
+                  href={`/scholarships?q=${encodeURIComponent(searchTerm)}`}
+                  className="text-[10px] font-black text-rose-400 hover:text-rose-600 uppercase tracking-widest"
+                >
+                  See all {results.length} results →
+                </Link>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-100 rounded-xl shadow-lg z-50 px-4 py-6 text-center">
+            <p className="text-xs font-bold text-slate-400 italic">No results for "{searchTerm}"</p>
+          </div>
+        );
+      })()}
     </div>
 
+    {/* Top Destinations — always visible, unaffected by search */}
     <div className="w-full max-w-4xl mx-auto">
-      {/* Label / Separator */}
       <div className="flex items-center justify-between mb-2">
         <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">
-          {searchTerm ? 'Search Results' : 'Top Destinations'}
+          Top Destinations
         </p>
         <div className="h-[1px] flex-1 bg-slate-100 ml-4" />
       </div>
 
-      {/* Countries Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 max-h-[300px] overflow-y-auto custom-scrollbar p-1">
-        {(searchTerm 
-            ? countries.filter(c => c.country.toLowerCase().includes(searchTerm.toLowerCase())) 
-            : countries
-                .filter(c => ['canada', 'germany', 'united kingdom', 'australia'].includes(c.country.toLowerCase()))
-                .slice(0, 4) // Forces exactly 4 in the default view
-        ).map(c => (
-          <Link
-            key={c.code}
-            href={`/scholarships/${createSlug(c.country)}`}
-            className="group relative bg-white border border-gray-100 rounded-xl overflow-hidden hover:border-rose-400 hover:shadow-md transition-all active:scale-95"
-          >
-            {/* Flag Image */}
-            <div className="h-14 bg-slate-50 overflow-hidden">
-              <img 
-                src={c.flag} 
-                alt={c.country} 
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-                onError={(e) => e.target.src = "https://flagcdn.com/w80/un.png"}
-              />
-            </div>
-
-            {/* Text Info */}
-            <div className="p-2 text-center bg-white">
-              <p className="text-[11px] font-black text-gray-800 truncate leading-tight">
-                {c.country}
-              </p>
-              <p className="text-[9px] text-rose-500 font-bold uppercase tracking-tighter mt-0.5">
-                View Programs
-              </p>
-            </div>
-
-            {/* Hot Badge logic matches the 4 target countries */}
-            {['canada', 'usa', 'united kingdom', 'australia'].includes(c.country.toLowerCase()) && (
-              <div className="absolute top-1 right-1 bg-[#FED700] text-black text-[7px] font-black px-1.5 py-0.5 rounded-full uppercase shadow-sm">
-                Hot
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-1">
+        {countries
+          .filter(c => ['canada', 'germany', 'united kingdom', 'australia'].includes(c.country.toLowerCase()))
+          .slice(0, 4)
+          .map(c => (
+            <Link
+              key={c.code}
+              href={`/scholarships/${createSlug(c.country)}`}
+              className="group relative bg-white border border-gray-100 rounded-xl overflow-hidden hover:border-rose-400 hover:shadow-md transition-all active:scale-95"
+            >
+              <div className="h-14 bg-slate-50 overflow-hidden">
+                <img
+                  src={c.flag}
+                  alt={c.country}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  onError={(e) => e.target.src = "https://flagcdn.com/w80/un.png"}
+                />
               </div>
-            )}
-          </Link>
-        ))}
-
-        {/* Empty State */}
-        {searchTerm && countries.filter(c => c.country.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 && (
-          <div className="col-span-full py-10 text-center">
-            <p className="text-xs font-bold text-slate-400 italic">No scholarships found for "{searchTerm}"</p>
-          </div>
-        )}
+              <div className="p-2 text-center bg-white">
+                <p className="text-[11px] font-black text-gray-800 truncate leading-tight">{c.country}</p>
+                <p className="text-[9px] text-rose-500 font-bold uppercase tracking-tighter mt-0.5">View Programs</p>
+              </div>
+              {['canada', 'usa', 'united kingdom', 'australia'].includes(c.country.toLowerCase()) && (
+                <div className="absolute top-1 right-1 bg-[#FED700] text-black text-[7px] font-black px-1.5 py-0.5 rounded-full uppercase shadow-sm">
+                  Hot
+                </div>
+              )}
+            </Link>
+          ))}
       </div>
 
-      {/* View All Footer */}
       <div className="mt-3 text-center border-t border-slate-50 pt-2">
-        <Link 
-          href="/scholarships" 
+        <Link
+          href="/scholarships"
           className="text-[10px] font-black text-rose-400 hover:text-rose-600 transition-colors uppercase tracking-widest flex items-center justify-center gap-1"
         >
           Explore All Countries <span className="text-xs">→</span>

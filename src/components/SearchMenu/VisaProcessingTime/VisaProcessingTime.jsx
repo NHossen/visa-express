@@ -383,8 +383,18 @@ export default function VisaProcessingTime() {
           <p className="text-[10px] text-gray-300 font-medium">195+ countries · E-Visa, Sticker, Transit & more</p>
           <p className="text-[10px] text-gray-300 font-medium hidden sm:block">Free · No signup required</p>
         </div>
-
+         
       </div>
+       <div className="mx-auto max-w-7xl px-4 mt-6">
+          <p className="text-sm leading-relaxed text-slate-500 font-medium">
+            <strong className="text-slate-900 font-bold">Visa Express Hub</strong> simplifies the world of international travel. We specialize in comprehensive 
+            <span className="text-slate-900"> Schengen visa services</span>, 
+            <span className="text-slate-900"> UK visa processing</span>, and expert guidance for 
+            <span className="text-slate-900"> USA, Canada, and Australia visas</span>. 
+            Whether you are a <strong className="text-slate-700">tourist</strong>, a <strong className="text-slate-700">business traveler</strong>, or a <strong className="text-slate-700">student</strong> seeking global education, our team provides complete documentation support and embassy appointment assistance. 
+            From <span className="text-slate-900">Dubai visit visas</span> to specialized <span className="text-slate-900">Europe work permit guidance</span>, we ensure fast processing and strategic travel consultation to make your journey simple, secure, and successful.
+          </p>
+        </div>
     </div>
   );
 }

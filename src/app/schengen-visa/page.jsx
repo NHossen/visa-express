@@ -62,7 +62,7 @@ const SCHENGEN_COUNTRY_NAMES = [
   { name: 'Belgium', slug: 'belgium' },
   { name: 'Bulgaria', slug: 'bulgaria' },
   { name: 'Croatia', slug: 'croatia' },
-  { name: 'Czech Republic', slug: 'czech-republic' },
+  { name: 'Czech Republic', slug: 'czechia' },
   { name: 'Denmark', slug: 'denmark' },
   { name: 'Estonia', slug: 'estonia' },
   { name: 'Finland', slug: 'finland' },

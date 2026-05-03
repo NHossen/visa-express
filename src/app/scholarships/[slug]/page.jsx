@@ -3,28 +3,6 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
-// ─── SEO Metadata (App Router — put in app/scholarships/[slug]/page.js) ───────
-// export async function generateMetadata({ params }) {
-//   const slug = params.slug;
-//   const res = await fetch(`https://yoursite.com/api/scholarships?country_slug=${slug}`);
-//   const data = await res.json();
-//   const countryName = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-//   const count = Array.isArray(data) ? data.length : 0;
-//   return {
-//     title: `${countryName} Scholarships 2026 – ${count} Fully Funded Programs`,
-//     description: `Explore ${count} verified scholarships in ${countryName} for 2026. Find fully funded programs with complete coverage of tuition, living costs, and travel. Updated application deadlines and official links.`,
-//     keywords: `${countryName} scholarships 2026, fully funded scholarships ${countryName}, study in ${countryName}, international students ${countryName}`,
-//     openGraph: {
-//       title: `${countryName} Scholarships 2026 – ${count} Fully Funded Programs`,
-//       description: `Find fully funded scholarships in ${countryName} for international students.`,
-//       url: `https://yoursite.com/scholarships/${slug}`,
-//       type: "website",
-//     },
-//     alternates: { canonical: `https://yoursite.com/scholarships/${slug}` },
-//   };
-// }
-
-// ─── Dynamic Copy (varies per render for freshness) ──────────────────────────
 const dynamicIntros = [
   (country, count) => `Discover ${count} rigorously verified scholarship programs available to international students in ${country} for 2026. Every listing includes official application links, exact funding scope, and current deadlines.`,
   (country, count) => `${country} hosts ${count} of the world's most competitive scholarship programs for graduate and undergraduate students. Browse funding options covering full tuition, living costs, and travel below.`,

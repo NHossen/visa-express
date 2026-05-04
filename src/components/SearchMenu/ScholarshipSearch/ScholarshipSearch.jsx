@@ -136,7 +136,7 @@ export default function ScholarshipSearch() {
 
         {/* Heading */}
         <div className="mb-8">
-          <h2 className="text-2xl font-semibold bg-amber-400 p-2.5 w-[340px] rounded-lg text-[#002f72] mb-1">
+          <h2 className="text-2xl font-semibold  rounded-lg text-amber-400">
             Find scholarships by country
           </h2>
           <p className="text-sm text-gray-400">

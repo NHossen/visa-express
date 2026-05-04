@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-
+import Image from 'next/image';
 /* ─────────────────────────────────────────
    NAV DATA
 ───────────────────────────────────────── */
@@ -244,20 +244,30 @@ export default function Header() {
         >
           <div className="flex items-center justify-around px-4 md:px-6 lg:px-8 h-[55px] lg:h-[70px] gap-2">
 
+    
             {/* ── LOGO ── */}
-            <Link
-              href="/"
-              className="flex items-center gap-2.5 no-underline flex-shrink-0 group"
-            >
-              <div className="flex flex-col leading-tight">
-                <span className="text-[17px] font-black text-black tracking-tight">
-                  Visa <span className="text-[#FED700]">Express </span>Hub
-                </span>
-                <span className="text-[10px] text-gray-400 font-medium tracking-wide hidden sm:block">
-                  Visa Help, Anytime, Anywhere
-                </span>
-              </div>
-            </Link>
+<Link
+  href="/"
+  className="flex items-center gap-2.5 no-underline flex-shrink-0 group"
+>
+  {/* 
+      1. added 'relative' so 'fill' knows where to stay.
+      2. defined a width and height (e.g., w-40 h-10). 
+  */}
+  <div className="relative w-60 h-24 flex-shrink-0 mt-2">
+    <Image
+      src="/visa_express_hub_log.png"
+      alt="Visa Express Hub Logo"
+      fill
+      priority
+      sizes="(max-width: 768px) 100vw, 33vw"
+      style={{
+        objectFit: 'contain',
+        objectPosition: 'left', // Forces the image to hug the left side
+      }}
+    />
+  </div>
+</Link>
 
             {/* ── DESKTOP NAV ── */}
             <nav className="hidden lg:flex items-center justify-center gap-0.5">
@@ -288,7 +298,7 @@ export default function Header() {
             {/* ── DESKTOP BUTTONS ── */}
             <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
               <Link
-                href="/login"
+                href="/auth"
                 className="
                   px-5 py-2.5 text-sm font-bold text-black
                   border-2 border-black rounded-xl
@@ -298,7 +308,7 @@ export default function Header() {
               >Log in</Link>
 
               <Link
-                href="/signup"
+                href="/auth"
                 className="veh-signup
                   px-5 py-2.5 text-sm font-extrabold text-black
                   bg-[#FED700] border-2 border-[#FED700] rounded-xl
@@ -310,8 +320,8 @@ export default function Header() {
                   active:scale-[0.98]
                 "
               >
-                Sign Up Free
-                <span className="text-base">✈️</span>
+                Sign Up
+
               </Link>
             </div>
 
@@ -393,7 +403,7 @@ export default function Header() {
             {/* Mobile CTA Buttons */}
             <div className="flex gap-3 pt-3 border-t border-gray-100">
               <Link
-                href="/login"
+                href="/auth"
                 className="
                   flex-1 py-3 text-sm font-bold text-center text-black
                   border-2 border-amber-400 rounded-xl no-underline
@@ -403,7 +413,7 @@ export default function Header() {
               >Log in</Link>
 
               <Link
-                href="/signup"
+                href="/auth"
                 className="
                   flex-1 py-3 text-sm font-extrabold text-center text-black
                   bg-amber-400 border-2 border-[#FED700] rounded-xl no-underline

@@ -18,19 +18,24 @@ const Footer = () => {
             {/* Logo */}
             <Link href="/" className="inline-flex items-center gap-3 no-underline group">
             
-              <div className="flex flex-col leading-tight">
-                <span className="text-[18px] font-black text-black tracking-tight">
-                  Visa<span className="text-[#FED700]">Express</span>Hub
-                </span>
-                <span className="text-[10px] text-gray-400 font-medium tracking-wide">
-                  Visa Help, Anytime, Anywhere
-                </span>
-              </div>
+{/* Adjusted container with negative margin to remove the left gap */}
+<div className="relative w-64 h-20 flex-shrink-0 -ml-10"> 
+  <Image
+    src="/visa_express_hub_log.png"
+    alt="Visa Express Hub Logo"
+    fill
+    priority
+    className="scale-165 origin-left" 
+    style={{
+      objectFit: 'contain',
+      objectPosition: 'left',
+    }}
+  />
+</div>
             </Link>
-
             {/* Tagline */}
             <h2 className="text-lg font-bold text-[#111111]">
-              Visa Success Starts Here
+               Visa Help, Anytime, Anywhere
             </h2>
 
             {/* Description */}
@@ -235,13 +240,13 @@ const Footer = () => {
               {/* Log in / Sign Up */}
               <div className="flex gap-2">
                 <Link
-                  href="/login"
+                  href="/auth?mode=login"
                   className="flex-1 text-center py-2.5 text-sm font-bold border-2 border-black text-black rounded-xl hover:bg-[#FED700] hover:border-[#FED700] transition-all duration-200 no-underline"
                 >
                   Log in
                 </Link>
                 <Link
-                  href="/signup"
+                  href="/auth?mode=signup"
                   className="flex-1 text-center py-2.5 text-sm font-bold bg-[#FED700] text-black rounded-xl border-2 border-[#FED700] hover:bg-[#e0c000] hover:border-[#e0c000] transition-all duration-200 no-underline shadow-[0_4px_14px_rgba(254,215,0,0.35)]"
                 >
                   Sign Up

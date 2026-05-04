@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
+
 const flagUrl = (code) => `https://flagcdn.com/w80/${code.toLowerCase()}.png`;
 
 const VISA_TYPES = [

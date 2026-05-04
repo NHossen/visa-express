@@ -1,10 +1,20 @@
 'use client'
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect ,useCallback} from 'react'
 import Link from 'next/link'
 import Image from 'next/image';
 /* ─────────────────────────────────────────
    NAV DATA
 ───────────────────────────────────────── */
+// ── TOP SEARCHES (hardcoded popular pages) ──
+const TOP_SEARCHES = [
+  { title: 'Schengen Visa Guide',   url: '/schengen-visa',         icon: '🇪🇺', category: 'Visa Guide' },
+  { title: 'UAE Tourist Visa',      url: '/visa/tourist-visa/uae', icon: '🇦🇪', category: 'Tourist Visa' },
+  { title: 'UK Work Visa',          url: '/visa/work-visa/uk',     icon: '🇬🇧', category: 'Work Visa' },
+  { title: 'Canada Student Visa',   url: '/visa/student-visa/canada', icon: '🇨🇦', category: 'Student Visa' },
+  { title: 'Visa Checklist',        url: '/visa-resources/visa-checklist', icon: '✅', category: 'Resources' },
+  { title: 'Visa Processing Tracker', url: '/visa-processing-time-tracker', icon: '⏱️', category: 'Tools' },
+];
+
 const NAV_ITEMS = [
   {
     label: 'Check Visa',
@@ -162,12 +172,151 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [searchFocused, setSearchFocused] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  // ── SEARCH STATE (add alongside your existing state) ──
+const [searchQuery, setSearchQuery]   = useState('');
+const [searchOpen, setSearchOpen]     = useState(false);
+const [searchIndex, setSearchIndex]   = useState([]);
+const [searchResults, setSearchResults] = useState([]);
+const searchRef = useRef(null);
+
+// Add this new state for mobile dropdown
+const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+// Add this new ref for mobile
+const mobileSearchRef = useRef(null);
+
+// ── RECENT SEARCHES STATE ──
+const [recentSearches, setRecentSearches] = useState(() => {
+  if (typeof window === 'undefined') return [];
+  try {
+    return JSON.parse(localStorage.getItem('visa_recent_searches') || '[]');
+  } catch { return []; }
+});
+
+// ── SAVE TO RECENT ON CLICK ──
+const handleResultClick = (item) => {
+  setSearchOpen(false);
+  setSearchQuery('');
+  setSearchFocused(false);
+
+  const updated = [item, ...recentSearches.filter(r => r.url !== item.url)].slice(0, 6);
+  setRecentSearches(updated);
+  localStorage.setItem('visa_recent_searches', JSON.stringify(updated));
+};
+
+// ── BUILD SEARCH INDEX ON MOUNT ──
+useEffect(() => {
+  async function buildIndex() {
+    const index = [];
+
+    // 1. Static pages
+    const staticPages = [
+      { title: 'Schengen Visa Guide',         url: '/schengen-visa',                        icon: '🇪🇺', category: 'Visa Guide' },
+      { title: 'Scholarships',                url: '/scholarships',                          icon: '🎓', category: 'Scholarships' },
+      { title: 'Visa News',                   url: '/visa-news',                             icon: '📰', category: 'News' },
+      { title: 'Visa Processing Time Tracker',url: '/visa-processing-time-tracker',          icon: '⏱️', category: 'Tools' },
+      { title: 'Visa Rejection Help',         url: '/visa-rejection',                        icon: '❌', category: 'Help' },
+      { title: 'Visa Resources',              url: '/visa-resources',                        icon: '📚', category: 'Resources' },
+      { title: 'Visa Checklist',              url: '/visa-resources/visa-checklist',         icon: '✅', category: 'Resources' },
+      { title: 'Visa Checklist Generator',    url: '/visa-resources/visa-checklist-generator', icon: '🛠️', category: 'Tools' },
+      { title: 'Visa Document Generator',     url: '/visa-resources/visa-document-generator',  icon: '📄', category: 'Tools' },
+      { title: 'Tourist Visa',                url: '/visa/tourist-visa',                     icon: '🏖️', category: 'Visa Type' },
+      { title: 'Student Visa',                url: '/visa/student-visa',                     icon: '🎓', category: 'Visa Type' },
+      { title: 'Work Visa',                   url: '/visa/work-visa',                        icon: '💼', category: 'Visa Type' },
+      { title: 'Business Visa',               url: '/visa/business-visa',                    icon: '🤝', category: 'Visa Type' },
+      { title: 'Transit Visa',                url: '/visa/transit-visa',                     icon: '✈️', category: 'Visa Type' },
+      { title: 'Dubai Residents Visa',        url: '/visa/dubai-residents',                  icon: '🇦🇪', category: 'Visa Type' },
+      { title: 'India Visa',                  url: '/visa/india',                            icon: '🇮🇳', category: 'Country Visa' },
+      { title: 'Nigeria Visa',                url: '/visa/nigeria',                          icon: '🇳🇬', category: 'Country Visa' },
+      { title: 'Ghana Visa',                  url: '/visa/ghana',                            icon: '🇬🇭', category: 'Country Visa' },
+      { title: 'Contact Us',                  url: '/contact',                               icon: '📞', category: 'Info' },
+    ];
+    index.push(...staticPages);
+
+    // 2. Countries from MongoDB → multiple visa page types per country
+    try {
+      const res = await fetch('/api/countries');
+      const countries = await res.json();
+      for (const c of countries) {
+        const slug = c.country?.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+        const flag = c.flag || '🌍';
+        const name = c.country;
+        index.push(
+          { title: `${name} Tourist Visa`,   url: `/visa/tourist-visa/${slug}`,     icon: flag, category: 'Tourist Visa' },
+          { title: `${name} Student Visa`,   url: `/visa/student-visa/${slug}`,     icon: flag, category: 'Student Visa' },
+          { title: `${name} Work Visa`,      url: `/visa/work-visa/${slug}`,        icon: flag, category: 'Work Visa' },
+          { title: `${name} Business Visa`,  url: `/visa/business-visa/${slug}`,    icon: flag, category: 'Business Visa' },
+          { title: `${name} Transit Visa`,   url: `/visa/transit-visa/${slug}`,     icon: flag, category: 'Transit Visa' },
+          { title: `${name} Scholarship`,    url: `/scholarships/${slug}`,          icon: '🎓', category: 'Scholarship' },
+        );
+      }
+    } catch (e) { console.error('Search index: countries fetch failed', e); }
+
+    // 3. Scholarships from MongoDB
+    try {
+      const res = await fetch('/api/scholarships');
+      const scholarships = await res.json();
+      for (const s of scholarships) {
+        if (s.scholarship_name && s.slug) {
+          index.push({
+            title:    s.scholarship_name,
+            url:      `/scholarships/${s.slug}`,
+            icon:     '🎓',
+            category: 'Scholarship',
+          });
+        }
+      }
+    } catch (e) { console.error('Search index: scholarships fetch failed', e); }
+
+    setSearchIndex(index);
+  }
+
+  buildIndex();
+}, []);
+
+// ── SEARCH FILTER ──
+useEffect(() => {
+  if (!searchQuery || searchQuery.length < 2) {
+    setSearchResults([]);
+    return;
+  }
+  const q = searchQuery.toLowerCase();
+  const results = searchIndex.filter(
+    (item) =>
+      item.title.toLowerCase().includes(q) ||
+      item.category.toLowerCase().includes(q)
+  );
+  setSearchResults(results);
+}, [searchQuery, searchIndex]);
+
+// ── CLOSE ON OUTSIDE CLICK ──
+useEffect(() => {
+  function handleClick(e) {
+    if (searchRef.current && !searchRef.current.contains(e.target)) {
+      setSearchOpen(false);
+      setSearchFocused(false);
+    }
+  }
+  document.addEventListener('mousedown', handleClick);
+  return () => document.removeEventListener('mousedown', handleClick);
+}, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, []);
+
+  // Add mobile to your outside-click handler (update the existing one)
+useEffect(() => {
+  function handleClick(e) {
+    const outsideDesktop = searchRef.current && !searchRef.current.contains(e.target);
+    const outsideMobile = mobileSearchRef.current && !mobileSearchRef.current.contains(e.target);
+    if (outsideDesktop) { setSearchOpen(false); setSearchFocused(false); }
+    if (outsideMobile) { setMobileSearchOpen(false); }
+  }
+  document.addEventListener('mousedown', handleClick);
+  return () => document.removeEventListener('mousedown', handleClick);
+}, []);
 
   return (
     <>
@@ -277,23 +426,141 @@ export default function Header() {
             </nav>
 
             {/* ── SEARCH ── */}
-            <div className="hidden lg:block relative flex-shrink-0">
-              <input
-                type="text"
-                placeholder="🔍  Search visa guides…"
-                onFocus={() => setSearchFocused(true)}
-                onBlur={() => setSearchFocused(false)}
-                className={`
-                  pl-4 pr-4 py-2.5 rounded-xl text-sm font-medium
-                  border-2 bg-gray-50 text-gray-800 outline-none
-                  transition-all duration-250 placeholder:text-gray-400
-                  ${searchFocused
-                    ? 'border-[#FED700] bg-white w-[230px] shadow-[0_0_0_3px_rgba(254,215,0,0.2)]'
-                    : 'border-gray-200 w-[185px] hover:border-gray-300'
-                  }
-                `}
-              />
+{/* ── SEARCH ── */}
+<div className="hidden lg:block relative flex-shrink-0" ref={searchRef}>
+  <input
+    type="text"
+    placeholder="🔍  Search visa guides…"
+    value={searchQuery}
+    onChange={(e) => {
+      setSearchQuery(e.target.value);
+      setSearchOpen(true);
+    }}
+    onFocus={() => {
+      setSearchFocused(true);
+      setSearchOpen(true);
+    }}
+    className={`
+      pl-4 pr-4 py-2.5 rounded-xl text-sm font-medium
+      border-2 bg-gray-50 text-gray-800 outline-none
+      transition-all duration-250 placeholder:text-gray-400
+      ${searchFocused
+        ? 'border-[#FED700] bg-white w-[280px] shadow-[0_0_0_3px_rgba(254,215,0,0.2)]'
+        : 'border-gray-200 w-[185px] hover:border-gray-300'
+      }
+    `}
+  />
+
+  {searchOpen && (
+    <div className="absolute top-full mt-2 left-0 w-[360px] bg-white border border-gray-200 rounded-2xl shadow-xl z-50 overflow-hidden">
+
+      {/* ── Empty state: Recent + Top Searches ── */}
+      {searchQuery.length < 2 && (
+        <>
+          {/* Recent Searches */}
+          {recentSearches.length > 0 && (
+            <div>
+              <div className="flex items-center justify-between px-4 pt-3 pb-1">
+                <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">Recent</span>
+                <button
+                  onClick={() => { setRecentSearches([]); localStorage.removeItem('visa_recent_searches'); }}
+                  className="text-[11px] text-gray-400 hover:text-red-400 transition-colors"
+                >
+                  Clear
+                </button>
+              </div>
+              {recentSearches.slice(0, 4).map((item, i) => (
+                <Link
+                  key={i}
+                  href={item.url}
+                  onClick={() => handleResultClick(item)}
+                  className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#FFFBEA] transition-colors group"
+                >
+                  <span className="text-gray-300 text-sm flex-shrink-0">🕐</span>
+                  <div className="min-w-0">
+                    <div className="text-sm font-medium text-gray-700 group-hover:text-[#B8960C] truncate">{item.title}</div>
+                    <div className="text-xs text-gray-400 truncate">{item.category}</div>
+                  </div>
+                </Link>
+              ))}
+              <div className="border-t border-gray-100 my-1" />
             </div>
+          )}
+
+          {/* Top Searches */}
+          <div>
+            <div className="px-4 pt-3 pb-1">
+              <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">🔥 Popular</span>
+            </div>
+            {TOP_SEARCHES.map((item, i) => (
+              <Link
+                key={i}
+                href={item.url}
+                onClick={() => handleResultClick(item)}
+                className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#FFFBEA] transition-colors group"
+              >
+                <span className="text-xl flex-shrink-0 w-7 h-7 flex items-center justify-center">
+                  {item.icon}
+                </span>
+                <div className="min-w-0">
+                  <div className="text-sm font-medium text-gray-700 group-hover:text-[#B8960C] truncate">{item.title}</div>
+                  <div className="text-xs text-gray-400 truncate">{item.category}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* ── Search Results ── */}
+      {searchQuery.length >= 2 && searchResults.length > 0 && (
+        <div className="max-h-[420px] overflow-y-auto divide-y divide-gray-50">
+          {searchResults.slice(0, 10).map((result, i) => (
+            <Link
+              key={i}
+              href={result.url}
+              onClick={() => handleResultClick(result)}
+              className="flex items-center gap-3 px-4 py-3 hover:bg-[#FFFBEA] transition-colors group"
+            >
+              <span className="text-xl flex-shrink-0 w-7 h-7 flex items-center justify-center">
+                {result.icon?.startsWith('http') ? (
+                  <img
+                    src={result.icon}
+                    alt=""
+                    className="w-6 h-6 object-contain rounded-sm"
+                    onError={(e) => { e.target.style.display = 'none'; }}
+                  />
+                ) : (
+                  result.icon
+                )}
+              </span>
+              <div className="min-w-0">
+                <div className="text-sm font-semibold text-gray-800 group-hover:text-[#B8960C] truncate">
+                  {result.title}
+                </div>
+                <div className="text-xs text-gray-400 truncate">{result.category}</div>
+              </div>
+            </Link>
+          ))}
+          {searchResults.length > 10 && (
+            <div className="px-4 py-2 text-xs text-center text-gray-400 bg-gray-50 border-t border-gray-100">
+              {searchResults.length - 10} more results — refine your search
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── No Results ── */}
+      {searchQuery.length >= 2 && searchResults.length === 0 && (
+        <div className="px-4 py-6 text-center">
+          <div className="text-2xl mb-1">🔍</div>
+          <div className="text-sm text-gray-500">No results for <strong>&quot;{searchQuery}&quot;</strong></div>
+        </div>
+      )}
+
+    </div>
+  )}
+</div>
 
             {/* ── DESKTOP BUTTONS ── */}
             <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
@@ -369,18 +636,123 @@ export default function Header() {
           >
 
             {/* Mobile Search */}
-            <div className="mb-4">
-              <input
-                type="text"
-                placeholder="🔍  Search visa guides…"
-                className="
-                  w-full px-4 py-3 rounded-xl text-sm font-medium
-                  border-2 border-gray-200 bg-white text-gray-800 outline-none
-                  transition-all duration-200 placeholder:text-gray-400
-                  focus:border-[#FED700] focus:shadow-[0_0_0_3px_rgba(254,215,0,0.18)]
-                "
-              />
+<div className="mb-4 relative" ref={mobileSearchRef}>
+  <input
+    type="text"
+    placeholder="🔍  Search visa guides…"
+    value={searchQuery}
+    onChange={(e) => {
+      setSearchQuery(e.target.value);
+      setMobileSearchOpen(true);
+    }}
+    onFocus={() => setMobileSearchOpen(true)}
+    className="
+      w-full px-4 py-3 rounded-xl text-sm font-medium
+      border-2 border-gray-200 bg-white text-gray-800 outline-none
+      transition-all duration-200 placeholder:text-gray-400
+      focus:border-[#FED700] focus:shadow-[0_0_0_3px_rgba(254,215,0,0.18)]
+    "
+  />
+
+  {mobileSearchOpen && (
+    <div className="absolute top-full mt-2 left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 overflow-hidden">
+
+      {/* Empty state: Recent + Popular */}
+      {searchQuery.length < 2 && (
+        <>
+          {recentSearches.length > 0 && (
+            <div>
+              <div className="flex items-center justify-between px-4 pt-3 pb-1">
+                <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">Recent</span>
+                <button
+                  onClick={() => { setRecentSearches([]); localStorage.removeItem('visa_recent_searches'); }}
+                  className="text-[11px] text-gray-400 hover:text-red-400 transition-colors"
+                >
+                  Clear
+                </button>
+              </div>
+              {recentSearches.slice(0, 4).map((item, i) => (
+                <Link
+                  key={i}
+                  href={item.url}
+                  onClick={() => { handleResultClick(item); setMobileSearchOpen(false); }}
+                  className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#FFFBEA] transition-colors group"
+                >
+                  <span className="text-gray-300 text-sm flex-shrink-0">🕐</span>
+                  <div className="min-w-0">
+                    <div className="text-sm font-medium text-gray-700 group-hover:text-[#B8960C] truncate">{item.title}</div>
+                    <div className="text-xs text-gray-400 truncate">{item.category}</div>
+                  </div>
+                </Link>
+              ))}
+              <div className="border-t border-gray-100 my-1" />
             </div>
+          )}
+
+          <div>
+            <div className="px-4 pt-3 pb-1">
+              <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">🔥 Popular</span>
+            </div>
+            <div className="max-h-[260px] overflow-y-auto">
+              {TOP_SEARCHES.map((item, i) => (
+                <Link
+                  key={i}
+                  href={item.url}
+                  onClick={() => { handleResultClick(item); setMobileSearchOpen(false); }}
+                  className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#FFFBEA] transition-colors group"
+                >
+                  <span className="text-xl flex-shrink-0 w-7 h-7 flex items-center justify-center">{item.icon}</span>
+                  <div className="min-w-0">
+                    <div className="text-sm font-medium text-gray-700 group-hover:text-[#B8960C] truncate">{item.title}</div>
+                    <div className="text-xs text-gray-400 truncate">{item.category}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Search Results */}
+      {searchQuery.length >= 2 && searchResults.length > 0 && (
+        <div className="max-h-[320px] overflow-y-auto divide-y divide-gray-50">
+          {searchResults.slice(0, 10).map((result, i) => (
+            <Link
+              key={i}
+              href={result.url}
+              onClick={() => { handleResultClick(result); setMobileSearchOpen(false); }}
+              className="flex items-center gap-3 px-4 py-3 hover:bg-[#FFFBEA] transition-colors group"
+            >
+              <span className="text-xl flex-shrink-0 w-7 h-7 flex items-center justify-center">
+                {result.icon?.startsWith('http') ? (
+                  <img src={result.icon} alt="" className="w-6 h-6 object-contain rounded-sm" onError={(e) => { e.target.style.display = 'none'; }} />
+                ) : result.icon}
+              </span>
+              <div className="min-w-0">
+                <div className="text-sm font-semibold text-gray-800 group-hover:text-[#B8960C] truncate">{result.title}</div>
+                <div className="text-xs text-gray-400 truncate">{result.category}</div>
+              </div>
+            </Link>
+          ))}
+          {searchResults.length > 10 && (
+            <div className="px-4 py-2 text-xs text-center text-gray-400 bg-gray-50 border-t border-gray-100">
+              {searchResults.length - 10} more results — refine your search
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* No Results */}
+      {searchQuery.length >= 2 && searchResults.length === 0 && (
+        <div className="px-4 py-6 text-center">
+          <div className="text-2xl mb-1">🔍</div>
+          <div className="text-sm text-gray-500">No results for <strong>&quot;{searchQuery}&quot;</strong></div>
+        </div>
+      )}
+
+    </div>
+  )}
+</div>
 
             {/* Mobile Links Grid */}
             <div className="grid grid-cols-2 gap-2 mb-4">

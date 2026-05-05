@@ -1,526 +1,470 @@
-import React from 'react';
-import Link from 'next/link';
+// app/visa/work-visa/[slug]/page.jsx  ← SERVER COMPONENT
+// Handles all SEO: generateMetadata + 4 JSON-LD schemas
+// Passes resolved data as props to WorkVisaSlugClient
+
+import WorkVisaSlugClient from "@/components/Client/WorkVisaSlugClient/WorkVisaSlugClient";
 
 
-const flagUrl = (code) => `https://flagcdn.com/w80/${code.toLowerCase()}.png`;
 
-const VISA_TYPES = [
-  { label: "Business Visa", href: "/visa/business-visa" },
-  { label: "Work Visa", href: "/visa/work-visa", active: true },
-  { label: "Student Visa", href: "/visa/student-visa" },
-  { label: "Tourist Visa", href: "/visa/tourist-visa" },
-  { label: "Transit Visa", href: "/visa/transit-visa" },
+// ─── Constants ────────────────────────────────────────────────────────────────
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://visaexpresshub.com";
+
+const GULF_COUNTRIES = [
+  "United Arab Emirates", "Saudi Arabia", "Qatar", "Kuwait", "Bahrain", "Oman",
 ];
 
-const DOCUMENTS = [
-  { icon: "🛂", title: "Valid Passport", detail: "Min. 12 months validity beyond intended stay. 2 blank pages minimum for stamps.", mandatory: true },
-  { icon: "💼", title: "Formal Job Offer Letter", detail: "On company letterhead. Must include job title, salary, start date, and contract duration.", mandatory: true },
-  { icon: "🏢", title: "Sponsorship Licence / LMIA", detail: "Employer's government-issued sponsorship number or Labour Market Impact Assessment approval.", mandatory: true },
-  { icon: "🎓", title: "Educational Certificates", detail: "Attested degree certificates with apostille or notarisation as required by destination country.", mandatory: true },
-  { icon: "📄", title: "Work Experience Letters", detail: "From all previous employers on official letterhead, covering full relevant work history with dates.", mandatory: true },
-  { icon: "🏥", title: "Medical Examination Report", detail: "Completed by a government-approved panel physician. Includes chest X-ray and blood tests.", mandatory: true },
-  { icon: "🚔", title: "Police Clearance Certificate", detail: "From your home country and any country you've lived in for 6+ months in the past 5 years.", mandatory: true },
-  { icon: "🗣️", title: "Language Test Results", detail: "IELTS General (min 6.0), TOEFL iBT, PTE Academic, or Goethe/DELF for non-English destinations.", mandatory: false },
-  { icon: "📋", title: "Professional CV / Resume", detail: "Reverse-chronological, aligned to destination standards. No photo for UK/US applications.", mandatory: false },
-  { icon: "🏦", title: "Bank Statements (3–6 months)", detail: "Demonstrating financial stability during relocation and initial employment period.", mandatory: false },
-  { icon: "🖐️", title: "Biometric Data", detail: "Fingerprints and photo at nearest VFS Global centre or official embassy. Included in application fee.", mandatory: true },
-  { icon: "💳", title: "Visa Application Fee", detail: "Paid online at submission. Ranges $50–$1,500 USD depending on visa type and destination.", mandatory: true },
-];
+// Per-destination work visa data
+const DESTINATION_DATA = {
+  "Canada": {
+    visaName: "Express Entry / LMIA Work Permit",
+    processingTime: "6–12 months (Express Entry) / 2–4 months (LMIA)",
+    initialValidity: "1–3 years",
+    fee: "CAD 155 + CAD 100 open permit",
+    sponsorship: "Employer LMIA or Express Entry CRS score",
+    prPathway: "Available after 1–3 years (CEC, PNP, FSWP)",
+    languageReq: "IELTS General min. 6.0 per band",
+    notes: "Express Entry pool draws happen every 2 weeks. Check CRS score requirements via IRCC.",
+    expedite: "Priority processing available for some streams",
+    isGulf: false,
+  },
+  "United Kingdom": {
+    visaName: "Skilled Worker Visa",
+    processingTime: "3–8 weeks",
+    initialValidity: "Up to 5 years",
+    fee: "GBP 719–1,423 (depending on duration)",
+    sponsorship: "Employer must hold active UK sponsorship licence",
+    prPathway: "Available after 5 years (Indefinite Leave to Remain)",
+    languageReq: "IELTS or approved English test, B1 level minimum",
+    notes: "Points-based system — minimum 70 points. Check SOC code eligibility.",
+    expedite: "Priority: GBP 500 (5 working days)",
+    isGulf: false,
+  },
+  "United Arab Emirates": {
+    visaName: "UAE Employment Visa",
+    processingTime: "2–4 weeks",
+    initialValidity: "2–3 years",
+    fee: "AED 300–1,500 (employer typically covers)",
+    sponsorship: "Employer sponsorship (kafala system)",
+    prPathway: "Not available (Golden Visa for exceptional talent)",
+    languageReq: "None formally required",
+    notes: "Employer tied. Changing jobs requires NOC or contract completion. Tax-free income.",
+    expedite: "Urgent processing: 3–5 working days",
+    isGulf: true,
+  },
+  "Germany": {
+    visaName: "EU Blue Card / Skilled Worker Visa",
+    processingTime: "1–3 months",
+    initialValidity: "Up to 4 years",
+    fee: "EUR 75–100",
+    sponsorship: "Job offer from German employer (no sponsorship licence required)",
+    prPathway: "Available after 21–33 months (EU Blue Card holders faster)",
+    languageReq: "German A1–B2 recommended; English roles available",
+    notes: "Opportunity Card (Chancenkarte) available since 2024 for job-seekers. Credential recognition required.",
+    expedite: "Express not standard — apply 3 months in advance",
+    isGulf: false,
+  },
+  "Australia": {
+    visaName: "Temporary Skill Shortage Visa (Subclass 482)",
+    processingTime: "2–4 months",
+    initialValidity: "2–4 years",
+    fee: "AUD 3,115",
+    sponsorship: "Approved sponsor employer (DAMA or standard TSS)",
+    prPathway: "Available via ENS (subclass 186) after 3 years",
+    languageReq: "IELTS min. 5.0 per band (stream dependent)",
+    notes: "Points test via SkillSelect for PR pathways. Occupation must be on MLTSSL or STSOL.",
+    expedite: "Priority processing available (additional fee)",
+    isGulf: false,
+  },
+  "Saudi Arabia": {
+    visaName: "Iqama (Residence & Work Permit)",
+    processingTime: "2–6 weeks",
+    initialValidity: "1–2 years (renewable)",
+    fee: "SAR 2,400–9,600 per year (employer typically covers)",
+    sponsorship: "Employer sponsorship required (kafala system)",
+    prPathway: "Not available (Premium Residency for investors only)",
+    languageReq: "Arabic beneficial; English widely used in multinationals",
+    notes: "Saudisation (Nitaqat) quotas apply. Vision 2030 creating strong demand in tech, tourism, and healthcare.",
+    expedite: "Subject to MOFA processing",
+    isGulf: true,
+  },
+  "Qatar": {
+    visaName: "Work Permit (QID / Residence Permit)",
+    processingTime: "2–4 weeks",
+    initialValidity: "1–2 years",
+    fee: "QAR 100–500 (employer typically covers)",
+    sponsorship: "Employer sponsorship required",
+    prPathway: "Not available",
+    languageReq: "None formally required",
+    notes: "High demand in construction, hospitality, healthcare, and finance. Labour reforms post-2022 improved worker mobility.",
+    expedite: "3–5 working days with employer urgency request",
+    isGulf: true,
+  },
+  "United States": {
+    visaName: "H-1B / L-1 / O-1 Visa",
+    processingTime: "3–6 months (H-1B lottery in April)",
+    initialValidity: "3 years (H-1B) / 1–3 years (L-1)",
+    fee: "USD 460–4,000+ (employer typically pays most)",
+    sponsorship: "Employer petitions USCIS on your behalf",
+    prPathway: "Available via EB-1, EB-2, EB-3 green card categories",
+    languageReq: "No formal test; English proficiency expected",
+    notes: "H-1B subject to annual cap (65,000 + 20,000 advanced degree). STEM roles prioritised.",
+    expedite: "Premium processing: USD 2,805 (15 business days)",
+    isGulf: false,
+  },
+};
 
-const STEPS = [
-  { t: "Eligibility & Occupation Check", d: (nat, dest) => `Verify your occupation falls under ${dest}'s recognised skilled occupations list (NOC, SOC, or ISCO-08). If your role is listed as "in-demand" or on a shortage occupation list, you may qualify for expedited processing.` },
-  { t: "Language Proficiency Test", d: (nat, dest) => `Most ${dest} work visa applications require a recognised language test — IELTS General (min 6.0), TOEFL iBT, or PTE Academic for English; TEF/DELF for French; Goethe for German. Book early as test slots and results can take up to 4 weeks.` },
-  { t: "Find a Sponsoring Employer", d: (nat, dest) => `Your employer in ${dest} must hold an active government-issued sponsorship licence before they can legally hire you. Use LinkedIn, Indeed, and ${dest}-specific job boards. Always state "I require employer sponsorship" clearly in your cover letter.` },
-  { t: "Credential Attestation & Document Gathering", d: (nat, dest) => `${nat} qualifications must be assessed and attested by the appropriate body recognised in ${dest}. Simultaneously, gather your experience letters, police clearance from ${nat}, and medical examination from a ${dest}-approved panel physician.` },
-  { t: "Submit Your Work Visa Application", d: (nat, dest) => `Once your employer has the sponsorship licence number and issued your formal job offer, submit through the official ${dest} immigration portal. Pay the visa fee and schedule your biometrics appointment at a VFS Global service centre.` },
-  { t: "Biometrics, Medical & Background Checks", d: (nat, dest) => `After submission you'll attend a biometrics appointment for fingerprints and a photograph. Your medical results are submitted directly by the clinic. Avoid international travel with your original passport during this stage.` },
-  { t: "Visa Decision & Conditions Review", d: (nat, dest) => `Upon approval, review your visa conditions carefully — the employer it's tied to, the permitted occupation, and the validity period. Most ${dest} work visas are initially granted for 2–3 years with extension or PR options.` },
-  { t: "Travel & Onboarding in Your Destination", d: (nat, dest) => `On arrival in ${dest}, your employer completes onboarding — registering your work permit with local authorities, setting up your tax and social security numbers, and providing your employment contract. Know your rights including minimum wage protections.` },
-];
+const DEFAULT_DESTINATION_DATA = {
+  visaName: "Employer-Sponsored Work Visa",
+  processingTime: "4–12 weeks",
+  initialValidity: "1–3 years",
+  fee: "Varies by country",
+  sponsorship: "Employer sponsorship required",
+  prPathway: "Check local immigration authority",
+  languageReq: "Varies by destination",
+  notes: "Verify latest requirements at the official immigration authority of your destination.",
+  expedite: "May be available",
+  isGulf: false,
+};
 
-const RELATED_NATIONALITIES = [
-  { name: "Indian", code: "in" },
-  { name: "Filipino", code: "ph" },
-  { name: "Pakistani", code: "pk" },
-  { name: "Bangladeshi", code: "bd" },
-  { name: "Nigerian", code: "ng" },
-  { name: "Kenyan", code: "ke" },
-];
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function cap(str) {
+  if (!str || typeof str !== "string") return "";
+  return str.replace(/\b\w/g, (l) => l.toUpperCase());
+}
 
-const RELATED_DESTINATIONS = [
-  { name: "Canada", code: "ca" },
-  { name: "United Arab Emirates", code: "ae" },
-  { name: "United Kingdom", code: "gb" },
-  { name: "Germany", code: "de" },
-  { name: "Australia", code: "au" },
-  { name: "Saudi Arabia", code: "sa" },
-];
+function getDestinationInfo(destCap) {
+  return DESTINATION_DATA[destCap] || {
+    ...DEFAULT_DESTINATION_DATA,
+    isGulf: GULF_COUNTRIES.includes(destCap),
+  };
+}
 
-const TRUSTED_APPS = [
-  { name: "VFS Global", url: "https://www.vfsglobal.com", desc: "Biometrics collection & visa application centres worldwide" },
-  { name: "Canada IRCC Portal", url: "https://www.canada.ca/en/immigration-refugees-citizenship.html", desc: "Express Entry, LMIA & work permits" },
-  { name: "UK Visas & Immigration", url: "https://www.gov.uk/browse/visas-immigration/work-visas", desc: "Skilled Worker Visa applications and sponsor register" },
-  { name: "MOHRE UAE", url: "https://www.mohre.gov.ae", desc: "UAE Ministry of Human Resources — work permits & contracts" },
-];
-
-const cap = (str) => str.replace(/\b\w/g, (l) => l.toUpperCase());
-
-export default async function WorkVisaSlugPage({ params, searchParams }) {
-  const { slug } = await params;
-  const { nFlag, dFlag } = await searchParams;
+// ─── generateMetadata ─────────────────────────────────────────────────────────
+export async function generateMetadata({ params, searchParams }) {
+  const resolvedParams = await params;
+  const slug = resolvedParams?.slug ?? "";
+  if (!slug) return {};
 
   const parts = decodeURIComponent(slug).split("-to-");
-  const nationality = parts[0]?.replace(/-/g, ' ') || "Origin";
-  const destination = parts[1]?.replace(/-/g, ' ') || "Destination";
-  const natCap = cap(nationality);
-  const destCap = cap(destination);
+  const natCap = cap(parts[0]?.replace(/-/g, " ") || "");
+  const destCap = cap(parts[1]?.replace(/-/g, " ") || "");
 
-  // Gulf countries don't have PR pathways
-  const gulfCountries = ["United Arab Emirates", "Saudi Arabia", "Qatar", "Kuwait", "Bahrain", "Oman"];
-  const isGulf = gulfCountries.includes(destCap);
-  const prNote = isGulf
-    ? "Not available (employment visa only)"
-    : "Available after 2–5 years";
+  const destInfo = getDestinationInfo(destCap);
+  const isGulf = destInfo.isGulf;
 
-  const emailTemplate = `Subject: Work Visa Sponsorship Inquiry — ${natCap} National — [Job Title]
+  const title = `${natCap} to ${destCap} Work Visa 2026 — Requirements, Sponsorship & Processing | VisaExpressHub`;
 
-Dear [Hiring Manager / HR],
+  const description = `Complete ${destCap} work visa guide for ${natCap} nationals. Visa: ${destInfo.visaName}. Processing: ${destInfo.processingTime}. Fee: ${destInfo.fee}. Covers employer sponsorship, required documents, credential recognition, and step-by-step application.${isGulf ? ` Kafala system and NOC requirements explained.` : ` PR pathway: ${destInfo.prPathway}.`}`;
 
-I am a ${natCap} national with [X years] of experience in [field], seeking employment in ${destCap} with employer visa sponsorship.
+  const canonicalUrl = `${BASE_URL}/visa/work-visa/${slug}`;
+  const ogImage = `${BASE_URL}/og/visa/work-visa/${slug}.jpg`;
 
-My qualifications include [degrees/certifications] attested from ${natCap}. I am fully prepared to provide all required documentation — degree attestations, police clearance certificate, and certified medical examination — to support your sponsorship application.
+  return {
+    title,
+    description,
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      type: "article",
+      url: canonicalUrl,
+      title,
+      description,
+      siteName: "VisaExpressHub",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${natCap} to ${destCap} Work Visa Requirements 2026` }],
+      publishedTime: "2026-01-01T00:00:00Z",
+      modifiedTime: "2026-05-01T00:00:00Z",
+      section: "Visa Guides",
+      tags: [
+        `${natCap} work visa ${destCap}`,
+        `${destCap} work permit ${natCap}`,
+        `${destInfo.visaName}`,
+        "work abroad 2026",
+        "employer sponsorship",
+        "international work permit",
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+      site: "@visaexpresshub",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-snippet": -1,
+        "max-image-preview": "large",
+        "max-video-preview": -1,
+      },
+    },
+    keywords: [
+      `${natCap} work visa ${destCap} 2026`,
+      `${destCap} work permit for ${natCap} nationals`,
+      `${destInfo.visaName} requirements`,
+      `how to get work visa in ${destCap}`,
+      `${natCap} passport work abroad ${destCap}`,
+      `${destCap} employer sponsorship ${natCap}`,
+      `${destCap} work visa documents`,
+      `${destCap} work visa processing time`,
+      `${destCap} work visa fee`,
+      isGulf ? `kafala system ${destCap}` : `${destCap} skilled worker visa`,
+    ],
+    verification: {
+      google: process.env.GOOGLE_SITE_VERIFICATION,
+    },
+  };
+}
 
-I am available for interview at your convenience and can commence employment [timeframe] following visa approval.
+// ─── generateStaticParams ─────────────────────────────────────────────────────
+export async function generateStaticParams() {
+  const topRoutes = [
+    { nat: "india", dest: "canada" },
+    { nat: "india", dest: "united-kingdom" },
+    { nat: "india", dest: "united-arab-emirates" },
+    { nat: "india", dest: "germany" },
+    { nat: "india", dest: "australia" },
+    { nat: "india", dest: "united-states" },
+    { nat: "philippines", dest: "united-arab-emirates" },
+    { nat: "philippines", dest: "saudi-arabia" },
+    { nat: "philippines", dest: "qatar" },
+    { nat: "nigeria", dest: "united-kingdom" },
+    { nat: "nigeria", dest: "canada" },
+    { nat: "pakistan", dest: "saudi-arabia" },
+    { nat: "pakistan", dest: "united-arab-emirates" },
+    { nat: "bangladesh", dest: "qatar" },
+    { nat: "mexico", dest: "united-states" },
+    { nat: "kenya", dest: "united-kingdom" },
+  ];
+  return topRoutes.map(({ nat, dest }) => ({ slug: `${nat}-to-${dest}` }));
+}
 
-Kind regards,
-[Your Name] | [LinkedIn] | [Phone]`;
+// ─── Page (Server Component) ──────────────────────────────────────────────────
+export default async function WorkVisaSlugPage({ params, searchParams }) {
+  const resolvedParams = await params;
+  const resolvedSearch = await searchParams;
+
+  const slug = resolvedParams?.slug ?? "";
+  if (!slug) return null;
+
+  const nFlagParam = resolvedSearch?.nFlag || "";
+  const dFlagParam = resolvedSearch?.dFlag || "";
+
+  const parts = decodeURIComponent(slug).split("-to-");
+  const natRaw = parts[0]?.replace(/-/g, " ") || "";
+  const destRaw = parts[1]?.replace(/-/g, " ") || "";
+  const natCap = cap(natRaw);
+  const destCap = cap(destRaw);
+
+  const destInfo = getDestinationInfo(destCap);
+  const isGulf = destInfo.isGulf;
+
+  const nFlag = nFlagParam
+    ? decodeURIComponent(nFlagParam)
+    : `https://flagcdn.com/w80/${natRaw.toLowerCase().replace(/ /g, "-").slice(0, 2)}.png`;
+
+  const dFlag = dFlagParam
+    ? decodeURIComponent(dFlagParam)
+    : `https://flagcdn.com/w80/${destRaw.toLowerCase().replace(/ /g, "-").slice(0, 2)}.png`;
+
+  const canonicalUrl = `${BASE_URL}/visa/work-visa/${slug}`;
+
+  // ── JSON-LD 1: Article ────────────────────────────────────────────────────
+  const articleLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: `${natCap} to ${destCap} Work Visa Requirements 2026`,
+    description: `Complete ${destCap} work visa guide for ${natCap} passport holders — sponsorship, documents, fees, processing time, and application steps.`,
+    url: canonicalUrl,
+    datePublished: "2026-01-01",
+    dateModified: "2026-05-01",
+    author: { "@type": "Organization", name: "VisaExpressHub", url: BASE_URL },
+    publisher: {
+      "@type": "Organization",
+      name: "VisaExpressHub",
+      url: BASE_URL,
+      logo: { "@type": "ImageObject", url: `${BASE_URL}/logo.png` },
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
+    keywords: [
+      `${natCap} work visa ${destCap}`,
+      `${destCap} work permit`,
+      `${destInfo.visaName}`,
+    ],
+  };
+
+  // ── JSON-LD 2: BreadcrumbList ─────────────────────────────────────────────
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "Visa Guides", item: `${BASE_URL}/visa` },
+      { "@type": "ListItem", position: 3, name: "Work Visa", item: `${BASE_URL}/visa/work-visa` },
+      {
+        "@type": "ListItem",
+        position: 4,
+        name: `${natCap} → ${destCap} Work Visa`,
+        item: canonicalUrl,
+      },
+    ],
+  };
+
+  // ── JSON-LD 3: FAQPage ────────────────────────────────────────────────────
+  const faqLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `How can ${natCap} nationals get a work visa for ${destCap}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `${natCap} nationals can work in ${destCap} by obtaining the ${destInfo.visaName}. The primary route is employer sponsorship — a ${destCap} employer with an active sponsorship licence issues a formal job offer, then jointly applies for your work authorisation. Processing takes ${destInfo.processingTime}.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `What is the ${destCap} work visa fee for ${natCap} nationals?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `The ${destInfo.visaName} costs ${destInfo.fee}. ${isGulf ? `In ${destCap}, the employer typically covers work permit costs.` : `Some fees may be covered by the sponsoring employer — confirm in your offer letter.`} Application fees are non-refundable.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `How long does ${destCap} work visa processing take for ${natCap} nationals?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Standard processing time for the ${destCap} ${destInfo.visaName} is ${destInfo.processingTime}. Expedited option: ${destInfo.expedite}. Apply well in advance — do not resign from your current role until you have an approved visa in hand.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `Can ${natCap} nationals get permanent residency in ${destCap} through a work visa?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: isGulf
+            ? `${destCap} does not offer permanent residency through standard employment visas. ${destInfo.prPathway}. For long-term residency, check special investor or talent schemes.`
+            : `Yes. ${destInfo.prPathway}. Continuous employment and maintaining visa conditions are typically required throughout the qualifying period.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `What documents do ${natCap} nationals need for a ${destCap} work visa?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Required documents for a ${natCap} national applying for the ${destCap} ${destInfo.visaName} include: valid passport (min. 12 months validity), formal job offer letter on company letterhead, employer sponsorship number or ${isGulf ? "work permit approval" : "LMIA"}, attested educational certificates, work experience letters from all previous employers, medical examination from an approved panel physician, police clearance certificate from ${natCap}, ${destInfo.languageReq !== "None formally required" ? `language test results (${destInfo.languageReq}),` : ""} and biometric data collected at a VFS Global centre.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `Can ${natCap} nationals change employers after getting a ${destCap} work visa?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: isGulf
+            ? `In ${destCap}, changing employers requires a No Objection Certificate (NOC) from your current sponsor or completion of your contract. Always review your specific visa conditions before making any employer changes.`
+            : `In most cases yes, but you may need to notify immigration authorities or obtain a new work permit endorsement tied to the new employer. Check your ${destInfo.visaName} conditions carefully before changing jobs.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `What language requirements do ${natCap} nationals need for a ${destCap} work visa?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: destInfo.languageReq === "None formally required"
+            ? `There is no formal language test requirement for the ${destCap} work visa. However, professional-level English or local language ability is expected in most workplaces.`
+            : `${natCap} nationals applying for the ${destCap} ${destInfo.visaName} must typically meet the language requirement: ${destInfo.languageReq}. Book your test well in advance as results can take 2–4 weeks.`,
+        },
+      },
+    ],
+  };
+
+  // ── JSON-LD 4: HowTo (application process) ────────────────────────────────
+  const howToLd = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: `How to Apply for a ${destCap} Work Visa as a ${natCap} National`,
+    description: `8-step application guide for ${natCap} passport holders obtaining the ${destCap} ${destInfo.visaName}.`,
+    totalTime: "P8W",
+    estimatedCost: {
+      "@type": "MonetaryAmount",
+      value: destInfo.fee,
+    },
+    step: [
+      {
+        "@type": "HowToStep",
+        position: 1,
+        name: "Eligibility & Occupation Check",
+        text: `Verify your occupation is on ${destCap}'s recognised skilled occupations list and that you meet minimum experience and qualification requirements.`,
+      },
+      {
+        "@type": "HowToStep",
+        position: 2,
+        name: "Language Proficiency Test",
+        text: `Book and complete the required language test: ${destInfo.languageReq}. Results take 2–4 weeks.`,
+      },
+      {
+        "@type": "HowToStep",
+        position: 3,
+        name: "Find a Sponsoring Employer",
+        text: `Apply for jobs in ${destCap}. Your employer must hold an active sponsorship licence before they can legally issue your work offer.`,
+      },
+      {
+        "@type": "HowToStep",
+        position: 4,
+        name: "Credential Attestation & Document Gathering",
+        text: `Have your ${natCap} qualifications assessed and attested. Gather experience letters, police clearance, and medical examination from an approved physician.`,
+      },
+      {
+        "@type": "HowToStep",
+        position: 5,
+        name: "Submit Work Visa Application",
+        text: `Submit through the official ${destCap} immigration portal. Pay the fee of ${destInfo.fee} and schedule biometrics at VFS Global.`,
+      },
+      {
+        "@type": "HowToStep",
+        position: 6,
+        name: "Biometrics, Medical & Background Checks",
+        text: "Attend biometrics appointment. Medical results are submitted directly by the approved clinic. Keep your passport available.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 7,
+        name: "Visa Decision & Conditions Review",
+        text: `Processing takes ${destInfo.processingTime}. Review visa conditions — employer tie, permitted occupation, and validity period.`,
+      },
+      {
+        "@type": "HowToStep",
+        position: 8,
+        name: "Travel & Onboarding in Your Destination",
+        text: `On arrival, your employer completes onboarding — registering your work permit, setting up tax and social security, and providing your employment contract.`,
+      },
+    ],
+  };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
+    <>
+      {/* All JSON-LD injected server-side — fully crawlable */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToLd) }} />
 
-      {/* BREADCRUMB */}
-      <div className="bg-white border-b border-slate-100 px-6 py-3">
-        <div className="max-w-6xl mx-auto flex items-center gap-2 text-xs text-slate-400 font-medium">
-          <Link href="/" className="hover:text-amber-600 transition-colors">Home</Link>
-          <span>›</span>
-          <Link href="/visa" className="hover:text-amber-600 transition-colors">Visa Guides</Link>
-          <span>›</span>
-          <Link href="/visa/work-visa" className="hover:text-amber-600 transition-colors">Work Visa</Link>
-          <span>›</span>
-          <span className="text-slate-600 font-semibold">{natCap} → {destCap}</span>
-        </div>
-      </div>
+      <WorkVisaSlugClient
+        slug={slug}
+        natCap={natCap}
+        destCap={destCap}
+        nFlag={nFlag}
+        dFlag={dFlag}
+        destInfo={destInfo}
+        isGulf={isGulf}
+        canonicalUrl={canonicalUrl}
+      />
 
-      {/* TOP BANNER */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-6 py-10">
-
-          {/* Visa type pills */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {VISA_TYPES.map((v) => (
-              <Link
-                key={v.label}
-                href={v.href}
-                className={`px-4 py-1.5 rounded-full text-[11px] font-bold border transition-all ${v.active
-                  ? 'bg-amber-400 text-slate-900 border-amber-400'
-                  : 'border-slate-200 text-slate-500 hover:border-amber-300 hover:text-amber-700'
-                }`}
-              >
-                {v.label}
-              </Link>
-            ))}
-          </div>
-
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div>
-              <div className="flex items-center gap-4 mb-3">
-                <div className="flex items-center -space-x-3">
-                  <img src={nFlag || flagUrl('in')} className="w-12 h-8 rounded shadow-md border-2 border-white z-10 object-cover" alt={natCap} />
-                  <img src={dFlag || flagUrl('ca')} className="w-12 h-8 rounded shadow-md border-2 border-white z-20 object-cover" alt={destCap} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Work Visa Guide</p>
-                  <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900">
-                    {natCap} <span className="text-amber-500">→</span> {destCap}
-                  </h1>
-                </div>
-              </div>
-              <p className="text-sm text-slate-500 max-w-xl">
-                Complete work visa and work permit requirements for {natCap} passport holders seeking employment in {destCap} — sponsorship, documents, processing times, and official portals.
-              </p>
-            </div>
-            <div className="flex flex-col items-end gap-2 shrink-0">
-              <span className="px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-xs font-bold border border-amber-200 uppercase tracking-wider">
-                Employer Sponsored
-              </span>
-              <p className="text-[10px] text-slate-400">Updated May 2026</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6 mt-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-
-          {/* ─── MAIN CONTENT ─── */}
-          <div className="lg:col-span-2 space-y-8">
-
-            {/* OVERVIEW */}
-            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-              <h2 className="text-xl font-bold mb-4">Work Visa Overview</h2>
-              <p className="text-slate-600 leading-relaxed text-sm mb-4">
-                As a <strong>{natCap}</strong> national, you can legally work in <strong>{destCap}</strong> by obtaining the appropriate work permit or employment visa. The most common route is the employer-sponsored work permit, where a company in {destCap} with an active sponsorship licence offers you a formal contract and applies jointly with you for your work authorisation.
-              </p>
-              {isGulf && (
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-4">
-                  <p className="text-sm font-bold text-amber-800 mb-1">🏜️ Gulf Employment Visa</p>
-                  <p className="text-xs text-amber-700 leading-relaxed">
-                    {destCap} operates an employer-tied work permit system. Your visa is linked to your sponsor employer (kafala system in some Gulf states). Changing employers requires a No Objection Certificate (NOC) or completion of your contract. There is no permanent residency pathway via employment visas in {destCap}.
-                  </p>
-                </div>
-              )}
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-                <p className="text-xs text-slate-500 leading-relaxed italic">
-                  ⚠️ Always verify current requirements directly with the {destCap} immigration authority before submitting. Rules change frequently and this guide reflects information available as of May 2026. For short-term business travel, see our <Link href="/visa/business-visa" className="text-amber-600 font-semibold hover:underline">Business Visa Guide →</Link>
-                </p>
-              </div>
-            </section>
-
-            {/* AT A GLANCE */}
-            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-              <h2 className="text-xl font-bold mb-6">At a Glance</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {[
-                  { label: "Processing Time", value: isGulf ? "2–6 weeks" : "3–12 weeks" },
-                  { label: "Initial Validity", value: "1–3 years" },
-                  { label: "Sponsorship", value: "Employer Required" },
-                  { label: "PR Pathway", value: isGulf ? "Not Available" : "Available" },
-                ].map((item) => (
-                  <div key={item.label} className="bg-slate-50 rounded-xl p-4 text-center border border-slate-100">
-                    <p className="text-base font-extrabold text-slate-900 mb-1">{item.value}</p>
-                    <p className="text-[10px] uppercase font-bold text-slate-400 tracking-widest">{item.label}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* 8-STEP APPLICATION */}
-            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-              <h2 className="text-xl font-bold mb-2">8-Step Application Guide</h2>
-              <p className="text-sm text-slate-500 mb-6">Specifically written for {natCap} nationals applying to work in {destCap}.</p>
-              <div className="space-y-5">
-                {STEPS.map((step, index) => (
-                  <div key={index} className="flex gap-5 group">
-                    <div className="shrink-0 w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-black text-sm">
-                      {String(index + 1).padStart(2, '0')}
-                    </div>
-                    <div className="pt-1 border-b border-slate-100 pb-5 flex-1 last:border-0 last:pb-0">
-                      <h4 className="font-bold text-sm text-slate-900 mb-1">{step.t}</h4>
-                      <p className="text-slate-500 text-xs leading-relaxed">{step.d(natCap, destCap)}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* DOCUMENTS */}
-            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-              <h2 className="text-xl font-bold mb-2">Required Documents</h2>
-              <p className="text-sm text-slate-500 mb-6">For {natCap} passport holders applying for a {destCap} work visa.</p>
-              <div className="space-y-3">
-                {DOCUMENTS.map((doc) => (
-                  <div key={doc.title} className="flex items-start gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-amber-200 transition-colors">
-                    <span className="text-xl shrink-0 mt-0.5">{doc.icon}</span>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-bold text-sm text-slate-900">{doc.title}</h4>
-                        <span className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded-full shrink-0 ${doc.mandatory ? 'bg-amber-100 text-amber-700' : 'bg-slate-200 text-slate-500'}`}>
-                          {doc.mandatory ? 'Required' : 'Recommended'}
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-500 leading-relaxed">{doc.detail}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-6">
-                <Link
-                  href="/visa-resources/visa-checklist-generator"
-                  className="inline-flex items-center gap-2 bg-amber-400 text-slate-900 px-6 py-3 rounded-xl font-bold text-sm hover:bg-amber-500 transition-all"
-                >
-                  Download PDF Checklist for {destCap} →
-                </Link>
-              </div>
-            </section>
-
-            {/* FAQ */}
-            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-              <h2 className="text-xl font-bold mb-6">Frequently Asked Questions</h2>
-              <div className="space-y-5">
-                {[
-                  {
-                    q: `Does ${destCap} require credential recognition for ${natCap} degrees?`,
-                    a: `Most ${destCap} employers and immigration authorities require ${natCap} educational qualifications to be assessed by an approved credential evaluation body. This takes 4–12 weeks and must be completed before your visa application is submitted. Start this as early as possible.`
-                  },
-                  {
-                    q: `Can I change employers after arriving in ${destCap}?`,
-                    a: isGulf
-                      ? `In Gulf countries, changing employers typically requires a No Objection Certificate (NOC) from your current sponsor or completion of your contract. Always check your specific visa conditions and consult a registered adviser before making any changes.`
-                      : `In most cases yes, but you may need to notify immigration authorities or obtain a new work permit endorsement. Check your specific visa conditions carefully — some ${destCap} work visas are employer-tied and require a change-of-employer request.`
-                  },
-                  {
-                    q: `Can my family accompany me to ${destCap}?`,
-                    a: isGulf
-                      ? `${destCap} allows sponsored workers to bring dependants (spouse and children) subject to minimum salary thresholds. Dependant spouses are generally not permitted to work in most Gulf countries without their own separate work permit.`
-                      : `Most skilled worker visas allow you to bring your spouse and dependent children under 18. In many destinations including Canada, UK, and Australia, dependant spouses are permitted to work. Confirm the specific rules for your ${destCap} visa category.`
-                  },
-                  {
-                    q: `Is there a path to permanent residency in ${destCap}?`,
-                    a: isGulf
-                      ? `${destCap} does not currently offer permanent residency through standard employment visas. Long-term residency schemes (e.g. UAE Golden Visa) are available for investors and highly skilled professionals but are separate from standard work permits.`
-                      : `Many ${destCap} work visas include a pathway to permanent residency after 2–5 years of continuous employment. Check the specific pathway for your visa category — conditions around employer changes and continuous residence typically apply.`
-                  },
-                  {
-                    q: `What are the main reasons ${natCap} work visa applications are refused?`,
-                    a: `The most common refusal reasons are: discrepancies between the application and supporting documents; missing or non-attested credentials; failure to meet minimum language requirements; an employer whose sponsorship licence was revoked; and providing false information. Double-check every detail before submission.`
-                  },
-                ].map((item, i) => (
-                  <div key={i} className="border-b border-slate-100 last:border-0 pb-5 last:pb-0">
-                    <h4 className="font-bold text-sm text-slate-900 mb-2">Q: {item.q}</h4>
-                    <p className="text-xs text-slate-500 leading-relaxed">{item.a}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* EMAIL TEMPLATE */}
-            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-              <h2 className="text-xl font-bold mb-2">Email Template: Requesting Sponsorship</h2>
-              <p className="text-sm text-slate-500 mb-6">Use this when reaching out to {destCap} employers about visa sponsorship. Replace all brackets with your own information.</p>
-              <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
-                <div className="border-b border-slate-100 px-5 py-3 bg-slate-50 flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-400" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                  <div className="w-3 h-3 rounded-full bg-green-400" />
-                  <span className="ml-2 text-[11px] font-bold uppercase tracking-widest text-slate-400">{natCap} → {destCap} Sponsorship Template</span>
-                </div>
-                <pre className="text-xs font-mono leading-relaxed text-slate-600 whitespace-pre-wrap p-6 bg-slate-50">{emailTemplate}</pre>
-              </div>
-              <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                {[
-                  { tip: "Personalise every email", detail: "Generic bulk emails are ignored. Research the company and mention a specific role or project you've seen." },
-                  { tip: "Include your LinkedIn URL", detail: `${destCap} recruiters verify candidates on LinkedIn before responding to unsolicited emails.` },
-                  { tip: "Be upfront about sponsorship", detail: "Mentioning visa sponsorship from the start saves time and ensures you only hear from willing sponsors." }
-                ].map((t) => (
-                  <div key={t.tip} className="bg-slate-50 border border-slate-100 rounded-xl p-4">
-                    <h5 className="font-bold text-xs text-slate-900 mb-1">{t.tip}</h5>
-                    <p className="text-[11px] text-slate-500 leading-relaxed">{t.detail}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* TRUSTED PORTALS */}
-            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-              <h2 className="text-xl font-bold mb-2">Official Application Portals</h2>
-              <p className="text-sm text-slate-500 mb-6">Submit your {destCap} work visa application through official government channels only.</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {TRUSTED_APPS.map((app) => (
-                  <a
-                    key={app.name}
-                    href={app.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-start justify-between gap-4 p-4 bg-slate-50 border border-slate-100 rounded-xl hover:border-amber-300 hover:shadow-sm group transition-all"
-                  >
-                    <div>
-                      <h5 className="font-bold text-sm text-slate-900 mb-1">{app.name}</h5>
-                      <p className="text-xs text-slate-500">{app.desc}</p>
-                    </div>
-                    <span className="text-slate-300 group-hover:text-amber-500 font-bold transition-colors text-lg shrink-0">↗</span>
-                  </a>
-                ))}
-              </div>
-            </section>
-
-            {/* RELATED ROUTES */}
-            <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-              <h2 className="text-xl font-bold mb-2">Related Work Visa Guides</h2>
-              <p className="text-sm text-slate-500 mb-6">Other popular routes you may find useful.</p>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">Same Nationality</p>
-                  <div className="space-y-2">
-                    {RELATED_DESTINATIONS
-                      .filter(d => d.name.toLowerCase() !== destCap.toLowerCase())
-                      .slice(0, 5)
-                      .map((dest) => {
-                        const sl = `${nationality.toLowerCase()}-to-${dest.name.toLowerCase().replace(/\s+/g, '-')}`;
-                        const df = flagUrl(dest.code);
-                        return (
-                          <Link
-                            key={dest.code}
-                            href={`/visa/work-visa/${sl}?nFlag=${encodeURIComponent(nFlag || '')}&dFlag=${encodeURIComponent(df)}`}
-                            className="flex items-center gap-3 p-3 border border-slate-200 rounded-xl hover:border-amber-300 hover:shadow-sm group transition-all"
-                          >
-                            <img src={df} className="w-7 h-5 rounded object-cover shadow-sm" alt={dest.name} />
-                            <span className="text-xs font-bold text-slate-700">{natCap} → {dest.name}</span>
-                            <span className="ml-auto text-slate-300 group-hover:text-amber-500 font-bold">›</span>
-                          </Link>
-                        );
-                      })}
-                  </div>
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">Same Destination</p>
-                  <div className="space-y-2">
-                    {RELATED_NATIONALITIES
-                      .filter(n => n.name.toLowerCase() !== natCap.toLowerCase())
-                      .slice(0, 5)
-                      .map((nat) => {
-                        const sl = `${nat.name.toLowerCase()}-to-${destination.toLowerCase().replace(/\s+/g, '-')}`;
-                        const nf = flagUrl(nat.code);
-                        return (
-                          <Link
-                            key={nat.code}
-                            href={`/visa/work-visa/${sl}?nFlag=${encodeURIComponent(nf)}&dFlag=${encodeURIComponent(dFlag || '')}`}
-                            className="flex items-center gap-3 p-3 border border-slate-200 rounded-xl hover:border-amber-300 hover:shadow-sm group transition-all"
-                          >
-                            <img src={nf} className="w-7 h-5 rounded object-cover shadow-sm" alt={nat.name} />
-                            <span className="text-xs font-bold text-slate-700">{nat.name} → {destCap}</span>
-                            <span className="ml-auto text-slate-300 group-hover:text-amber-500 font-bold">›</span>
-                          </Link>
-                        );
-                      })}
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* OTHER VISA TYPES */}
-            <section className="bg-amber-400 rounded-2xl p-8">
-              <h2 className="text-xl font-bold text-slate-900 mb-2">Explore Other Visa Types for {destCap}</h2>
-              <p className="text-sm text-amber-900 mb-6">Not a skilled worker? Find the right visa category below.</p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {[
-                  { label: "Business Visa", desc: "Meetings & conferences", href: "/visa/business-visa", icon: "💼" },
-                  { label: "Student Visa", desc: "Study & university", href: "/visa/student-visa", icon: "🎓" },
-                  { label: "Tourist Visa", desc: "Leisure & tourism", href: "/visa/tourist-visa", icon: "🌴" },
-                  { label: "Transit Visa", desc: "Layovers & connections", href: "/visa/transit-visa", icon: "🛫" },
-                ].map((v) => (
-                  <Link
-                    key={v.label}
-                    href={v.href}
-                    className="bg-white rounded-xl p-4 hover:shadow-md transition-all group"
-                  >
-                    <span className="text-2xl block mb-2">{v.icon}</span>
-                    <p className="font-bold text-sm text-slate-900 group-hover:text-amber-700 transition-colors">{v.label}</p>
-                    <p className="text-[10px] text-slate-400 mt-0.5">{v.desc}</p>
-                  </Link>
-                ))}
-              </div>
-            </section>
-
-          </div>
-
-          {/* ─── SIDEBAR ─── */}
-          <aside className="space-y-5">
-            <div className="bg-slate-900 rounded-2xl p-7 text-white sticky top-10">
-              <h3 className="text-lg font-bold mb-2">Get Your Full Checklist</h3>
-              <p className="text-slate-400 text-xs mb-6 leading-relaxed">
-                Personalised PDF document checklist for {natCap} professionals seeking work in {destCap}. Free download.
-              </p>
-              <Link
-                href="/visa-resources/visa-checklist-generator"
-                className="block w-full bg-amber-400 hover:bg-amber-300 text-slate-900 text-center py-3.5 rounded-xl font-bold transition-all text-sm"
-              >
-                Download Checklist (PDF)
-              </Link>
-
-              <div className="mt-6 border-t border-slate-800 pt-5 space-y-3">
-                {[
-                  { label: "Visa Type", value: "Employer Sponsored" },
-                  { label: "Processing", value: isGulf ? "2–6 weeks" : "3–12 weeks" },
-                  { label: "Initial Validity", value: "1–3 years" },
-                  { label: "Language Req.", value: "IELTS 6.0+ typical" },
-                  { label: "PR Pathway", value: prNote },
-                ].map((row) => (
-                  <div key={row.label} className="flex justify-between text-xs">
-                    <span className="text-slate-500">{row.label}</span>
-                    <span className="text-slate-200 font-bold text-right max-w-[55%]">{row.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Other visa types */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200">
-              <h3 className="text-sm font-bold text-slate-900 mb-4">Other Visa Types</h3>
-              <div className="space-y-2">
-                {[
-                  { label: "Business Visa Guides", href: "/visa/business-visa", icon: "💼" },
-                  { label: "Student Visa Guides", href: "/visa/student-visa", icon: "🎓" },
-                  { label: "Tourist Visa Guides", href: "/visa/tourist-visa", icon: "🌴" },
-                  { label: "Transit Visa Guides", href: "/visa/transit-visa", icon: "🛫" },
-                ].map((v) => (
-                  <Link
-                    key={v.label}
-                    href={v.href}
-                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-amber-50 hover:border-amber-200 border border-transparent transition-all"
-                  >
-                    <span className="text-lg">{v.icon}</span>
-                    <span className="text-sm font-semibold text-slate-700 hover:text-amber-700">{v.label}</span>
-                    <span className="ml-auto text-slate-300 text-sm">›</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            {/* Warning */}
-            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6">
-              <h3 className="text-sm font-bold text-amber-900 mb-2">⚠️ Use Licensed Advisers Only</h3>
-              <p className="text-xs text-amber-800 leading-relaxed">
-                Only use RCIC (Canada), OISC-registered (UK), or RMA-licensed (Australia) immigration consultants. Unregulated agents have caused thousands of visa rejections and permanent bans.
-              </p>
-            </div>
-
-            {/* Visa resources */}
-            <div className="bg-white border border-slate-200 rounded-2xl p-6">
-              <h3 className="text-sm font-bold text-slate-900 mb-2">🔧 Visa Resources</h3>
-              <div className="space-y-2">
-                {[
-                  { label: "Visa Checklist Generator", href: "/visa-resources/visa-checklist-generator" },
-                  { label: "Sponsorship Email Templates", href: "/visa-resources/email-templates" },
-                  { label: "Embassy Directory", href: "/visa-resources/embassy-directory" },
-                  { label: "Processing Time Tracker", href: "/visa-resources/processing-times" },
-                  { label: "Credential Assessment Guide", href: "/visa-resources/credential-assessment" },
-                ].map((r) => (
-                  <Link key={r.label} href={r.href} className="block text-xs font-semibold text-slate-500 hover:text-amber-600 hover:underline underline-offset-4 py-1 transition-colors">
-                    {r.label} →
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </aside>
-
-        </div>
-      </div>
-
-      {/* BOTTOM SEARCH CTA */}
-      <div className="max-w-6xl mx-auto px-6 mt-12">
-        <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center">
-          <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">Search Another Route</p>
-          <h3 className="text-2xl font-extrabold text-slate-900 mb-3">Need a Different Work Visa?</h3>
-          <p className="text-sm text-slate-500 mb-6">Get a personalised guide for any nationality and destination combination.</p>
-          <Link
-            href="/visa/work-visa#search"
-            className="inline-block bg-amber-400 text-slate-900 px-10 py-4 rounded-xl font-bold hover:bg-amber-500 transition-all shadow-lg shadow-amber-100 text-sm"
-          >
-            Search Work Visa Requirements →
-          </Link>
-        </div>
-      </div>
-
-    </div>
+   
+    </>
   );
 }

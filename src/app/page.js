@@ -1,4 +1,5 @@
 import HeroSection from '@/components/HeroSection/HeroSection'
+import EVisaSearchMenu from '@/components/SearchMenu/EVisaSearchMenu/EVisaSearchMenu';
 import QuickAccessCards from '@/components/SearchMenu/QuickAccessCards/QuickAccessCards'
 import ScholarshipSearch from '@/components/SearchMenu/ScholarshipSearch/ScholarshipSearch';
 import VisaProcessingTime from '@/components/SearchMenu/VisaProcessingTime/VisaProcessingTime'
@@ -40,6 +41,7 @@ export default function page() {
       <VisaProcessingTime />
       <ScholarshipSearch />
       <QuickAccessCards />
+      <EVisaSearchMenu />
     </div>
   )
 }

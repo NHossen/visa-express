@@ -366,7 +366,7 @@ export default function BusinessVisaSearch() {
       const slug = `${nationality.name.toLowerCase()}-to-${destination.name.toLowerCase()}`.replace(/\s+/g, '-');
       const nFlag = encodeURIComponent(nationality.flag);
       const dFlag = encodeURIComponent(destination.flag);
-      router.push(`/visa/business-visa/${slug}?nFlag=${nFlag}&dFlag=${dFlag}`);
+      router.push(`/visa/business-visa/${slug}`);
     }
   };
 
@@ -490,7 +490,7 @@ export default function BusinessVisaSearch() {
               const df = flagUrl(r.toCode);
               return (
                 <Link key={slug}
-                  href={`/visa/business-visa/${slug}?nFlag=${encodeURIComponent(nf)}&dFlag=${encodeURIComponent(df)}`}
+                  href={`/visa/business-visa/${slug}`}
                   className="border border-slate-200 rounded-xl p-5 flex items-center justify-between hover:border-amber-300 hover:shadow-md hover:shadow-amber-50 group transition-all bg-white">
                   <div className="flex items-center gap-4">
                     <div className="flex -space-x-2">
@@ -977,7 +977,7 @@ export default function BusinessVisaSearch() {
                     { label: "Bangladeshi", code: "bd" },
                   ].map((nat) => (
                     <Link key={nat.label}
-                      href={`/visa/business-visa/${nat.label.toLowerCase()}-to-${dest.name.toLowerCase().replace(/\s+/g, '-')}?nFlag=${encodeURIComponent(flagUrl(nat.code))}&dFlag=${encodeURIComponent(flagUrl(dest.code))}`}
+                      href={`/visa/business-visa/${nat.label.toLowerCase()}-to-${dest.name.toLowerCase().replace(/\s+/g, '-')}`}
                       className="block text-[11px] font-semibold text-slate-400 hover:text-amber-600 hover:underline underline-offset-4 transition-colors">
                       {nat.label} nationals →
                     </Link>

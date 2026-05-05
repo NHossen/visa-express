@@ -398,7 +398,7 @@ export default function BusinessSlugPage({
                   const df = flagUrl(r.destCode);
                   return (
                     <Link key={routeSlug}
-                      href={`/visa/business-visa/${routeSlug}?nFlag=${encodeURIComponent(nf)}&dFlag=${encodeURIComponent(df)}`}
+                      href={`/visa/business-visa/${routeSlug}`}
                       className="flex items-center gap-4 p-4 border border-slate-200 rounded-xl hover:border-amber-300 hover:shadow-sm group transition-all">
                       <div className="flex -space-x-2">
                         <img src={nf} className="w-7 h-5 rounded object-cover border-2 border-white shadow-sm z-10" alt={r.nat} />

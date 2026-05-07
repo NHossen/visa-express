@@ -44,9 +44,8 @@ const VISA_TYPES = [
   { icon: '🏖️', label: 'Tourist',  href: '/visa/tourist-visa',                desc: 'Leisure & sightseeing visits' },
   { icon: '💼', label: 'Business', href: '/visa/business-visa',               desc: 'Meetings, conferences, trade' },
   { icon: '🎓', label: 'Student',  href: '/visa/student-visa',   desc: 'Academic enrollment abroad' },
-  { icon: '👨‍👩‍👧', label: 'Family',   href: '/visa/family-visa',                 desc: 'Reunification & sponsorship' },
-  { icon: '💊', label: 'Medical',  href: '/visa/medical-visa',                desc: 'Treatment & health tourism' },
   { icon: '🧳', label: 'Transit',  href: '/visa/transit-visa',                desc: 'Layover & onward travel' },
+  { icon: '💻', label: 'E-Visa',   href: '/visa/e-visa',                    desc: 'Electronic visa application' },
 ];
 
 // Top destination country pages — for SEO internal link hub
@@ -349,7 +348,7 @@ export default function VisaGuide() {
 
           {/* Internal links hub */}
           <div className="mt-8 flex flex-wrap gap-2">
-            {['visa/tourist-visa', 'visa/student-visa', 'visa/work-visa'].map(path => (
+            {['visa/tourist-visa', 'visa/student-visa', 'visa/work-visa', 'visa/e-visa'].map(path => (
               <Link key={path} href={`/${path}`}
                 className="text-xs font-bold text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1.5 rounded-full hover:bg-blue-100 transition capitalize">
                 {path.split('/').pop().replace(/-/g, ' ')} →
@@ -435,7 +434,7 @@ export default function VisaGuide() {
                 Explore our{' '}
                 <Link href="/visa/tourist-visa"                 className="text-blue-600 font-bold hover:underline">tourist visa guides</Link>,{' '}
                 <Link href="/visa/student-visa"   className="text-blue-600 font-bold hover:underline">student visa guides</Link>, and{' '}
-                <Link href="/scholarship"                 className="text-blue-600 font-bold hover:underline">scholarship opportunities</Link>{' '}
+                <Link href="/scholarships"                 className="text-blue-600 font-bold hover:underline">scholarship opportunities</Link>{' '}
                 for Bangladeshi students.
               </p>
             </div>

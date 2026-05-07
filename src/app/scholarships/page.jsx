@@ -107,10 +107,10 @@ export default function ScholarshipsMain() {
   ];
 
   const degreeLinks = [
-    { label: "Bachelor's", href: "/scholarships/degree/bachelors" },
-    { label: "Master's", href: "/scholarships/degree/masters" },
-    { label: "PhD", href: "/scholarships/degree/phd" },
-    { label: "Fully Funded Only", href: "/scholarships/funding/fully-funded" },
+    { label: "Bachelor's", href: "/scholarships" },
+    { label: "Master's", href: "/scholarships" },
+    { label: "PhD", href: "/scholarships" },
+    { label: "Fully Funded Only", href: "/scholarships" },
   ];
 
   return (

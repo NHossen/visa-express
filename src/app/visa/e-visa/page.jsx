@@ -554,14 +554,14 @@ export default function EVISAMainPage() {
             <p className="text-xs text-black/25 font-bold uppercase tracking-widest mb-4">Browse e-Visa by Nationality</p>
             <div className="flex flex-wrap gap-3">
               {[
-                { label: "Nigerian e-Visa",      href: "/visa/e-visa/nigerian" },
-                { label: "Ghanaian e-Visa",      href: "/visa/e-visa/ghanaian" },
-                { label: "Indian e-Visa",        href: "/visa/e-visa/indian" },
-                { label: "Pakistani e-Visa",     href: "/visa/e-visa/pakistani" },
-                { label: "Bangladeshi e-Visa",   href: "/visa/e-visa/bangladeshi" },
-                { label: "Dubai Resident e-Visa",href: "/visa/e-visa/dubai-resident" },
-                { label: "South African e-Visa", href: "/visa/e-visa/south-african" },
-                { label: "Kenyan e-Visa",        href: "/visa/e-visa/kenyan" },
+                { label: "Nigerian e-Visa",      href: "/visa/e-visa/nigerian-national-e-visa-requirements-for-turkey" },
+                { label: "Ghanaian e-Visa",      href: "/visa/e-visa/ghanaian-national-e-visa-requirements-for-turkey" },
+                { label: "Indian e-Visa",        href: "/visa/e-visa/indian-national-e-visa-requirements-for-turkey" },
+                { label: "Pakistani e-Visa",     href: "/visa/e-visa/pakistani-national-e-visa-requirements-for-turkey" },
+                { label: "Bangladeshi e-Visa",   href: "/visa/e-visa/bangladeshi-national-e-visa-requirements-for-turkey" },
+                { label: "Dubai Resident e-Visa",href: "/visa/e-visa/dubai-resident-national-e-visa-requirements-for-turkey" },
+                { label: "South African e-Visa", href: "/visa/e-visa/south-african-national-e-visa-requirements-for-turkey" },
+                { label: "Kenyan e-Visa",        href: "/visa/e-visa/kenyan-national-e-visa-requirements-for-turkey" },
               ].map(link => (
                 <Link key={link.label} href={link.href}
                   className="text-xs font-bold text-black/40 hover:text-[#f5c800] transition border border-black/10 px-3 py-1.5 rounded-lg hover:border-[#f5c800]/30 bg-white"
@@ -574,14 +574,14 @@ export default function EVISAMainPage() {
             <p className="text-xs text-black/25 font-bold uppercase tracking-widest mb-4">Browse e-Visa by Destination</p>
             <div className="flex flex-wrap gap-3">
               {[
-                { label: "Turkey e-Visa",    href: "/visa/e-visa/requirements-for-turkey" },
-                { label: "UAE e-Visa",       href: "/visa/e-visa/requirements-for-united-arab-emirates" },
-                { label: "Kenya e-Visa",     href: "/visa/e-visa/requirements-for-kenya" },
-                { label: "Sri Lanka ETA",    href: "/visa/e-visa/requirements-for-sri-lanka" },
-                { label: "Rwanda e-Visa",    href: "/visa/e-visa/requirements-for-rwanda" },
-                { label: "Cambodia e-Visa",  href: "/visa/e-visa/requirements-for-cambodia" },
-                { label: "Egypt e-Visa",     href: "/visa/e-visa/requirements-for-egypt" },
-                { label: "Thailand e-Visa",  href: "/visa/e-visa/requirements-for-thailand" },
+                { label: "Turkey e-Visa",    href: "/visa/e-visa/nigerian-national-e-visa-requirements-for-turkey" },
+                { label: "UAE e-Visa",       href: "/visa/e-visa/nigerian-national-e-visa-requirements-for-united-arab-emirates" },
+                { label: "Kenya e-Visa",     href: "/visa/e-visa/nigerian-national-e-visa-requirements-for-kenya" },
+                { label: "Sri Lanka ETA",    href: "/visa/e-visa/nigerian-national-e-visa-requirements-for-sri-lanka" },
+                { label: "Rwanda e-Visa",    href: "/visa/e-visa/nigerian-national-e-visa-requirements-for-rwanda" },
+                { label: "Cambodia e-Visa",  href: "/visa/e-visa/nigerian-national-e-visa-requirements-for-cambodia" },
+                { label: "Egypt e-Visa",     href: "/visa/e-visa/nigerian-national-e-visa-requirements-for-egypt" },
+                { label: "Thailand e-Visa",  href: "/visa/e-visa/nigerian-national-e-visa-requirements-for-thailand" },
               ].map(link => (
                 <Link key={link.label} href={link.href}
                   className="text-xs font-bold text-black/40 hover:text-[#f5c800] transition border border-black/10 px-3 py-1.5 rounded-lg hover:border-[#f5c800]/30 bg-white"

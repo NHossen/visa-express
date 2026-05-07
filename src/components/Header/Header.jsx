@@ -205,6 +205,7 @@ const handleResultClick = (item) => {
 
 // ── BUILD SEARCH INDEX ON MOUNT ──
 useEffect(() => {
+  let isMounted = true;
   async function buildIndex() {
     const index = [];
 
@@ -265,6 +266,9 @@ useEffect(() => {
           });
         }
       }
+       if (isMounted) {
+        setSearchIndex(index); // ✅ safe now
+      }
     } catch (e) { console.error('Search index: scholarships fetch failed', e); }
 
     setSearchIndex(index);
@@ -288,13 +292,13 @@ useEffect(() => {
   setSearchResults(results);
 }, [searchQuery, searchIndex]);
 
-// ── CLOSE ON OUTSIDE CLICK ──
+// ── CLOSE ON OUTSIDE CLICK ──// Add mobile to your outside-click handler (update the existing one)
 useEffect(() => {
   function handleClick(e) {
-    if (searchRef.current && !searchRef.current.contains(e.target)) {
-      setSearchOpen(false);
-      setSearchFocused(false);
-    }
+    const outsideDesktop = searchRef.current && !searchRef.current.contains(e.target);
+    const outsideMobile = mobileSearchRef.current && !mobileSearchRef.current.contains(e.target);
+    if (outsideDesktop) { setSearchOpen(false); setSearchFocused(false); }
+    if (outsideMobile) { setMobileSearchOpen(false); }
   }
   document.addEventListener('mousedown', handleClick);
   return () => document.removeEventListener('mousedown', handleClick);
@@ -306,17 +310,8 @@ useEffect(() => {
     return () => window.removeEventListener('scroll', onScroll)
   }, []);
 
-  // Add mobile to your outside-click handler (update the existing one)
-useEffect(() => {
-  function handleClick(e) {
-    const outsideDesktop = searchRef.current && !searchRef.current.contains(e.target);
-    const outsideMobile = mobileSearchRef.current && !mobileSearchRef.current.contains(e.target);
-    if (outsideDesktop) { setSearchOpen(false); setSearchFocused(false); }
-    if (outsideMobile) { setMobileSearchOpen(false); }
-  }
-  document.addEventListener('mousedown', handleClick);
-  return () => document.removeEventListener('mousedown', handleClick);
-}, []);
+  
+
 
   return (
     <>

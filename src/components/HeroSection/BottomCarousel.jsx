@@ -323,9 +323,9 @@ export default function BottomCarousel() {
           <ChevronRight size={24} />
         </button>
       </div>
-      <div class="max-w-7xl mx-auto">
-    <p class="text-sm leading-relaxed tracking-wide text-gray-700 font-medium text-justify">
-      <span class="font-bold text-[#FED700]">Visa Express Hub</span> provides accurate, real-time data on 
+      <div className="max-w-7xl mx-auto">
+    <p className="text-sm leading-relaxed tracking-wide text-gray-700 font-medium text-justify">
+      <span className="font-bold text-[#FED700]">Visa Express Hub</span> provides accurate, real-time data on 
       <strong> visa requirements</strong>, <strong>embassy fees</strong>, and <strong>processing times </strong> 
       for all nationalities. From the <strong>USA</strong>, <strong>UK</strong>, and <strong>Canada</strong> 
       to <strong>Schengen</strong> and <strong>Australia</strong>, we offer expert step-by-step guides for 

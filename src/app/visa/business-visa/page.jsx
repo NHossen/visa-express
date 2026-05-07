@@ -412,6 +412,7 @@ export default function BusinessVisaSearch() {
               { label: "Student Visa", href: "/visa/student-visa" },
               { label: "Tourist Visa", href: "/visa/tourist-visa" },
               { label: "Transit Visa", href: "/visa/transit-visa" },
+              { label: "E - Visa", href: "/visa/e-visa" },
             ].map((v) => (
               <Link key={v.label} href={v.href}
                 className={`px-4 py-2 rounded-full text-xs font-bold border transition-all ${v.active
@@ -950,6 +951,7 @@ export default function BusinessVisaSearch() {
             <Link href="/visa/student-visa" className="bg-white text-slate-900 px-6 py-3 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all border border-slate-200">Student Visa →</Link>
             <Link href="/visa/tourist-visa" className="bg-white text-slate-900 px-6 py-3 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all border border-slate-200">Tourist Visa →</Link>
             <Link href="/visa/transit-visa" className="bg-white text-slate-900 px-6 py-3 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all border border-slate-200">Transit Visa →</Link>
+            <Link href="/visa/e-visa" className="bg-white text-slate-900 px-6 py-3 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all border border-slate-200">E-Visa →</Link>
           </div>
         </div>
       </section>

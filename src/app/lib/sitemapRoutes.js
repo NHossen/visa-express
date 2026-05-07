@@ -3,7 +3,8 @@ import { createSlug } from './utils';
 
 const BASE_URL = 'https://www.visaexpresshub.com';
 const BUILD_TIME = new Date().toISOString();
-const VISA_TYPES = ['sticker', 'e-visa', 'transit', 'sticker-extended'];
+const PROCESSING_TYPES = ['sticker', 'e-visa', 'transit', 'sticker-extended'];
+const REJECTION_TYPES  = ['tourist', 'student', 'work', 'transit', 'business', 'family'];
 
 function fmt(path, priority = 0.7, changeFreq = 'monthly') {
   return {
@@ -114,10 +115,10 @@ export function buildAllRoutes(countries) {
   slugs.forEach(nat => {
     slugs.forEach(dest => {
       if (nat.slug !== dest.slug) {
-        VISA_TYPES.forEach(type => {
-          routes.push(
-            fmt(
-              `/visa-processing-time-tracker/${nat.slug}-to-${dest.slug}?type=${type}`,
+       PROCESSING_TYPES.forEach(type => {
+  routes.push(
+    fmt(
+      `/visa-processing-time-tracker/${nat.slug}-to-${dest.slug}?type=${type}`,
               0.7,
               'monthly'
             )
@@ -127,10 +128,22 @@ export function buildAllRoutes(countries) {
     });
   });
 
-  // ── /visa-rejection/[slug] ─────────────────────────────────────────────────
-  slugs.forEach(({ slug }) => {
-    routes.push(fmt(`/visa-rejection/${slug}`, 0.7, 'monthly'));
+// ── /visa-rejection/[nat]-visa-rejection-rate-for-[dest]?type=[visaType] ───
+slugs.forEach(nat => {
+  slugs.forEach(dest => {
+    if (nat.slug !== dest.slug) {
+      REJECTION_TYPES.forEach(type => {
+  routes.push(
+    fmt(
+      `/visa-rejection/${nat.slug}-visa-rejection-rate-for-${dest.slug}?type=${type}`,
+            0.7,
+            'monthly'
+          )
+        );
+      });
+    }
   });
+});
 
   // ── /scholarships/[slug] ───────────────────────────────────────────────────
   slugs.forEach(({ slug }) => {

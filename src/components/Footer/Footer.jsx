@@ -278,7 +278,7 @@ const Footer = () => {
               { label: 'Privacy Policy', href: '/privacy-policy' },
               { label: 'Terms of Use',   href: '/terms' },
               { label: 'Disclaimer',     href: '/disclaimer' },
-              { label: 'Sitemap',        href: '/sitemap.xml' },
+              { label: 'Sitemap',        href: '/sitemap-index.xml' },
               { label: 'Contact',        href: '/contact' },
             ].map((l) => (
               <Link

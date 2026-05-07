@@ -9,6 +9,7 @@ const VISA_TYPES = [
   { label: "Student Visa", href: "/visa/student-visa" },
   { label: "Tourist Visa", href: "/visa/tourist-visa" },
   { label: "Transit Visa", href: "/visa/transit-visa" },
+  { label: "E-Visa", href: "/visa/e-visa" },
 ];
 
 const DOCUMENTS = [
@@ -447,6 +448,7 @@ export default function BusinessSlugPage({
                   { label: "Student Visa", desc: "Study & university", href: "/visa/student-visa", icon: "🎓" },
                   { label: "Tourist Visa", desc: "Leisure & tourism", href: "/visa/tourist-visa", icon: "🌴" },
                   { label: "Transit Visa", desc: "Layovers & connections", href: "/visa/transit-visa", icon: "🛫" },
+                  { label: "E-Visa", desc: "Electronic visa application", href: "/visa/e-visa", icon: "💻" },
                 ].map((v) => (
                   <Link key={v.label} href={v.href}
                     className="bg-white rounded-xl p-4 hover:shadow-md transition-all group">
@@ -491,7 +493,7 @@ export default function BusinessSlugPage({
               </div>
 
               <div className="mt-5 border-t border-slate-800 pt-5">
-                <Link href="/visa-resources/embassy-directory"
+                <Link href="/visa-resources"
                   className="block w-full text-center text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors py-1">
                   Find {destCap} Embassy Near You →
                 </Link>
@@ -507,6 +509,7 @@ export default function BusinessSlugPage({
                   { label: `${destCap} Student Visa`, href: "/visa/student-visa", icon: "🎓" },
                   { label: `${destCap} Tourist Visa`, href: "/visa/tourist-visa", icon: "🌴" },
                   { label: `${destCap} Transit Visa`, href: "/visa/transit-visa", icon: "🛫" },
+                  { label: `${destCap} E-Visa`, href: "/visa/e-visa", icon: "💻" },
                 ].map((v) => (
                   <Link key={v.label} href={v.href}
                     className="flex items-center gap-3 p-3 rounded-xl hover:bg-amber-50 hover:border-amber-200 border border-transparent transition-all">
@@ -560,6 +563,7 @@ export default function BusinessSlugPage({
                   { label: "Embassy Directory", href: "/visa-resources" },
                   { label: "Processing Time Tracker", href: "/visa-processing-time-tracker" },
                   { label: "Schengen Visa Guide", href: "/visa-resources/schengen-visa" },
+                  { label: "E-Visa Information", href: "/visa/e-visa" },
                 ].map((r) => (
                   <Link key={r.label} href={r.href}
                     className="block text-xs font-semibold text-slate-500 hover:text-amber-600 hover:underline underline-offset-4 py-1 transition-colors">
@@ -621,6 +625,7 @@ export default function BusinessSlugPage({
               { label: "Tourist Visa Guides", href: "/visa/tourist-visa" },
               { label: "Transit Visa Guides", href: "/visa/transit-visa" },
               { label: "Schengen Visa Guide", href: "/visa/schengen-visa" },
+              { label: "E-Visa Information", href: "/visa/e-visa" },
             ].map(l => <Link key={l.href} href={l.href} className="block text-[11px] text-slate-500 hover:text-amber-600 py-0.5 hover:underline">{l.label} →</Link>)}
           </div>
           <div>

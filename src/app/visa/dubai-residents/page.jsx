@@ -577,6 +577,7 @@ export default function TouristVisaDubaiResidents() {
                 { label: "Student Visa",  href: "/visa/student-visa" },
                 { label: "Medical Visa",  href: "/visa/medical-visa" },
                 { label: "Schengen Visa", href: "/visa/schengen-visa" },
+                { label: "E-Visa",        href: "/visa/e-visa" },
                 { label: "USA Visa",      href: "/visa/dubai-residents/united-states" },
                 { label: "UK Visa",       href: "/visa/dubai-residents/united-kingdom" },
                 { label: "Canada Visa",   href: "/visa/dubai-residents/canada" },

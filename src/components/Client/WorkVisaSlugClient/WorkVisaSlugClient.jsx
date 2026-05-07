@@ -442,7 +442,7 @@ Kind regards,
                         return (
                           <Link
                             key={dest.code}
-                            href={`/visa/work-visa/${sl}?nFlag=${encodeURIComponent(nFlag)}&dFlag=${encodeURIComponent(df)}`}
+                            href={`/visa/work-visa/${sl}`}
                             className="flex items-center gap-3 p-3 border border-slate-200 rounded-xl hover:border-amber-300 hover:shadow-sm group transition-all"
                           >
                             <img src={df} className="w-7 h-5 rounded object-cover shadow-sm" alt={dest.name} loading="lazy" width={28} height={20} />
@@ -465,7 +465,7 @@ Kind regards,
                         return (
                           <Link
                             key={nat.code}
-                            href={`/visa/work-visa/${sl}?nFlag=${encodeURIComponent(nf)}&dFlag=${encodeURIComponent(dFlag)}`}
+                            href={`/visa/work-visa/${sl}`}
                             className="flex items-center gap-3 p-3 border border-slate-200 rounded-xl hover:border-amber-300 hover:shadow-sm group transition-all"
                           >
                             <img src={nf} className="w-7 h-5 rounded object-cover shadow-sm" alt={nat.name} loading="lazy" width={28} height={20} />
@@ -575,10 +575,10 @@ Kind regards,
               <div className="space-y-2">
                 {[
                   { label: "Visa Checklist Generator", href: "/visa-resources/visa-checklist-generator" },
-                  { label: "Sponsorship Email Templates", href: "/visa-resources/email-templates" },
-                  { label: "Embassy Directory", href: "/visa-resources/embassy-directory" },
-                  { label: "Processing Time Tracker", href: "/visa-resources/processing-times" },
-                  { label: "Credential Assessment Guide", href: "/visa-resources/credential-assessment" },
+                  { label: "Sponsorship Email Templates", href: "/visa-resources/visa-checklist-generator" },
+                  { label: "Embassy Directory", href: "/visa-resources" },
+                  { label: "Processing Time Tracker", href: "/visa-resources/visa-processing-time-tracker" },
+                  { label: "Credential Assessment Guide", href: "/visa-resources" },
                 ].map((r) => (
                   <Link
                     key={r.label}
@@ -602,7 +602,7 @@ Kind regards,
           <h3 className="text-2xl font-extrabold text-slate-900 mb-3">Need a Different Work Visa?</h3>
           <p className="text-sm text-slate-500 mb-6">Get a personalised guide for any nationality and destination combination.</p>
           <Link
-            href="/visa/work-visa#search"
+            href="/visa/work-visa"
             className="inline-block bg-amber-400 text-slate-900 px-10 py-4 rounded-xl font-bold hover:bg-amber-500 transition-all shadow-lg shadow-amber-100 text-sm"
           >
             Search Work Visa Requirements →

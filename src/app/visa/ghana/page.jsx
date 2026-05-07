@@ -58,12 +58,12 @@ const SEO_LINKS = [
 ];
 
 const VISA_CATEGORIES = [
-  { label: "Europe & Schengen",  icon: "🏰", desc: "Germany, France, Italy, Spain & 22 more Schengen nations",     href: "/visa/schengen-visa" },
-  { label: "North America",      icon: "🗽", desc: "USA B1/B2, Canada TRV, Mexico & beyond",                        href: "/visa/usa-visa" },
-  { label: "Asia Pacific",       icon: "🏯", desc: "Japan, Singapore, Thailand, Malaysia, South Korea",             href: "/visa/asia-visa" },
-  { label: "Australia & NZ",     icon: "🦘", desc: "Australian Subclass 600, NZ Visitor Visa",                      href: "/visa/australia-visa" },
-  { label: "Middle East",        icon: "🕌", desc: "UAE, Saudi Arabia, Qatar, Oman — Ghanaian passport guide",      href: "/visa/middle-east-visa" },
-  { label: "Business Visa",      icon: "💼", desc: "Short-stay business visas — USA, UK, Schengen & Asia",          href: "/visa/business-visa" },
+  { label: "Europe & Schengen",  icon: "🏰", desc: "Germany, France, Italy, Spain & 22 more Schengen nations",     href: "/schengen-visa" },
+  { label: "North America",      icon: "🗽", desc: "USA B1/B2, Canada TRV, Mexico & beyond",                        href: "/visa/tourist-visa/united-states" },
+  { label: "Asia Pacific",       icon: "🏯", desc: "Japan, Singapore, Thailand, Malaysia, South Korea",             href: "/visa/tourist-visa/south-korea" },
+  { label: "Australia & NZ",     icon: "🦘", desc: "Australian Subclass 600, NZ Visitor Visa",                      href: "/visa/tourist-visa/australia-visa" },
+  { label: "Middle East",        icon: "🕌", desc: "UAE, Saudi Arabia, Qatar, Oman — Ghanaian passport guide",      href: "/visa/tourist-visa/qatar" },
+  { label: "Business Visa",      icon: "💼", desc: "Short-stay business visas — USA, UK, Schengen & Asia",          href: "/visa/business-visa/united-kingdom" },
 ];
 
 const STATS = [
@@ -507,7 +507,7 @@ export default function TouristVisaGhanaianNationals() {
             {SEO_LINKS.map((link, i) => (
               <Link
                 key={i}
-                href={`/visa/ghanaian-nationals/${link.slug}`}
+                href={`/visa/ghana/${link.slug}`}
                 className="flex items-start gap-3 p-4 rounded-xl border border-black/5 bg-white hover:border-[#f5c800]/30 hover:shadow-md transition-all group"
                 title={`${link.name} — Complete guide for Ghanaian passport holders`}
               >
@@ -555,7 +555,6 @@ export default function TouristVisaGhanaianNationals() {
                 { label: "Tourist Visa",  href: "/visa/tourist-visa" },
                 { label: "Business Visa", href: "/visa/business-visa" },
                 { label: "Student Visa",  href: "/visa/student-visa" },
-                { label: "Medical Visa",  href: "/visa/medical-visa" },
                 { label: "Schengen Visa", href: "/visa/schengen-visa" },
                 { label: "USA Visa",      href: "/visa/ghana/united-states" },
                 { label: "UK Visa",       href: "/visa/ghana/united-kingdom" },

@@ -58,11 +58,11 @@ const SEO_LINKS = [
 ];
 
 const VISA_CATEGORIES = [
-  { label: "Europe & Schengen",   icon: "🏰", desc: "Germany, France, Italy, Spain & 22 more Schengen nations",   href: "/visa/schengen-visa" },
-  { label: "North America",       icon: "🗽", desc: "USA B1/B2, Canada TRV, Mexico & beyond",                      href: "/visa/usa-visa" },
+  { label: "Europe & Schengen",   icon: "🏰", desc: "Germany, France, Italy, Spain & 22 more Schengen nations",   href: "/schengen-visa" },
+  { label: "North America",       icon: "🗽", desc: "USA B1/B2, Canada TRV, Mexico & beyond",                      href: "/visa/tourist-visa/united-states" },
   { label: "Asia Pacific",        icon: "🏯", desc: "Japan, Singapore, Thailand, Malaysia, South Korea",           href: "/visa/asia-visa" },
-  { label: "Australia & NZ",      icon: "🦘", desc: "Australian Subclass 600, NZ Visitor Visa",                    href: "/visa/australia-visa" },
-  { label: "Middle East",         icon: "🕌", desc: "UAE, Saudi Arabia, Qatar, Oman — Indian passport guide",      href: "/visa/middle-east-visa" },
+  { label: "Australia & NZ",      icon: "🦘", desc: "Australian Subclass 600, NZ Visitor Visa",                    href: "/visa/tourist-visa/australia" },
+  { label: "Middle East",         icon: "🕌", desc: "UAE, Saudi Arabia, Qatar, Oman — Indian passport guide",      href: "/visa/tourist-visa/india" },
   { label: "Business Visa",       icon: "💼", desc: "Short-stay business visas — USA, UK, Schengen & Asia",        href: "/visa/business-visa" },
 ];
 
@@ -575,7 +575,7 @@ export default function TouristVisaIndia() {
                 { label: "Tourist Visa",  href: "/visa/tourist-visa" },
                 { label: "Business Visa", href: "/visa/business-visa" },
                 { label: "Student Visa",  href: "/visa/student-visa" },
-                { label: "Medical Visa",  href: "/visa/medical-visa" },
+                { label: "Medical Visa",  href: "/visa" },
                 { label: "Schengen Visa", href: "/visa/schengen-visa" },
                 { label: "USA Visa",      href: "/visa/india/united-states" },
                 { label: "UK Visa",       href: "/visa/india/united-kingdom" },

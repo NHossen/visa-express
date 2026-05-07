@@ -176,7 +176,7 @@ const INTERNAL_LINKS = [
   { href: '/visa-resources/visa-document-generator', label: 'NOC Letter Template', icon: '⚖️' },
   { href: '/visa-resources/visa-document-generator', label: 'Bank Statement Template', icon: '🏦' },
   { href: '/visa-processing-time-tracker', label: 'Processing Time Tracker', icon: '⏱️' },
-  { href: '/visa-resources/embassy-directory', label: 'Embassy Directory', icon: '🏛️' },
+  { href: '/visa-resources', label: 'Embassy Directory', icon: '🏛️' },
 ];
 
 /* ─── COUNTRY CARD COMPONENT ────────────────────────────────────── */

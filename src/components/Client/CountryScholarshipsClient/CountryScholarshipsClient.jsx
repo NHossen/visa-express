@@ -25,11 +25,11 @@ const fundingTypeDescriptions = {
 };
 
 const relatedLinks = [
-  { label: "All Fully Funded Scholarships", href: "/scholarships/funding/fully-funded" },
-  { label: "PhD Scholarships 2026", href: "/scholarships/degree/phd" },
-  { label: "Master's Scholarships 2026", href: "/scholarships/degree/masters" },
-  { label: "No IELTS Scholarships", href: "/scholarships/no-ielts" },
-  { label: "October Deadline Scholarships", href: "/scholarships/deadline/october" },
+  { label: "All Fully Funded Scholarships", href: "/scholarships" },
+  { label: "PhD Scholarships 2026", href: "/scholarships/degree" },
+  { label: "Master's Scholarships 2026", href: "/scholarships" },
+  { label: "No IELTS Scholarships", href: "/scholarships" },
+  { label: "October Deadline Scholarships", href: "/scholarships" },
 ];
 
 // ─── Main Client Component ────────────────────────────────────────────────────
@@ -116,7 +116,7 @@ export default function CountryScholarshipsClient({
                 Browse All Countries
               </Link>
               <Link
-                href="/scholarships/funding/fully-funded"
+                href="/scholarships"
                 className="bg-gray-50 text-gray-700 px-8 py-3 rounded-full font-bold border border-gray-100 hover:bg-gray-100 transition"
               >
                 View Fully Funded Programs
@@ -421,7 +421,7 @@ export default function CountryScholarshipsClient({
                         {s.tags.map((t) => (
                           <Link
                             key={t}
-                            href={`/scholarships/tag/${t}`}
+                            href={`/scholarships`}
                             className="text-[10px] bg-white border border-gray-200 px-3 py-1.5 rounded-xl text-gray-500 font-black uppercase tracking-wider hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition"
                           >
                             #{t}
@@ -600,10 +600,10 @@ export default function CountryScholarshipsClient({
             <h3 className="text-base font-black text-gray-900 mb-4">Filter by Degree</h3>
             <div className="space-y-1">
               {[
-                { label: "Bachelor's Scholarships", href: "/scholarships/degree/bachelors", icon: "📚" },
-                { label: "Master's Scholarships", href: "/scholarships/degree/masters", icon: "🎓" },
-                { label: "PhD Scholarships", href: "/scholarships/degree/phd", icon: "🔬" },
-                { label: "Short Courses", href: "/scholarships/degree/short-course", icon: "📋" },
+                { label: "Bachelor's Scholarships", href: "/scholarships", icon: "📚" },
+                { label: "Master's Scholarships", href: "/scholarships", icon: "🎓" },
+                { label: "PhD Scholarships", href: "/scholarships", icon: "🔬" },
+                { label: "Short Courses", href: "/scholarships", icon: "📋" },
               ].map((d) => (
                 <Link
                   key={d.href}
@@ -660,7 +660,7 @@ export default function CountryScholarshipsClient({
               2026 intake.
             </p>
             <Link
-              href="/scholarships/deadline/october"
+              href="/scholarships"
               className="text-xs font-black text-red-600 hover:underline uppercase tracking-widest"
             >
               View October Deadlines →

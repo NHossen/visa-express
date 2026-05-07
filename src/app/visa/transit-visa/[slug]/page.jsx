@@ -496,7 +496,7 @@ export default async function TransitVisaSlugPage({ params, searchParams }) {
           <p className="text-sm text-slate-500 mb-6">Check transit visa rules for any nationality and hub combination instantly.</p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
-              href="/visa/transit-visa#search"
+              href="/visa/transit-visa"
               className="inline-block bg-amber-400 text-slate-900 px-10 py-4 rounded-xl font-bold hover:bg-amber-500 transition-all shadow-lg shadow-amber-100 text-sm"
             >
               Search Transit Visa Requirements →

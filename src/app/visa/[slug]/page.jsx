@@ -834,7 +834,7 @@ export default async function VisaDetails({ params }) {
                       className="text-xs font-bold text-purple-600 bg-white border border-purple-100 px-3 py-1.5 rounded-full hover:bg-purple-50 transition">
                       Student Visa →
                     </Link>
-                    <Link href="/scholarship"
+                    <Link href="/scholarships"
                       className="text-xs font-bold text-rose-600 bg-white border border-rose-100 px-3 py-1.5 rounded-full hover:bg-rose-50 transition">
                       Scholarships →
                     </Link>
@@ -998,7 +998,7 @@ export default async function VisaDetails({ params }) {
               <div className="mt-4 pt-4 border-t border-slate-100 space-y-2">
                 <Link href="/visa/tourist-visa"               className="flex items-center gap-2 text-sm font-bold text-green-600 hover:text-green-700 transition">🏖️ Tourist Visa Directory</Link>
                 <Link href="/visa/student-visa"  className="flex items-center gap-2 text-sm font-bold text-purple-600 hover:text-purple-700 transition">🎓 Student Visa Guides</Link>
-                <Link href="/scholarship"                className="flex items-center gap-2 text-sm font-bold text-rose-600 hover:text-rose-700 transition">🏆 Scholarship Finder</Link>
+                <Link href="/scholarships"                className="flex items-center gap-2 text-sm font-bold text-rose-600 hover:text-rose-700 transition">🏆 Scholarship Finder</Link>
               </div>
             </div>
 

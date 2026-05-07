@@ -50,9 +50,12 @@ function parseEvisaSlug(slug) {
 
 // Convert slug back to a readable name for matching
 function slugToName(slug) {
-  return slug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+  if (!slug || typeof slug !== "string") return "";
+  return slug
+    .split("-")
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
 }
-
 // ─────────────────────────────────────────────────────────────────────────────
 // NATIONALITY ADJECTIVE MAP (slug → adjective label)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1253,9 +1256,9 @@ export default async function EVisaSlugPage({ params }) {
               <div className="space-y-1.5">
                 {[
                   { label: `${natAdj} Tourist Visa Guides`, href: `/visa/${nationalitySlug}-nationals` },
-                  { label: "Schengen Visa Guide",            href: "/visa/schengen-visa" },
-                  { label: "USA Visa Guide",                 href: "/visa/usa-visa" },
-                  { label: "UK Visa Guide",                  href: "/visa/uk-visa" },
+                  { label: "Schengen Visa Guide",            href: "/schengen-visa" },
+                  { label: "USA Visa Guide",                 href: "/visa/united-states" },
+                  { label: "UK Visa Guide",                  href: "/visa/united-kingdom" },
                   { label: "Canada Visa Guide",              href: "/visa/canada-visa" },
                   { label: "All e-Visa Guides",              href: "/visa/e-visa" },
                 ].map(link => (

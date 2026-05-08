@@ -168,7 +168,7 @@ slugs.forEach(nat => {
 
   // 4. /visa/india/[slug]
   slugs.forEach(({ slug }) => {
-    routes.push(fmt(`/visa/india/${slug}`, 0.8, 'monthly'));
+    routes.push(fmt(`/visa/india/${slug}`, 0.85, 'monthly'));
   });
 
   // 5. /visa/nigeria/[slug]

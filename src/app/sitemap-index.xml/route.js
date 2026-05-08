@@ -5,7 +5,7 @@ import { buildAllRoutes } from '@/app/lib/sitemapRoutes';
 
 export const dynamic = 'force-dynamic';
 
-const BASE_URL = 'https://www.visaexpresshub.com';
+const BASE_URL = 'https://visaexpresshub.com';
 const PAGE_SIZE = 50_000;
 
 export async function GET() {

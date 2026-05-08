@@ -1,7 +1,7 @@
 // /app/lib/sitemapRoutes.js
 import { createSlug } from './utils';
 
-const BASE_URL = 'https://www.visaexpresshub.com';
+const BASE_URL = 'https://visaexpresshub.com';
 const BUILD_TIME = new Date().toISOString();
 const PROCESSING_TYPES = ['sticker', 'e-visa', 'transit', 'sticker-extended'];
 const REJECTION_TYPES  = ['tourist', 'student', 'work', 'transit', 'business', 'family'];

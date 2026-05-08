@@ -1,27 +1,17 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactCompiler: true,
 
-async rewrites() {
-  return [
-    {
-      source: '/sitemap/:id.xml',
-      destination: '/sitemap/:id',
-    },
-  ];
-},
-
-  async headers() {
+  async rewrites() {
     return [
+      // /sitemap/0.xml → /sitemap/0
       {
-        // Apply caching headers to all sitemap sub-paths
-        source: '/sitemap/:path*',
-        headers: [
-          { 
-            key: 'Cache-Control', 
-            value: 'public, max-age=3600, s-maxage=3600' 
-          },
-        ],
+        source: '/sitemap/:id.xml',
+        destination: '/sitemap/:id',
+      },
+      // /sitemap.xml → served by your sitemap-index.xml route
+      {
+        source: '/sitemap.xml',
+        destination: '/sitemap-index.xml',
       },
     ];
   },

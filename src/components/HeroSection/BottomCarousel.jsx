@@ -90,7 +90,7 @@ const bottomSlides = [
     price: "Track Now →",
     img: "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=800&auto=format&fit=crop&q=80",
     alt: "Canada Visa Processing Time for Bangladesh",
-    link: "/visa-processing-time/canada/for/bangladesh",
+    link: "/visa-processing-time-tracker/pakistan-national-visa-processing-time-for-canada?type=e-visa",
   },
   {
     id: 7,
@@ -101,7 +101,7 @@ const bottomSlides = [
     price: "Track Now →",
     img: "https://images.unsplash.com/photo-1529655683826-aba9b3e77383?w=800&auto=format&fit=crop&q=80",
     alt: "UK Visa Processing Time for Bangladesh",
-    link: "/visa-processing-time/uk/for/bangladesh",
+    link: "/visa-processing-time-tracker/bangladesh-national-visa-processing-time-for-united-kingdom?type=sticker",
   },
   {
     id: 8,
@@ -112,7 +112,7 @@ const bottomSlides = [
     price: "Track Now →",
     img: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&auto=format&fit=crop&q=80",
     alt: "Schengen Visa Processing Time",
-    link: "/visa-processing-time/schengen/for/bangladesh",
+    link: "/visa-processing-time-tracker/india-national-visa-processing-time-for-france?type=sticker",
   },
   {
     id: 9,
@@ -123,7 +123,7 @@ const bottomSlides = [
     price: "Track Now →",
     img: "https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=800&auto=format&fit=crop&q=80",
     alt: "USA Visa Processing Time for Bangladesh Nationals",
-    link: "/visa-processing-time/usa/for/bangladesh",
+    link: "/visa-processing-time-tracker/india-national-visa-processing-time-for-united-arab-emirates?type=e-visa",
   },
  
   // ── FREE TOOLS & TEMPLATES ────────────────────────────────────────────────
@@ -135,7 +135,7 @@ const bottomSlides = [
     validUntil: "Statement of Purpose – Ready to Use",
     img: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80",
     alt: "Free SOP Template Download for Visa Application",
-    link: "/sop-template",
+    link: "/visa-resources/visa-document-generator",
   },
   {
     id: 11,
@@ -145,7 +145,7 @@ const bottomSlides = [
     validUntil: "No Objection Certificate – Editable",
     img: "https://images.unsplash.com/photo-1568219557405-376e23e4f7cf?w=800&auto=format&fit=crop&q=80",
     alt: "Free NOC Letter Template for Visa Application",
-    link: "/noc-template",
+    link: "/visa-resources/visa-document-generator",
   },
   {
     id: 12,
@@ -165,7 +165,7 @@ const bottomSlides = [
     validUntil: "Country-Specific Checklists – Free",
     img: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&auto=format&fit=crop&q=80",
     alt: "Visa Document Checklist for Every Country",
-    link: "/visa-checklist",
+    link: "/visa-resources/visa-checklist-generator",
   },
  
   // ── STUDENT VISA & SCHOLARSHIP ────────────────────────────────────────────

@@ -1,20 +1,14 @@
-// app/lib/sitemapData.js
+import { unstable_cache } from 'next/cache';
 import { MongoClient } from 'mongodb';
 
 const uri = process.env.MONGODB_URI;
 
-let _countries = null;
-
-// src/app/lib/sitemapData.js
-export async function getCountries() {
-  if (_countries && _countries.length > 0) return _countries;
-
+async function fetchCountries() {
   const client = new MongoClient(uri, {
     serverSelectionTimeoutMS: 5000,
     connectTimeoutMS: 10000,
     family: 4,
   });
-
   try {
     await client.connect();
     const db = client.db('Eammu-Holidays');
@@ -25,22 +19,22 @@ export async function getCountries() {
       .sort({ country: 1 })
       .toArray();
 
-    // ✅ Deduplicate by country name
     const seen = new Set();
     const unique = countries.filter(c => {
       const key = c.country.toLowerCase().trim();
-      if (seen.has(key)) {
-        console.warn(`[sitemap] ⚠️ Duplicate country removed: "${c.country}"`);
-        return false;
-      }
+      if (seen.has(key)) return false;
       seen.add(key);
       return true;
     });
-
-    console.log(`[sitemap] Countries: ${countries.length} raw → ${unique.length} unique`);
-    _countries = unique;
-    return _countries;
+    console.log(`[sitemap] ${countries.length} raw → ${unique.length} unique`);
+    return unique;
   } finally {
     await client.close();
   }
 }
+
+export const getCountries = unstable_cache(
+  fetchCountries,
+  ['sitemap-countries'],
+  { revalidate: 86400 }
+);

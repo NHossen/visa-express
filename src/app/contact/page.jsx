@@ -1,150 +1,222 @@
-"use client";
-import React from 'react';
-import Link from 'next/link';
-
-export default function ContactPage() {
-  const offices = [
+import ContactPage from '@/components/Client/Contact/Contact'
+import React from 'react'
+export const metadata = {
+  title: "Contact Visa Express Hub | Visa Assistance in Dubai & Dhaka",
+  description:
+    "Speak with our expert visa consultants in Dubai (UAE) and Dhaka (Bangladesh). We assist with Schengen, UK, Canada, USA, Australia tourist, student, and work visas. Call +971 50 707 8334 or email info@visaexpresshub.com.",
+  keywords: [
+    "visa assistance Dubai",
+    "visa consultant Dubai UAE",
+    "visa consultant Dhaka Bangladesh",
+    "Visa Express Hub contact",
+    "Schengen visa help Dubai",
+    "Canada visa consultant UAE",
+    "UK visa assistance Dubai",
+    "USA visa consultant Dubai",
+    "Australia visa Dubai",
+    "student visa consultant Dubai",
+    "work visa Dubai",
+    "tourist visa Dubai",
+    "travel documentation services UAE",
+    "visa agency Deira Dubai",
+    "visa office Dhaka Dhanmondi",
+    "immigration consultants Dubai",
+    "visa application help UAE",
+    "visa appointment Dubai",
+  ],
+  alternates: {
+    canonical: "https://www.visaexpresshub.com/contact",
+  },
+  openGraph: {
+    title: "Contact Visa Express Hub | Expert Visa Assistance in Dubai & Dhaka",
+    description:
+      "Get professional visa support from our offices in Dubai, UAE and Dhaka, Bangladesh. We handle tourist, student, and work visas for 50+ countries. Call +971 50 707 8334.",
+    url: "https://www.visaexpresshub.com/contact",
+    siteName: "Visa Express Hub",
+    images: [
+      {
+        url: "/visa-express-hub-banner.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Visa Express Hub - Contact our global visa specialists in Dubai and Dhaka",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Visa Express Hub | Visa Consultants Dubai & Dhaka",
+    description:
+      "Expert visa assistance for 50+ countries. Offices in Dubai (UAE) and Dhaka (Bangladesh). Call +971 50 707 8334 today.",
+    images: ["/visa-express-hub-banner.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
+ 
+// ─── JSON-LD STRUCTURED DATA ──────────────────────────────────
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      city: "Dubai, UAE",
-      address: "Al Nasser Building, Deira, Dubai, United Arab Emirates",
-      phone: "+971 50 707 8334",
-      callLink: "tel:+971507078334",
-      map: "https://www.google.com/maps/search/Al+Nasser+Building+Deira+Dubai"
+      "@type": "TravelAgency",
+      "@id": "https://www.visaexpresshub.com/#organization",
+      name: "Visa Express Hub",
+      url: "https://www.visaexpresshub.com",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://www.visaexpresshub.com/visa-express-hub-logo.jpg",
+        width: 200,
+        height: 60,
+      },
+      image: "https://www.visaexpresshub.com/visa-express-hub-banner.jpg",
+      description:
+        "Visa Express Hub is a professional visa consultancy and travel documentation agency with offices in Dubai (UAE) and Dhaka (Bangladesh), serving clients worldwide with tourist, student, work, and business visa applications for 50+ countries.",
+      telephone: "+971507078334",
+      email: "info@visaexpresshub.com",
+      address: [
+        {
+          "@type": "PostalAddress",
+          streetAddress: "Al Nasser Building, Deira",
+          addressLocality: "Dubai",
+          addressRegion: "Dubai",
+          addressCountry: "AE",
+          postalCode: "00000",
+        },
+        {
+          "@type": "PostalAddress",
+          streetAddress: "Dhanmondi",
+          addressLocality: "Dhaka",
+          addressCountry: "BD",
+        },
+      ],
+      areaServed: [
+        "United Arab Emirates",
+        "Bangladesh",
+        "United Kingdom",
+        "Canada",
+        "United States",
+        "Australia",
+        "Schengen Area",
+        "Worldwide",
+      ],
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Visa Services",
+        itemListElement: [
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Schengen Visa Assistance" } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "UK Visa Assistance" } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Canada Visa Assistance" } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "USA Visa Assistance" } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Australia Visa Assistance" } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Student Visa Assistance" } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Work Visa Assistance" } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Tourist Visa Assistance" } },
+        ],
+      },
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"],
+          opens: "09:00",
+          closes: "18:00",
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Saturday", "Sunday"],
+          opens: "10:00",
+          closes: "16:00",
+        },
+      ],
+      sameAs: [
+        "https://www.facebook.com/visaexpresshub",
+        "https://www.instagram.com/visaexpresshub",
+        "https://www.linkedin.com/company/visaexpresshub",
+      ],
     },
     {
-      city: "Dhaka, Bangladesh",
-      address: "Dhanmondi, Dhaka, Bangladesh",
-      phone: "+880 1631 312524",
-      callLink: "tel:+8801631312524",
-      map: "https://www.google.com/maps/search/Dhanmondi+Dhaka"
-    }
-  ];
+      "@type": "ContactPage",
+      "@id": "https://www.visaexpresshub.com/contact#webpage",
+      url: "https://www.visaexpresshub.com/contact",
+      name: "Contact Visa Express Hub",
+      description:
+        "Contact our visa specialists in Dubai and Dhaka for expert guidance on tourist, student, work, and business visas for 50+ countries.",
+      isPartOf: { "@id": "https://www.visaexpresshub.com/#organization" },
+      breadcrumb: {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.visaexpresshub.com" },
+          { "@type": "ListItem", position: 2, name: "Contact", item: "https://www.visaexpresshub.com/contact" },
+        ],
+      },
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "How can I contact Visa Express Hub in Dubai?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "You can reach our Dubai office by calling +971 50 707 8334, emailing info@visaexpresshub.com, or visiting us at Al Nasser Building, Deira, Dubai, UAE. Our office hours are Sunday to Thursday, 9 AM to 6 PM.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Does Visa Express Hub have an office in Dhaka, Bangladesh?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes, Visa Express Hub has a branch office in Dhanmondi, Dhaka, Bangladesh. You can contact us via phone or email to schedule an appointment at our Dhaka office.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Which visa types does Visa Express Hub assist with?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "We assist with a wide range of visa types including Schengen visas, UK visas, Canada visas, USA visas, Australia visas, student visas, work visas, tourist visas, and business visas for 50+ countries worldwide.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "How long does visa processing take?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Processing times vary by visa type and destination country. Schengen visas typically take 15–30 days, UK visas 3–8 weeks, and Canadian visas 4–12 weeks. Contact our consultants for a personalized timeline based on your specific case.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Can I apply for a visa consultation online?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes, Visa Express Hub offers online consultations. You can submit your enquiry via our contact form, email us at info@visaexpresshub.com, or WhatsApp us at +971 50 707 8334 for a remote consultation.",
+          },
+        },
+      ],
+    },
+  ],
+};
+ 
 
+export default function page() {
   return (
-    <div className="min-h-screen bg-white text-slate-900 selection:bg-yellow-100">
-      
-      {/* --- HERO SECTION --- */}
-      <section className="bg-yellow-400 py-20 px-6 text-center relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/world-item.png')] bg-center"></div>
-        </div>
-        
-        <div className="relative z-10">
-          <span className="bg-yellow-400 text-black px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.3em]">
-            Get In Touch
-          </span>
-          <h1 className="text-5xl md:text-7xl font-black text-white mt-6 tracking-tighter">
-            Global <span className="text-black">Support</span>
-          </h1>
-          <p className="mt-6 text-slate-400 max-w-xl mx-auto text-lg font-medium">
-            Connect with our visa specialists across our international offices for seamless travel documentation.
-          </p>
-        </div>
-      </section>
-
-      <main className="max-w-7xl mx-auto px-6 -mt-16 relative z-20 pb-24">
-        
-        {/* --- CORE CONTACT CARDS --- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          {offices.map((office, idx) => (
-            <div key={idx} className="bg-white border-2 border-slate-100 rounded-[2.5rem] p-10 shadow-xl shadow-slate-200/50 hover:border-yellow-400 transition-all group">
-              <div className="flex justify-between items-start mb-8">
-                <div className="bg-yellow-400 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl">
-                  📍
-                </div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-300 group-hover:text-yellow-500">
-                  Office {idx + 1}
-                </span>
-              </div>
-              <h3 className="text-3xl font-black mb-4 tracking-tight">{office.city}</h3>
-              <p className="text-slate-500 font-medium leading-relaxed mb-8 h-12">
-                {office.address}
-              </p>
-              <div className="space-y-4 border-t border-slate-50 pt-8">
-                <a href={office.callLink} className="flex items-center gap-4 group/link">
-                  <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover/link:bg-yellow-400 transition-colors">
-                    📞
-                  </div>
-                  <span className="font-black text-lg tracking-tight group-hover/link:text-yellow-600">
-                    {office.phone}
-                  </span>
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* --- DIGITAL CHANNELS & SPONSOR --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
-          {/* Quick Links */}
-          <div className="lg:col-span-2 bg-slate-50 rounded-[2.5rem] p-10 md:p-16 flex flex-col justify-center">
-            <h2 className="text-4xl font-black mb-8 tracking-tighter">Digital Reach</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <div>
-                <p className="text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Official Email</p>
-                <a href="mailto:info@visaexpresshub.com" className="text-xl font-black hover:text-yellow-600 transition-colors">
-                  info@visaexpresshub.com
-                </a>
-              </div>
-              <div>
-                <p className="text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Official Website</p>
-                <Link href="https://www.visaexpresshub.com" className="text-xl font-black hover:text-yellow-600 transition-colors">
-                  www.visaexpresshub.com
-                </Link>
-              </div>
-            </div>
-
-            {/* Sponsored Branding */}
-            <div className="mt-16 pt-10 border-t border-slate-200">
-               <p className="text-sm font-bold text-slate-400 mb-4 italic">Managed & Powered by</p>
-               <Link href="https://www.eammu.com" target="_blank" className="group inline-flex items-center gap-4">
-                  <div className="bg-slate-900 text-white px-6 py-3 rounded-xl font-black uppercase text-xs tracking-[0.2em] group-hover:bg-yellow-400 group-hover:text-black transition-all shadow-lg">
-                    Eammu Holidays
-                  </div>
-                  <span className="text-xs font-black text-slate-900 underline underline-offset-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                    Visit eammu.com →
-                  </span>
-               </Link>
-            </div>
-          </div>
-
-          {/* Business Hours Sidebar */}
-          <div className="bg-yellow-400 rounded-[2.5rem] p-10 flex flex-col">
-            <h4 className="text-2xl font-black uppercase leading-none mb-8">Service <br /> Hours</h4>
-            <div className="space-y-4 font-bold text-sm">
-              <div className="flex justify-between border-b border-black/10 pb-2">
-                <span>Sunday - Thursday</span>
-                <span>09:00 - 18:00</span>
-              </div>
-              <div className="flex justify-between border-b border-black/10 pb-2">
-                <span>Saturday</span>
-                <span>10:00 - 14:00</span>
-              </div>
-              <div className="flex justify-between text-black/40">
-                <span>Friday</span>
-                <span>Closed</span>
-              </div>
-            </div>
-            <div className="mt-auto pt-10">
-              <p className="text-xs font-black uppercase tracking-widest mb-4">Urgent Inquiry?</p>
-              <p className="text-[10px] font-medium leading-relaxed italic">
-                Our support team monitors emails 24/7 for urgent visa status updates.
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </main>
-
-      {/* --- SEO FOOTER TRADEMARK --- */}
-      <footer className="bg-white py-12 border-t border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-300">
-            Visa Express Hub © 2026 • All Rights Reserved
-          </p>
-        </div>
-      </footer>
+    <div>
+ {/* Inject JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <ContactPage />
     </div>
-  );
+  )
 }

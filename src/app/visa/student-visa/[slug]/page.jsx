@@ -43,6 +43,10 @@ function getRelatedCountries(name) {
   return pool.slice(0, 5);
 }
 
+// ── TOP STUDY DESTINATIONS (for internal links) ───────────────────────────────
+const TOP_DESTINATIONS = ["Canada","United Kingdom","Australia","Germany","USA","Malaysia","Japan","New Zealand"];
+const COMPARE_DESTINATIONS = ["Canada","United Kingdom","Australia","Germany","USA","Malaysia"];
+
 // ── SEO METADATA ──────────────────────────────────────────────────────────────
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -71,57 +75,130 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// ── JSON-LD SCHEMAS ───────────────────────────────────────────────────────────
+// ── JSON-LD SCHEMAS (FIXED) ───────────────────────────────────────────────────
 function ArticleSchema({ countryName, slug, flag, description, year }) {
+  const pageUrl = `https://www.eammu.com/visa/student-visa/${slug}`;
   const schema = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Article",
+        "@id": `${pageUrl}#article`,
         "headline": `${countryName} Student Visa for Bangladeshi Students ${year}`,
         "description": description,
-        "image": flag,
+        "image": {
+          "@type": "ImageObject",
+          "url": flag,
+          "width": 1200,
+          "height": 630
+        },
         "datePublished": `${year}-01-01`,
         "dateModified": new Date().toISOString().split("T")[0],
-        "author": { "@type": "Organization", "name": "Eammu Holidays", "url": "https://www.eammu.com" },
+        "author": {
+          "@type": "Organization",
+          "@id": "https://www.eammu.com#organization",
+          "name": "Eammu Holidays",
+          "url": "https://www.eammu.com"
+        },
         "publisher": {
           "@type": "Organization",
+          "@id": "https://www.eammu.com#organization",
           "name": "Eammu Holidays",
-          "logo": { "@type": "ImageObject", "url": "https://www.eammu.com/logo.png" }
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.eammu.com/logo.png",
+            "width": 200,
+            "height": 60
+          }
         },
-        "mainEntityOfPage": `https://www.eammu.com/visa/student-visa/${slug}`,
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": pageUrl
+        },
+        "inLanguage": "en-BD",
+        "keywords": `${countryName} student visa Bangladesh ${year}, study in ${countryName} from Bangladesh`
       },
       {
         "@type": "BreadcrumbList",
+        "@id": `${pageUrl}#breadcrumb`,
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.eammu.com" },
-          { "@type": "ListItem", "position": 2, "name": "Student Visa", "item": "https://www.eammu.com/study-abroad/student-visa" },
-          { "@type": "ListItem", "position": 3, "name": `Study in ${countryName}`, "item": `https://www.eammu.com/study-abroad/student-visa/${slug}` }
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.eammu.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Student Visa",
+            "item": "https://www.eammu.com/visa/student-visa"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": `Study in ${countryName}`,
+            "item": pageUrl
+          }
         ]
       },
       {
-        "@type": "LocalBusiness",
-        "name": "Eammu Holidays — Student Visa Consultancy",
+        "@type": "Organization",
+        "@id": "https://www.eammu.com#organization",
+        "name": "Eammu Holidays",
         "url": "https://www.eammu.com",
-        "telephone": "+880-163-131-2524",
-        "email": "support@eammu.com",
-        "address": { "@type": "PostalAddress", "addressLocality": "Dhaka", "addressCountry": "BD" },
-        "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "1200" }
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.eammu.com/logo.png"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+880-163-131-2524",
+          "contactType": "customer service",
+          "email": "support@eammu.com",
+          "availableLanguage": ["Bengali", "English"]
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Dhaka",
+          "addressCountry": "BD"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "1200",
+          "bestRating": "5"
+        }
       }
     ]
   };
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
 }
 
+// ── FAQ SCHEMA (FIXED) ────────────────────────────────────────────────────────
 function FaqSchema({ faqs }) {
   if (!faqs?.length) return null;
+
+  // Normalize both {question, answer} and {q, a} formats
+  const normalized = faqs
+    .map(f => ({
+      question: f.question || f.q || "",
+      answer: f.answer || f.a || ""
+    }))
+    .filter(f => f.question && f.answer); // skip any empty entries
+
+  if (!normalized.length) return null;
+
   const schema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": faqs.map(f => ({
+    "mainEntity": normalized.map(f => ({
       "@type": "Question",
-      "name": f.question || f.q,
-      "acceptedAnswer": { "@type": "Answer", "text": f.answer || f.a }
+      "name": f.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.answer
+      }
     }))
   };
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
@@ -180,21 +257,28 @@ function RelatedCountriesBox({ currentCountry }) {
   return (
     <div className="bg-white rounded-2xl border-2 border-gray-100 p-5">
       <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3">Also Explore</p>
-      <div className="flex flex-col gap-1">
-        {related.map(c => (
-          <Link key={c} href={`/visa/student-visa/${createSlug(c)}`}
-            title={`Study in ${c} — Student Visa Guide for Bangladeshi Students`}
-            className="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-green-700 px-3 py-2 rounded-xl hover:bg-green-50 transition-all no-underline"
+      <nav aria-label="Related study destinations">
+        <div className="flex flex-col gap-1">
+          {related.map(c => (
+            <Link
+              key={c}
+              href={`/visa/student-visa/${createSlug(c)}`}
+              title={`${c} Student Visa Guide for Bangladeshi Students — Requirements & Process`}
+              className="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-green-700 px-3 py-2 rounded-xl hover:bg-green-50 transition-all no-underline"
+            >
+              <ChevronRight size={12} className="text-yellow-500 shrink-0" />
+              Study in {c}
+            </Link>
+          ))}
+          <Link
+            href="/visa/student-visa"
+            title="All Student Visa Guides for Bangladeshi Students — 200+ Countries"
+            className="flex items-center gap-2 text-xs font-black text-green-700 px-3 py-2 rounded-xl hover:bg-green-50 transition-all no-underline mt-1 border-t border-gray-100 pt-3"
           >
-            <ChevronRight size={12} className="text-yellow-500 shrink-0" /> Study in {c}
+            <Globe size={12} className="shrink-0" /> View All 200+ Countries →
           </Link>
-        ))}
-        <Link href="/visa/student-visa"
-          className="flex items-center gap-2 text-xs font-black text-green-700 px-3 py-2 rounded-xl hover:bg-green-50 transition-all no-underline mt-1 border-t border-gray-100 pt-3"
-        >
-          <Globe size={12} className="shrink-0" /> View All 200+ Countries →
-        </Link>
-      </div>
+        </div>
+      </nav>
     </div>
   );
 }
@@ -203,21 +287,25 @@ function OtherVisaBox({ countryName, slug }) {
   return (
     <div className="bg-gray-50 rounded-2xl border-2 border-gray-100 p-5">
       <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3">Other {countryName} Visas</p>
-      <div className="grid grid-cols-2 gap-2">
-        {[
-          { label: "Tourist Visa", href: `/visa/tourist-visa/${slug}`, icon: "✈️" },
-          { label: "Work Visa", href: `/visa/work-visa/${slug}`, icon: "💼" },
-          { label: "Business Visa", href: `/visa/business-visa/${slug}`, icon: "🏢" },
-          { label: "Medical Visa", href: `/visa/medical-visa/${slug}`, icon: "🏥" },
-        ].map(t => (
-          <Link key={t.href} href={t.href}
-            title={`${countryName} ${t.label} for Bangladeshi Citizens`}
-            className="flex items-center gap-2 text-xs font-bold text-gray-600 hover:text-green-700 p-2.5 rounded-xl bg-white border border-gray-100 hover:border-yellow-300 transition-all no-underline"
-          >
-            <span>{t.icon}</span> {t.label}
-          </Link>
-        ))}
-      </div>
+      <nav aria-label={`Other ${countryName} visa types`}>
+        <div className="grid grid-cols-2 gap-2">
+          {[
+            { label: "Tourist Visa", href: `/visa/tourist-visa/${slug}`, icon: "✈️" },
+            { label: "Work Visa", href: `/visa/work-visa/${slug}`, icon: "💼" },
+            { label: "Business Visa", href: `/visa/business-visa/${slug}`, icon: "🏢" },
+            { label: "Medical Visa", href: `/visa/medical-visa/${slug}`, icon: "🏥" },
+          ].map(t => (
+            <Link
+              key={t.href}
+              href={t.href}
+              title={`${countryName} ${t.label} for Bangladeshi Citizens — Requirements & Process`}
+              className="flex items-center gap-2 text-xs font-bold text-gray-600 hover:text-green-700 p-2.5 rounded-xl bg-white border border-gray-100 hover:border-yellow-300 transition-all no-underline"
+            >
+              <span>{t.icon}</span> {t.label}
+            </Link>
+          ))}
+        </div>
+      </nav>
     </div>
   );
 }
@@ -230,20 +318,83 @@ function EmailCTABox({ countryName, whatsappUrl }) {
       <p className="text-black/70 text-xs leading-relaxed mb-5">
         Our specialists handle admission support, SOP writing, document review, and full visa application.
       </p>
-      <a href="mailto:info@visaexpresshub.com"
+      
+      {/* Fixed Email Link */}
+      <Link 
+        href="mailto:support@eammu.com"
         className="flex items-center justify-center gap-2 bg-black text-white py-3 rounded-xl font-black text-sm hover:bg-gray-800 transition mb-3 no-underline"
       >
-        <Mail size={14} /> info@visaexpresshub.com
-      </a>
-      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
+        <Mail size={14} /> support@eammu.com
+      </Link>
+      
+      {/* Fixed WhatsApp Link */}
+      <Link
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
         className="flex items-center justify-center gap-2 bg-green-600 text-white py-3 rounded-xl font-black text-sm hover:bg-green-700 transition no-underline"
       >
         💬 WhatsApp Now — Free
-      </a>
+      </Link>
     </div>
   );
 }
-// ── FALLBACK PAGE (country exists, no DB data yet) ────────────────────────────
+
+// ── INTERNAL LINKS SECTION (reusable, SEO-strong) ─────────────────────────────
+function InternalLinksSection({ currentCountry, year }) {
+  const destinations = TOP_DESTINATIONS.filter(c => c !== currentCountry);
+  return (
+    <section className="bg-white rounded-3xl border-2 border-gray-100 shadow-sm p-8">
+      <div className="flex items-center gap-3 mb-2">
+        <div className="w-1.5 h-8 bg-yellow-400 rounded-full" />
+        <h2 className="font-black text-gray-900 text-lg">
+          Compare Popular Study Destinations from Bangladesh
+        </h2>
+      </div>
+      <p className="text-xs text-gray-400 mb-6 ml-5">
+        Full student visa guides for Bangladeshi students — requirements, fees & scholarships
+      </p>
+      <nav aria-label="Study destination comparison links">
+        <div className="grid sm:grid-cols-2 gap-3">
+          {destinations.map(c => (
+            <Link
+              key={c}
+              href={`/visa/student-visa/${createSlug(c)}`}
+              title={`Study in ${c} — Student Visa Requirements for Bangladeshi Students ${year}`}
+              className="flex items-center gap-3 p-4 bg-gray-50 border-2 border-gray-100 hover:border-yellow-300 hover:bg-yellow-50 rounded-2xl transition-all group no-underline"
+            >
+              <GraduationCap size={16} className="text-yellow-500 shrink-0" />
+              <div>
+                <p className="text-sm font-black text-gray-800 group-hover:text-black transition-colors">
+                  Study in {c}
+                </p>
+                <p className="text-xs text-gray-400">
+                  Student Visa Guide {year}
+                </p>
+              </div>
+              <ArrowRight size={13} className="ml-auto text-gray-300 group-hover:text-yellow-500 group-hover:translate-x-0.5 transition-all" />
+            </Link>
+          ))}
+        </div>
+      </nav>
+      <div className="mt-5 pt-5 border-t border-gray-100 flex flex-wrap gap-2">
+        <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 w-full mb-1">Quick links:</span>
+        {["tourist-visa","work-visa","business-visa","medical-visa"].map(type => (
+          <Link
+            key={type}
+            href={`/visa/${type}`}
+            title={`${type.replace(/-/g," ")} guides for Bangladeshi citizens`}
+            className="text-xs font-bold text-gray-500 hover:text-green-700 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-100 hover:border-yellow-300 transition-all no-underline capitalize"
+          >
+            {type.replace(/-/g," ")}
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ── FALLBACK PAGE ─────────────────────────────────────────────────────────────
 function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
   const countryName = country.country;
   const year = new Date().getFullYear();
@@ -289,19 +440,24 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
   ];
 
   const faqs = [
-    { q: `Do Bangladeshi students need a visa to study in ${countryName}?`, a: `Yes. Bangladesh passport holders require a student visa or study permit to enrol in ${countryName}. Requirements, fees and processing times vary. WhatsApp our consultants for the exact current ${year} policy for ${countryName}.` },
-    { q: `How much bank balance do I need for a ${countryName} student visa?`, a: `Most countries require full first-year tuition plus living expenses (BDT 3–10 lakh depending on institution and city). A consistent 6–12 month banking history is equally critical — last-minute lump deposits are flagged as red signals.` },
-    { q: `Is IELTS mandatory for ${countryName} student visa?`, a: `IELTS Academic (6.0–6.5) is widely required, but many institutions also accept PTE Academic, TOEFL iBT, or Duolingo. Always verify from your target university and the specific visa category.` },
-    { q: `Can I work part-time while studying in ${countryName}?`, a: `Most destinations allow 20–24 hours per week during semester and full-time during academic breaks. Work rights vary by country — our consultants can confirm current ${countryName} policy.` },
-    { q: `How long does the ${countryName} student visa take to process?`, a: `Processing varies: typically 4–16 weeks depending on the country, season, and completeness of your application. Apply at least 3 months before your course start date.` },
-    { q: `What scholarships are available for Bangladeshi students in ${countryName}?`, a: `${countryName} universities and government bodies offer scholarships ranging from partial tuition waivers to fully-funded programs. Contact Eammu Holidays for a personalized ${year} scholarship shortlist.` },
+    { question: `Do Bangladeshi students need a visa to study in ${countryName}?`, answer: `Yes. Bangladesh passport holders require a student visa or study permit to enrol in ${countryName}. Requirements, fees and processing times vary. WhatsApp our consultants for the exact current ${year} policy for ${countryName}.` },
+    { question: `How much bank balance do I need for a ${countryName} student visa?`, answer: `Most countries require full first-year tuition plus living expenses (BDT 3–10 lakh depending on institution and city). A consistent 6–12 month banking history is equally critical — last-minute lump deposits are flagged as red signals.` },
+    { question: `Is IELTS mandatory for ${countryName} student visa?`, answer: `IELTS Academic (6.0–6.5) is widely required, but many institutions also accept PTE Academic, TOEFL iBT, or Duolingo. Always verify from your target university and the specific visa category.` },
+    { question: `Can I work part-time while studying in ${countryName}?`, answer: `Most destinations allow 20–24 hours per week during semester and full-time during academic breaks. Work rights vary by country — our consultants can confirm current ${countryName} policy.` },
+    { question: `How long does the ${countryName} student visa take to process?`, answer: `Processing varies: typically 4–16 weeks depending on the country, season, and completeness of your application. Apply at least 3 months before your course start date.` },
+    { question: `What scholarships are available for Bangladeshi students in ${countryName}?`, answer: `${countryName} universities and government bodies offer scholarships ranging from partial tuition waivers to fully-funded programs. Contact Eammu Holidays for a personalized ${year} scholarship shortlist.` },
   ];
 
   return (
     <div className="min-h-screen bg-white text-gray-900" style={{ fontFamily: "'DM Sans','Plus Jakarta Sans',system-ui,sans-serif" }}>
       <FaqSchema faqs={faqs} />
-      <ArticleSchema countryName={countryName} slug={cleanSlug} flag={country.flag}
-        description={`Complete ${year} guide to studying in ${countryName} for Bangladesh passport holders.`} year={year} />
+      <ArticleSchema
+        countryName={countryName}
+        slug={cleanSlug}
+        flag={country.flag}
+        description={`Complete ${year} guide to studying in ${countryName} for Bangladesh passport holders.`}
+        year={year}
+      />
 
       {/* ── HERO ── */}
       <div className="relative bg-black overflow-hidden">
@@ -310,12 +466,21 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
         <div className="max-w-7xl mx-auto px-5 py-16 md:py-24 relative z-10">
           {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex items-center gap-2 text-xs text-white/40 font-semibold flex-wrap">
-              <li><Link href="/" className="hover:text-white/70 transition">Home</Link></li>
+            <ol className="flex items-center gap-2 text-xs text-white/40 font-semibold flex-wrap" itemScope itemType="https://schema.org/BreadcrumbList">
+              <li itemScope itemProp="itemListElement" itemType="https://schema.org/ListItem">
+                <Link href="/" itemProp="item" className="hover:text-white/70 transition"><span itemProp="name">Home</span></Link>
+                <meta itemProp="position" content="1" />
+              </li>
               <li><ChevronRight size={12} /></li>
-              <li><Link href="/visa/student-visa" className="hover:text-white/70 transition">Student Visa</Link></li>
+              <li itemScope itemProp="itemListElement" itemType="https://schema.org/ListItem">
+                <Link href="/visa/student-visa" itemProp="item" className="hover:text-white/70 transition"><span itemProp="name">Student Visa</span></Link>
+                <meta itemProp="position" content="2" />
+              </li>
               <li><ChevronRight size={12} /></li>
-              <li className="text-white/60">{countryName}</li>
+              <li itemScope itemProp="itemListElement" itemType="https://schema.org/ListItem">
+                <span itemProp="name" className="text-white/60">{countryName}</span>
+                <meta itemProp="position" content="3" />
+              </li>
             </ol>
           </nav>
 
@@ -331,8 +496,8 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
               </h1>
               <p className="text-sm text-white/50 mb-2 font-medium">{countryName} student visa requirements for Bangladeshi students — {year}</p>
               <p className="text-white/40 text-sm leading-relaxed mb-8 max-w-lg">
-                Verified {year} requirements for {countryName} are being finalized. The comprehensive guide below is a highly accurate starting point.
-                <a href={whatsappUrl} className="text-yellow-400 font-black ml-1 hover:underline" target="_blank" rel="noopener noreferrer">WhatsApp our consultants</a> for confirmed details.
+                Verified {year} requirements for {countryName} are being finalized. The comprehensive guide below is a highly accurate starting point.{" "}
+                <a href={whatsappUrl} className="text-yellow-400 font-black hover:underline" target="_blank" rel="noopener noreferrer">WhatsApp our consultants</a> for confirmed details.
               </p>
               <div className="flex flex-wrap gap-3">
                 {["✅ Expert Consultants", "📋 Document Checklist", "🎓 Scholarship Guidance", "🔒 Confidential"].map(b => (
@@ -344,7 +509,7 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
               <div className="relative group">
                 <div className="absolute -inset-3 bg-yellow-400/20 rounded-3xl blur-2xl opacity-60 group-hover:opacity-90 transition duration-700" />
                 <div className="relative bg-white/10 backdrop-blur border border-white/20 p-4 rounded-3xl overflow-hidden w-72 h-52 flex items-center justify-center">
-                  <img src={country.flag} alt={`Study in ${countryName} — student visa guide for Bangladeshi students`} className="w-full h-full object-cover rounded-2xl" loading="eager" />
+                  <img src={country.flag} alt={`${countryName} flag — Study in ${countryName} student visa guide for Bangladeshi students`} className="w-full h-full object-cover rounded-2xl" loading="eager" />
                 </div>
                 <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-black px-5 py-2 rounded-full text-xs font-black uppercase tracking-wider whitespace-nowrap shadow-xl">
                   Student Visa {year}
@@ -390,15 +555,21 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
                 <p>Embassy officers scrutinize bank statement consistency, career plan clarity, and whether your program aligns with your academic background. See our <a href="#rejection-risks" className="text-green-700 font-bold hover:underline">rejection prevention guide</a> below.</p>
               </div>
               <div className="mt-6 pt-6 border-t border-gray-100">
-                <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Compare with top destinations:</p>
-                <div className="flex flex-wrap gap-2">
-                  {["Canada","United Kingdom","Australia","Germany","USA","Malaysia"].map(c => (
-                    <Link key={c} href={`/visa/student-visa/${createSlug(c)}`}
-                      title={`Study in ${c} — Student Visa Guide`}
-                      className="text-xs font-bold text-gray-600 hover:text-green-700 px-3 py-1.5 rounded-xl bg-gray-50 border border-gray-100 hover:border-yellow-300 transition-all no-underline"
-                    >Study in {c}</Link>
-                  ))}
-                </div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Compare with top study destinations:</p>
+                <nav aria-label="Compare study destinations">
+                  <div className="flex flex-wrap gap-2">
+                    {COMPARE_DESTINATIONS.filter(c => c !== countryName).map(c => (
+                      <Link
+                        key={c}
+                        href={`/visa/student-visa/${createSlug(c)}`}
+                        title={`Study in ${c} — Student Visa Requirements for Bangladeshi Students`}
+                        className="text-xs font-bold text-gray-600 hover:text-green-700 px-3 py-1.5 rounded-xl bg-gray-50 border border-gray-100 hover:border-yellow-300 transition-all no-underline"
+                      >
+                        Study in {c}
+                      </Link>
+                    ))}
+                  </div>
+                </nav>
               </div>
             </section>
 
@@ -565,7 +736,13 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
                 <h3 className="text-lg font-black text-gray-900">Scholarships for Bangladeshi Students in {countryName}</h3>
                 <p>{countryName} universities and government bodies offer scholarships ranging from partial tuition waivers to fully-funded programs. <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-green-700 font-bold hover:underline">Contact our consultants</a> for the best {year} funding options.</p>
                 <h3 className="text-lg font-black text-gray-900">Post-Study Work Rights in {countryName}</h3>
-                <p>Post-study work visa availability greatly affects study destination value. Countries like Canada, Australia, UK, and New Zealand offer strong 2–3 year post-study work pathways. Confirm {countryName}'s current rules with our consultants before enrolling.</p>
+                <p>Post-study work visa availability greatly affects study destination value. Countries like{" "}
+                  <Link href="/visa/student-visa/canada" className="text-green-700 font-bold hover:underline">Canada</Link>,{" "}
+                  <Link href="/visa/student-visa/australia" className="text-green-700 font-bold hover:underline">Australia</Link>,{" "}
+                  <Link href="/visa/student-visa/united-kingdom" className="text-green-700 font-bold hover:underline">UK</Link>, and{" "}
+                  <Link href="/visa/student-visa/new-zealand" className="text-green-700 font-bold hover:underline">New Zealand</Link>{" "}
+                  offer strong 2–3 year post-study work pathways. Confirm {countryName}'s current rules with our consultants before enrolling.
+                </p>
                 <h3 className="text-lg font-black text-gray-900">Why Choose Eammu Holidays for Your {countryName} Student Visa?</h3>
                 <p>With a 98% visa success rate and 10,000+ students helped, Eammu Holidays is Bangladesh's most trusted student visa consultancy. We handle university selection, SOP writing, document prep, financial review, and visa submission. Email <strong>support@eammu.com</strong> or <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-green-700 font-bold hover:underline">WhatsApp us</a> to start today.</p>
               </div>
@@ -582,19 +759,24 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
               </div>
               <div className="space-y-4" itemScope itemType="https://schema.org/FAQPage">
                 {faqs.map((faq, i) => (
-                  <details key={i} className="group bg-gray-50 border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-yellow-300 transition-all"
-                    itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
+                  <details
+                    key={i}
+                    className="group bg-gray-50 border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-yellow-300 transition-all"
+                    itemScope itemProp="mainEntity" itemType="https://schema.org/Question"
+                  >
                     <summary className="list-none flex items-center justify-between p-6 cursor-pointer">
                       <span className="font-black text-gray-800 pr-4 leading-snug text-sm" itemProp="name">
-                        <span className="text-yellow-500 mr-2">Q.</span>{faq.q}
+                        <span className="text-yellow-500 mr-2">Q.</span>{faq.question}
                       </span>
                       <div className="w-8 h-8 bg-white border-2 border-gray-200 rounded-xl flex items-center justify-center shrink-0 group-open:bg-yellow-400 group-open:border-yellow-400 transition-all">
                         <ChevronRight size={14} className="text-gray-500 group-open:text-black rotate-90 transition-transform" />
                       </div>
                     </summary>
-                    <div className="px-6 pb-6 pt-0 text-sm text-gray-600 leading-relaxed border-t border-gray-100 ml-8"
-                      itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-                      <span itemProp="text">{faq.a}</span>
+                    <div
+                      className="px-6 pb-6 pt-0 text-sm text-gray-600 leading-relaxed border-t border-gray-100 ml-8"
+                      itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer"
+                    >
+                      <span itemProp="text">{faq.answer}</span>
                     </div>
                   </details>
                 ))}
@@ -602,24 +784,7 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
             </section>
 
             {/* INTERNAL LINKS */}
-            <section className="bg-white rounded-3xl border-2 border-gray-100 shadow-sm p-8">
-              <h3 className="font-black text-gray-900 text-lg mb-5">Compare Popular Study Destinations from Bangladesh</h3>
-              <div className="grid sm:grid-cols-2 gap-3">
-                {["Canada","United Kingdom","Australia","Germany","USA","Malaysia","Japan","New Zealand"].map(c => (
-                  <Link key={c} href={`/visa/student-visa/${createSlug(c)}`}
-                    title={`Study in ${c} — Student Visa for Bangladeshi Students ${year}`}
-                    className="flex items-center gap-3 p-4 bg-gray-50 border-2 border-gray-100 hover:border-yellow-300 hover:bg-yellow-50 rounded-2xl transition-all group no-underline"
-                  >
-                    <GraduationCap size={16} className="text-yellow-500 shrink-0" />
-                    <div>
-                      <p className="text-sm font-black text-gray-800 group-hover:text-black transition-colors">Study in {c}</p>
-                      <p className="text-xs text-gray-400">Student Visa Guide {year}</p>
-                    </div>
-                    <ArrowRight size={13} className="ml-auto text-gray-300 group-hover:text-yellow-500 group-hover:translate-x-0.5 transition-all" />
-                  </Link>
-                ))}
-              </div>
-            </section>
+            <InternalLinksSection currentCountry={countryName} year={year} />
 
           </main>
 
@@ -656,7 +821,7 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
       {/* FOOTER CTA */}
       <section className="bg-black py-16 px-5 text-center">
         <div className="max-w-2xl mx-auto">
-          <img src={country.flag} alt={`Study in ${countryName} from Bangladesh`} className="w-20 h-14 object-cover rounded-xl mx-auto mb-5 shadow-xl" loading="lazy" />
+          <img src={country.flag} alt={`${countryName} flag — Study in ${countryName} from Bangladesh`} className="w-20 h-14 object-cover rounded-xl mx-auto mb-5 shadow-xl" loading="lazy" />
           <h2 className="text-3xl font-black text-white mb-3">Plan Your Studies in {countryName}</h2>
           <p className="text-gray-400 mb-8 leading-relaxed text-sm">
             Let our student visa experts guide your complete journey — university selection to visa approval. 98% success rate for Bangladeshi students applying to {countryName}.
@@ -669,22 +834,33 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
             </a>
             <Link href="/visa/student-visa"
               className="inline-flex items-center justify-center px-8 py-5 border-2 border-white/20 text-white rounded-2xl font-black hover:bg-white/10 transition-all text-sm no-underline"
-            >Browse All 200+ Countries</Link>
+            >
+              Browse All 200+ Countries
+            </Link>
           </div>
-          <p className="text-gray-600 text-xs">
-            Also explore:{" "}
-            {["Canada","UK","Australia","Germany","USA"].map((c, i) => (
-              <span key={c}>
-                <Link href={`/visa/student-visa/${createSlug(c)}`} className="text-gray-500 hover:text-white transition underline">Study in {c}</Link>
-                {i < 4 && " · "}
-              </span>
-            ))}
-          </p>
+          <nav aria-label="Popular study destinations footer links">
+            <p className="text-gray-600 text-xs">
+              Also explore:{" "}
+              {["Canada","United Kingdom","Australia","Germany","USA"].filter(c => c !== countryName).map((c, i, arr) => (
+                <span key={c}>
+                  <Link
+                    href={`/visa/student-visa/${createSlug(c)}`}
+                    title={`Study in ${c} — Student Visa for Bangladeshi Students`}
+                    className="text-gray-500 hover:text-white transition underline"
+                  >
+                    Study in {c}
+                  </Link>
+                  {i < arr.length - 1 && " · "}
+                </span>
+              ))}
+            </p>
+          </nav>
         </div>
       </section>
     </div>
   );
 }
+
 // ── FULL DATA PAGE ─────────────────────────────────────────────────────────────
 function FullDataPage({ country, d, countryName, year, whatsappUrl, cleanSlug }) {
   const faqs = d?.faq_student_edition || [];
@@ -698,12 +874,21 @@ function FullDataPage({ country, d, countryName, year, whatsappUrl, cleanSlug })
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex items-center gap-2 text-xs text-white/40 font-semibold flex-wrap">
-              <li><Link href="/" className="hover:text-white/70 transition">Home</Link></li>
+            <ol className="flex items-center gap-2 text-xs text-white/40 font-semibold flex-wrap" itemScope itemType="https://schema.org/BreadcrumbList">
+              <li itemScope itemProp="itemListElement" itemType="https://schema.org/ListItem">
+                <Link href="/" itemProp="item" className="hover:text-white/70 transition"><span itemProp="name">Home</span></Link>
+                <meta itemProp="position" content="1" />
+              </li>
               <li><ChevronRight size={12} /></li>
-              <li><Link href="/visa/student-visa" className="hover:text-white/70 transition">Student Visa</Link></li>
+              <li itemScope itemProp="itemListElement" itemType="https://schema.org/ListItem">
+                <Link href="/visa/student-visa" itemProp="item" className="hover:text-white/70 transition"><span itemProp="name">Student Visa</span></Link>
+                <meta itemProp="position" content="2" />
+              </li>
               <li><ChevronRight size={12} /></li>
-              <li className="text-white/60">{countryName}</li>
+              <li itemScope itemProp="itemListElement" itemType="https://schema.org/ListItem">
+                <span itemProp="name" className="text-white/60">{countryName}</span>
+                <meta itemProp="position" content="3" />
+              </li>
             </ol>
           </nav>
 
@@ -711,7 +896,12 @@ function FullDataPage({ country, d, countryName, year, whatsappUrl, cleanSlug })
             <div className="relative group shrink-0">
               <div className="absolute -inset-1 bg-yellow-400/30 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-700" />
               <div className="relative w-72 h-44 bg-white p-2 rounded-2xl shadow-2xl overflow-hidden">
-                <img src={country.flag} alt={`Study in ${countryName} from Bangladesh — student visa ${year}`} className="w-full h-full object-cover rounded-xl" loading="eager" />
+                <img
+                  src={country.flag}
+                  alt={`${countryName} flag — Study in ${countryName} student visa guide for Bangladeshi students ${year}`}
+                  className="w-full h-full object-cover rounded-xl"
+                  loading="eager"
+                />
               </div>
             </div>
             <div className="flex-1 text-center md:text-left">
@@ -766,15 +956,21 @@ function FullDataPage({ country, d, countryName, year, whatsappUrl, cleanSlug })
                 <p>The <strong className="text-gray-900">{countryName} student visa {year}</strong> requires proof of admission, English proficiency, strong financial documentation, and a well-crafted <strong className="text-gray-900">Statement of Purpose (SOP)</strong>.</p>
               </div>
               <div className="mt-6 pt-6 border-t border-gray-100">
-                <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Compare with top destinations:</p>
-                <div className="flex flex-wrap gap-2">
-                  {["Canada","United Kingdom","Australia","Germany","USA","Malaysia"].map(c => (
-                    <Link key={c} href={`/visa/student-visa/${createSlug(c)}`}
-                      title={`Study in ${c} — Student Visa Guide`}
-                      className="text-xs font-bold text-gray-600 hover:text-green-700 px-3 py-1.5 rounded-xl bg-gray-50 border border-gray-100 hover:border-yellow-300 transition-all no-underline"
-                    >Study in {c}</Link>
-                  ))}
-                </div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Compare with top study destinations:</p>
+                <nav aria-label="Compare study destinations">
+                  <div className="flex flex-wrap gap-2">
+                    {COMPARE_DESTINATIONS.filter(c => c !== countryName).map(c => (
+                      <Link
+                        key={c}
+                        href={`/visa/student-visa/${createSlug(c)}`}
+                        title={`Study in ${c} — Student Visa Requirements for Bangladeshi Students`}
+                        className="text-xs font-bold text-gray-600 hover:text-green-700 px-3 py-1.5 rounded-xl bg-gray-50 border border-gray-100 hover:border-yellow-300 transition-all no-underline"
+                      >
+                        Study in {c}
+                      </Link>
+                    ))}
+                  </div>
+                </nav>
               </div>
             </section>
 
@@ -975,8 +1171,11 @@ function FullDataPage({ country, d, countryName, year, whatsappUrl, cleanSlug })
                 </div>
                 <div className="space-y-5" itemScope itemType="https://schema.org/FAQPage">
                   {faqs.map((faq, i) => (
-                    <details key={i} className="group bg-gray-50 border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-yellow-300 transition-all"
-                      itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
+                    <details
+                      key={i}
+                      className="group bg-gray-50 border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-yellow-300 transition-all"
+                      itemScope itemProp="mainEntity" itemType="https://schema.org/Question"
+                    >
                       <summary className="list-none flex items-center justify-between p-6 cursor-pointer">
                         <span className="font-black text-gray-900 pr-4 text-sm group-hover:text-black transition-colors" itemProp="name">
                           <span className="text-yellow-500 mr-2">Q.</span>{faq.question}
@@ -985,8 +1184,10 @@ function FullDataPage({ country, d, countryName, year, whatsappUrl, cleanSlug })
                           <ChevronRight size={14} className="text-gray-500 group-open:text-black rotate-90 transition-transform" />
                         </div>
                       </summary>
-                      <div className="px-6 pb-6 pt-0 text-sm text-gray-600 leading-relaxed border-t border-gray-100 ml-8"
-                        itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                      <div
+                        className="px-6 pb-6 pt-0 text-sm text-gray-600 leading-relaxed border-t border-gray-100 ml-8"
+                        itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer"
+                      >
                         <span itemProp="text">{faq.answer}</span>
                       </div>
                     </details>
@@ -996,24 +1197,7 @@ function FullDataPage({ country, d, countryName, year, whatsappUrl, cleanSlug })
             )}
 
             {/* INTERNAL LINKS */}
-            <section className="bg-white rounded-3xl border-2 border-gray-100 shadow-sm p-8">
-              <h3 className="font-black text-gray-900 text-lg mb-5">Compare Popular Study Destinations from Bangladesh</h3>
-              <div className="grid sm:grid-cols-2 gap-3">
-                {["Canada","United Kingdom","Australia","Germany","USA","Malaysia","Japan","New Zealand"].map(c => (
-                  <Link key={c} href={`/visa/student-visa/${createSlug(c)}`}
-                    title={`Study in ${c} — Student Visa for Bangladeshi Students ${year}`}
-                    className="flex items-center gap-3 p-4 bg-gray-50 border-2 border-gray-100 hover:border-yellow-300 hover:bg-yellow-50 rounded-2xl transition-all group no-underline"
-                  >
-                    <GraduationCap size={16} className="text-yellow-500 shrink-0" />
-                    <div>
-                      <p className="text-sm font-black text-gray-800">Study in {c}</p>
-                      <p className="text-xs text-gray-400">Student Visa Guide {year}</p>
-                    </div>
-                    <ArrowRight size={13} className="ml-auto text-gray-300 group-hover:text-yellow-500 group-hover:translate-x-0.5 transition-all" />
-                  </Link>
-                ))}
-              </div>
-            </section>
+            <InternalLinksSection currentCountry={countryName} year={year} />
 
           </main>
 
@@ -1104,7 +1288,7 @@ function FullDataPage({ country, d, countryName, year, whatsappUrl, cleanSlug })
       {/* FOOTER CTA */}
       <section className="bg-black py-16 px-5 text-center">
         <div className="max-w-2xl mx-auto">
-          <img src={country.flag} alt={`Study in ${countryName}`} className="w-20 h-14 object-cover rounded-xl mx-auto mb-5 shadow-xl" loading="lazy" />
+          <img src={country.flag} alt={`${countryName} flag — Study in ${countryName} student visa`} className="w-20 h-14 object-cover rounded-xl mx-auto mb-5 shadow-xl" loading="lazy" />
           <h2 className="text-3xl font-black text-white mb-3">Ready to Study in {countryName}?</h2>
           <p className="text-gray-400 mb-8 leading-relaxed text-sm">
             Let our student visa experts handle your complete journey — university shortlisting to visa stamping — with a 98% approval rate.
@@ -1112,20 +1296,32 @@ function FullDataPage({ country, d, countryName, year, whatsappUrl, cleanSlug })
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-10 py-5 bg-yellow-400 hover:bg-yellow-300 text-black rounded-2xl font-black transition-all text-sm no-underline shadow-xl"
-            >Start Application via WhatsApp →</a>
+            >
+              Start Application via WhatsApp →
+            </a>
             <Link href="/visa/student-visa"
               className="inline-flex items-center justify-center px-8 py-5 border-2 border-white/20 text-white rounded-2xl font-black hover:bg-white/10 transition-all text-sm no-underline"
-            >Browse Other Countries</Link>
+            >
+              Browse Other Countries
+            </Link>
           </div>
-          <p className="text-gray-600 text-xs">
-            Also explore:{" "}
-            {["Canada","UK","Australia","Germany","USA"].map((c, i) => (
-              <span key={c}>
-                <Link href={`/visa/student-visa/${createSlug(c)}`} className="text-gray-500 hover:text-white transition underline">Study in {c}</Link>
-                {i < 4 && " · "}
-              </span>
-            ))}
-          </p>
+          <nav aria-label="Popular study destinations footer links">
+            <p className="text-gray-600 text-xs">
+              Also explore:{" "}
+              {["Canada","United Kingdom","Australia","Germany","USA"].filter(c => c !== countryName).map((c, i, arr) => (
+                <span key={c}>
+                  <Link
+                    href={`/visa/student-visa/${createSlug(c)}`}
+                    title={`Study in ${c} — Student Visa for Bangladeshi Students`}
+                    className="text-gray-500 hover:text-white transition underline"
+                  >
+                    Study in {c}
+                  </Link>
+                  {i < arr.length - 1 && " · "}
+                </span>
+              ))}
+            </p>
+          </nav>
         </div>
       </section>
     </div>
@@ -1146,7 +1342,7 @@ export default async function StudentVisaSlugPage({ params }) {
         <div className="text-7xl mb-6">🎓</div>
         <h1 className="text-3xl font-black text-gray-900 mb-3">Country Not Found</h1>
         <p className="text-gray-500 mb-8">We couldn't find that destination. Please browse all countries.</p>
-        <Link href="/study-abroad/student-visa" className="px-8 py-4 bg-yellow-400 text-black rounded-2xl font-black hover:bg-yellow-300 transition no-underline">
+        <Link href="/visa/student-visa" className="px-8 py-4 bg-yellow-400 text-black rounded-2xl font-black hover:bg-yellow-300 transition no-underline">
           ← Browse All Countries
         </Link>
       </div>

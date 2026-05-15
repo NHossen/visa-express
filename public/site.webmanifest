@@ -1,0 +1,21 @@
+{
+  "name": "Visa Express Hub",
+  "short_name": "Visa Express",
+  "description": "Global Visa Guides, Processing Times, and Document Checklists for 195+ countries.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/visa_express_hub_log.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/visa_express_hub_log.png",
+      "sizes": "512x512",
+      "type": "image/x-icon"
+    }
+  ]
+}

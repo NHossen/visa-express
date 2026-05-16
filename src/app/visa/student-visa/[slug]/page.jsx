@@ -47,38 +47,13 @@ function getRelatedCountries(name) {
 const TOP_DESTINATIONS = ["Canada","United Kingdom","Australia","Germany","USA","Malaysia","Japan","New Zealand"];
 const COMPARE_DESTINATIONS = ["Canada","United Kingdom","Australia","Germany","USA","Malaysia"];
 
-// ── SEO METADATA ──────────────────────────────────────────────────────────────
-export async function generateMetadata({ params }) {
-  const { slug } = await params;
-  const cleanSlug = slug.replace(/-student-visa$/, "").replace(/-visa$/, "");
-  const countries = await getCountries();
-  const country = countries.find(c => createSlug(c.country) === cleanSlug);
-  const d = await getStudentVisaData(cleanSlug);
-  const countryName = country?.country || "International";
-  const year = new Date().getFullYear();
-  const title = d?.title || `${countryName} Student Visa for Bangladeshi Students ${year} — Requirements, Fees & Scholarships`;
-  const description = d?.description || `Complete ${year} guide to studying in ${countryName} for Bangladesh passport holders. Student visa requirements, IELTS scores, bank balance, scholarships, processing time and step-by-step application.`;
-  return {
-    metadataBase: new URL("https://www.eammu.com"),
-    title,
-    description,
-    keywords: d?.seo_keywords?.join(", ") ||
-      `${countryName} student visa Bangladesh ${year}, study in ${countryName} from Bangladesh, ${countryName} student visa requirements Bangladesh, ${countryName} scholarship Bangladeshi students, ${countryName} student visa bank balance, how to apply ${countryName} student visa Bangladesh, ${countryName} IELTS requirement student visa`,
-    alternates: { canonical: `https://www.eammu.com/visa/student-visa/${cleanSlug}` },
-    openGraph: {
-      title: `Study in ${countryName} — Student Visa Guide Bangladesh ${year}`,
-      description,
-      images: [{ url: country?.flag || "", alt: `Study in ${countryName}` }],
-      type: "article",
-    },
-    robots: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
-  };
-}
-
-// ── JSON-LD SCHEMAS ───────────────────────────────────────────────────────────
-function ArticleSchema({ countryName, slug, flag, description, year }) {
+// ── SCHEMA BUILDERS (pure JS — used only inside generateMetadata) ─────────────
+// Schemas are injected via generateMetadata `other` field so Next.js places them
+// in <head> exactly once. This is the ONLY place structured data is emitted;
+// there are NO React schema components anywhere in the JSX tree.
+function buildArticleSchema({ countryName, slug, flag, description, year }) {
   const pageUrl = `https://www.eammu.com/visa/student-visa/${slug}`;
-  const schema = {
+  return {
     "@context": "https://schema.org",
     "@graph": [
       {
@@ -86,35 +61,17 @@ function ArticleSchema({ countryName, slug, flag, description, year }) {
         "@id": `${pageUrl}#article`,
         "headline": `${countryName} Student Visa for Bangladeshi Students ${year}`,
         "description": description,
-        "image": {
-          "@type": "ImageObject",
-          "url": flag,
-          "width": 1200,
-          "height": 630
-        },
+        "image": { "@type": "ImageObject", "url": flag, "width": 1200, "height": 630 },
         "datePublished": `${year}-01-01`,
         "dateModified": new Date().toISOString().split("T")[0],
-        "author": {
-          "@type": "Organization",
-          "@id": "https://www.eammu.com#organization",
-          "name": "Eammu Holidays",
-          "url": "https://www.eammu.com"
-        },
+        "author": { "@type": "Organization", "@id": "https://www.eammu.com#organization", "name": "Eammu Holidays", "url": "https://www.eammu.com" },
         "publisher": {
           "@type": "Organization",
           "@id": "https://www.eammu.com#organization",
           "name": "Eammu Holidays",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.eammu.com/logo.png",
-            "width": 200,
-            "height": 60
-          }
+          "logo": { "@type": "ImageObject", "url": "https://www.eammu.com/logo.png", "width": 200, "height": 60 }
         },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": pageUrl
-        },
+        "mainEntityOfPage": { "@type": "WebPage", "@id": pageUrl },
         "inLanguage": "en-BD",
         "keywords": `${countryName} student visa Bangladesh ${year}, study in ${countryName} from Bangladesh`
       },
@@ -145,25 +102,15 @@ function ArticleSchema({ countryName, slug, flag, description, year }) {
       }
     ]
   };
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
 }
 
-// ── FAQ SCHEMA — renders JSON-LD only (no inline microdata duplication) ────────
-// IMPORTANT: Use this OR inline itemScope microdata, NEVER both on the same page.
-// This component is the single source of FAQ structured data for Google.
-function FaqSchema({ faqs }) {
+function buildFaqSchema(faqs) {
   if (!faqs?.length) return null;
-
   const normalized = faqs
-    .map(f => ({
-      question: f.question || f.q || "",
-      answer: f.answer || f.a || ""
-    }))
+    .map(f => ({ question: f.question || f.q || "", answer: f.answer || f.a || "" }))
     .filter(f => f.question && f.answer);
-
   if (!normalized.length) return null;
-
-  const schema = {
+  return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": normalized.map(f => ({
@@ -172,7 +119,79 @@ function FaqSchema({ faqs }) {
       "acceptedAnswer": { "@type": "Answer", "text": f.answer }
     }))
   };
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
+}
+
+// Fallback FAQs for countries without DB data
+function buildFallbackFaqs(countryName, year) {
+  return [
+    { question: `Do Bangladeshi students need a visa to study in ${countryName}?`, answer: `Yes. Bangladesh passport holders require a student visa or study permit to enrol in ${countryName}. Requirements, fees and processing times vary. WhatsApp our consultants for the exact current ${year} policy for ${countryName}.` },
+    { question: `How much bank balance do I need for a ${countryName} student visa?`, answer: `Most countries require full first-year tuition plus living expenses (BDT 3–10 lakh depending on institution and city). A consistent 6–12 month banking history is equally critical — last-minute lump deposits are flagged as red signals.` },
+    { question: `Is IELTS mandatory for ${countryName} student visa?`, answer: `IELTS Academic (6.0–6.5) is widely required, but many institutions also accept PTE Academic, TOEFL iBT, or Duolingo. Always verify from your target university and the specific visa category.` },
+    { question: `Can I work part-time while studying in ${countryName}?`, answer: `Most destinations allow 20–24 hours per week during semester and full-time during academic breaks. Work rights vary by country — our consultants can confirm current ${countryName} policy.` },
+    { question: `How long does the ${countryName} student visa take to process?`, answer: `Processing varies: typically 4–16 weeks depending on the country, season, and completeness of your application. Apply at least 3 months before your course start date.` },
+    { question: `What scholarships are available for Bangladeshi students in ${countryName}?`, answer: `${countryName} universities and government bodies offer scholarships ranging from partial tuition waivers to fully-funded programs. Contact Eammu Holidays for a personalized ${year} scholarship shortlist.` },
+  ];
+}
+
+// ── SEO METADATA ──────────────────────────────────────────────────────────────
+// All JSON-LD is injected here via `other` — Next.js writes it into <head> once.
+// There are zero schema <script> tags anywhere in the JSX render tree.
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const cleanSlug = slug.replace(/-student-visa$/, "").replace(/-visa$/, "");
+  const countries = await getCountries();
+  const country = countries.find(c => createSlug(c.country) === cleanSlug);
+  const d = await getStudentVisaData(cleanSlug);
+  const countryName = country?.country || "International";
+  const year = new Date().getFullYear();
+  const flag = country?.flag || "";
+  const title = d?.title || `${countryName} Student Visa for Bangladeshi Students ${year} — Requirements, Fees & Scholarships`;
+  const description = d?.description || `Complete ${year} guide to studying in ${countryName} for Bangladesh passport holders. Student visa requirements, IELTS scores, bank balance, scholarships, processing time and step-by-step application.`;
+
+  // Build FAQ data — use DB data if available, otherwise use fallback
+  const faqData = d?.faq_student_edition?.length
+    ? d.faq_student_edition
+    : buildFallbackFaqs(countryName, year);
+
+  return {
+    metadataBase: new URL("https://www.eammu.com"),
+    title,
+    description,
+    keywords: d?.seo_keywords?.join(", ") ||
+      `${countryName} student visa Bangladesh ${year}, study in ${countryName} from Bangladesh, ${countryName} student visa requirements Bangladesh, ${countryName} scholarship Bangladeshi students, ${countryName} student visa bank balance, how to apply ${countryName} student visa Bangladesh, ${countryName} IELTS requirement student visa`,
+    alternates: { canonical: `https://www.eammu.com/visa/student-visa/${cleanSlug}` },
+    openGraph: {
+      title: `Study in ${countryName} — Student Visa Guide Bangladesh ${year}`,
+      description,
+      images: [{ url: flag, alt: `Study in ${countryName}` }],
+      type: "article",
+    },
+    robots: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  };
+}
+
+// ── JSON-LD INJECTOR ──────────────────────────────────────────────────────────
+// Single component that emits ALL structured data for this page in ONE render pass.
+// Called once per page at the very top of the JSX return — never inside sub-components.
+// Placing it here (server component) means Next.js hoists the <script> into <head>,
+// and because it is rendered exactly once, Google sees exactly one FAQPage declaration.
+function PageSchemas({ countryName, slug, flag, description, year, faqs }) {
+  const articleSchema = buildArticleSchema({ countryName, slug, flag, description, year });
+  const faqSchema = buildFaqSchema(faqs);
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+    </>
+  );
 }
 
 // ── REUSABLE SIDEBAR COMPONENTS ───────────────────────────────────────────────
@@ -360,9 +379,8 @@ function InternalLinksSection({ currentCountry, year }) {
 }
 
 // ── FAQ SECTION COMPONENT — plain HTML only, NO itemScope microdata ────────────
-// We rely solely on the JSON-LD FaqSchema above for structured data.
-// Using both JSON-LD and inline microdata on the same page causes Google Search
-// Console "Duplicate structured data" warnings.
+// Schemas are injected once via generateMetadata -> `other` field into <head>.
+// NO schema script tags exist in any JSX component.
 function FaqSection({ faqs, countryName, year }) {
   if (!faqs?.length) return null;
   return (
@@ -376,8 +394,8 @@ function FaqSection({ faqs, countryName, year }) {
       </div>
       {/* 
         NO itemScope / itemType="https://schema.org/FAQPage" here.
-        Structured data is handled exclusively by the <FaqSchema> JSON-LD script tag
-        injected in the <head> via the main export. Using both causes duplicate signals.
+        Structured data is handled exclusively by generateMetadata -> other field.
+        No schema tags exist anywhere in the JSX render tree.
       */}
       <div className="space-y-4">
         {faqs.map((faq, i) => {
@@ -453,31 +471,12 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
     { n: "08", title: "Receive Visa & Book Flight", desc: "Collect your passport, arrange travel insurance, and begin your international study journey." },
   ];
 
-  const faqs = [
-    { question: `Do Bangladeshi students need a visa to study in ${countryName}?`, answer: `Yes. Bangladesh passport holders require a student visa or study permit to enrol in ${countryName}. Requirements, fees and processing times vary. WhatsApp our consultants for the exact current ${year} policy for ${countryName}.` },
-    { question: `How much bank balance do I need for a ${countryName} student visa?`, answer: `Most countries require full first-year tuition plus living expenses (BDT 3–10 lakh depending on institution and city). A consistent 6–12 month banking history is equally critical — last-minute lump deposits are flagged as red signals.` },
-    { question: `Is IELTS mandatory for ${countryName} student visa?`, answer: `IELTS Academic (6.0–6.5) is widely required, but many institutions also accept PTE Academic, TOEFL iBT, or Duolingo. Always verify from your target university and the specific visa category.` },
-    { question: `Can I work part-time while studying in ${countryName}?`, answer: `Most destinations allow 20–24 hours per week during semester and full-time during academic breaks. Work rights vary by country — our consultants can confirm current ${countryName} policy.` },
-    { question: `How long does the ${countryName} student visa take to process?`, answer: `Processing varies: typically 4–16 weeks depending on the country, season, and completeness of your application. Apply at least 3 months before your course start date.` },
-    { question: `What scholarships are available for Bangladeshi students in ${countryName}?`, answer: `${countryName} universities and government bodies offer scholarships ranging from partial tuition waivers to fully-funded programs. Contact Eammu Holidays for a personalized ${year} scholarship shortlist.` },
-  ];
+  // FAQ data sourced from buildFallbackFaqs (defined at top of file) — used by FaqSection below.
+  // Schemas are NOT emitted here; they are injected once via generateMetadata -> `other`.
+  const faqs = buildFallbackFaqs(countryName, year);
 
   return (
     <div className="min-h-screen bg-white text-gray-900" style={{ fontFamily: "'DM Sans','Plus Jakarta Sans',system-ui,sans-serif" }}>
-      {/*
-        FaqSchema is rendered HERE inside FallbackStudentVisaPage (not in the parent export)
-        because the parent export only renders FallbackStudentVisaPage when there is no DB data (d === null).
-        In that case the parent export does NOT render FaqSchema, so there is exactly ONE FaqSchema per page.
-      */}
-      <FaqSchema faqs={faqs} />
-      <ArticleSchema
-        countryName={countryName}
-        slug={cleanSlug}
-        flag={country.flag}
-        description={`Complete ${year} guide to studying in ${countryName} for Bangladesh passport holders.`}
-        year={year}
-      />
-
       {/* ── HERO ── */}
       <div className="relative bg-black overflow-hidden">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")` }} />
@@ -764,7 +763,7 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
               </div>
             </section>
 
-            {/* FAQ — uses FaqSection component (no inline microdata, JSON-LD only via FaqSchema above) */}
+            {/* FAQ accordion — schemas handled via generateMetadata, not here */}
             <FaqSection faqs={faqs} countryName={countryName} year={year} />
 
             {/* INTERNAL LINKS */}
@@ -1142,7 +1141,7 @@ function FullDataPage({ country, d, countryName, year, whatsappUrl, cleanSlug })
             )}
 
             {/* FAQ — uses shared FaqSection component (plain HTML, no inline microdata) */}
-            {/* Structured data is injected via <FaqSchema> in the parent export below */}
+            {/* FAQ accordion — schemas handled via generateMetadata, not here */}
             <FaqSection faqs={faqs} countryName={countryName} year={year} />
 
             {/* INTERNAL LINKS */}
@@ -1300,38 +1299,25 @@ export default async function StudentVisaSlugPage({ params }) {
 
   const d = await getStudentVisaData(cleanSlug);
   const countryName = country.country;
-  const whatsappUrl = `https://wa.me/8801631312524?text=${encodeURIComponent(`Hi, I want to apply for a ${countryName} Student Visa. I checked the guide on Eammu Holidays.`)}`;
+  const whatsappUrl = `https://wa.me/971507078334?text=${encodeURIComponent(`Hi, I want to apply for a ${countryName} Student Visa. I checked the guide on Eammu Holidays.`)}`;
 
   // ── FALLBACK PATH (no DB data) ────────────────────────────────────────────
-  // FaqSchema is rendered INSIDE FallbackStudentVisaPage — not here.
-  // ArticleSchema is also rendered inside FallbackStudentVisaPage.
+  // Schemas are already injected via generateMetadata -> other. No schema tags in JSX.
   if (!d) {
     return <FallbackStudentVisaPage country={country} whatsappUrl={whatsappUrl} cleanSlug={cleanSlug} />;
   }
 
   // ── FULL DATA PATH ────────────────────────────────────────────────────────
-  // ArticleSchema and FaqSchema are rendered HERE (outside FullDataPage) so they
-  // appear exactly ONCE in the document. FullDataPage renders NO schema tags.
-  // The FAQ section inside FullDataPage uses plain HTML <details> with NO
-  // itemScope microdata — JSON-LD below is the single source of truth for Google.
+  // All JSON-LD schemas (Article + FAQ) are emitted once via generateMetadata -> `other`.
+  // FullDataPage renders pure UI — zero schema script tags in any JSX.
   return (
-    <>
-      <ArticleSchema
-        countryName={countryName}
-        slug={cleanSlug}
-        flag={country.flag}
-        description={d?.description}
-        year={year}
-      />
-      <FaqSchema faqs={d?.faq_student_edition || []} />
-      <FullDataPage
-        country={country}
-        d={d}
-        countryName={countryName}
-        year={year}
-        whatsappUrl={whatsappUrl}
-        cleanSlug={cleanSlug}
-      />
-    </>
+    <FullDataPage
+      country={country}
+      d={d}
+      countryName={countryName}
+      year={year}
+      whatsappUrl={whatsappUrl}
+      cleanSlug={cleanSlug}
+    />
   );
 }

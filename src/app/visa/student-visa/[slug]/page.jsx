@@ -75,7 +75,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// ── JSON-LD SCHEMAS (FIXED) ───────────────────────────────────────────────────
+// ── JSON-LD SCHEMAS ───────────────────────────────────────────────────────────
 function ArticleSchema({ countryName, slug, flag, description, year }) {
   const pageUrl = `https://www.eammu.com/visa/student-visa/${slug}`;
   const schema = {
@@ -122,24 +122,9 @@ function ArticleSchema({ countryName, slug, flag, description, year }) {
         "@type": "BreadcrumbList",
         "@id": `${pageUrl}#breadcrumb`,
         "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://www.eammu.com"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Student Visa",
-            "item": "https://www.eammu.com/visa/student-visa"
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": `Study in ${countryName}`,
-            "item": pageUrl
-          }
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.eammu.com" },
+          { "@type": "ListItem", "position": 2, "name": "Student Visa", "item": "https://www.eammu.com/visa/student-visa" },
+          { "@type": "ListItem", "position": 3, "name": `Study in ${countryName}`, "item": pageUrl }
         ]
       },
       {
@@ -147,10 +132,7 @@ function ArticleSchema({ countryName, slug, flag, description, year }) {
         "@id": "https://www.eammu.com#organization",
         "name": "Eammu Holidays",
         "url": "https://www.eammu.com",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.eammu.com/logo.png"
-        },
+        "logo": { "@type": "ImageObject", "url": "https://www.eammu.com/logo.png" },
         "contactPoint": {
           "@type": "ContactPoint",
           "telephone": "+880-163-131-2524",
@@ -158,34 +140,26 @@ function ArticleSchema({ countryName, slug, flag, description, year }) {
           "email": "support@eammu.com",
           "availableLanguage": ["Bengali", "English"]
         },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dhaka",
-          "addressCountry": "BD"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.9",
-          "reviewCount": "1200",
-          "bestRating": "5"
-        }
+        "address": { "@type": "PostalAddress", "addressLocality": "Dhaka", "addressCountry": "BD" },
+        "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "1200", "bestRating": "5" }
       }
     ]
   };
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
 }
 
-// ── FAQ SCHEMA (FIXED) ────────────────────────────────────────────────────────
+// ── FAQ SCHEMA — renders JSON-LD only (no inline microdata duplication) ────────
+// IMPORTANT: Use this OR inline itemScope microdata, NEVER both on the same page.
+// This component is the single source of FAQ structured data for Google.
 function FaqSchema({ faqs }) {
   if (!faqs?.length) return null;
 
-  // Normalize both {question, answer} and {q, a} formats
   const normalized = faqs
     .map(f => ({
       question: f.question || f.q || "",
       answer: f.answer || f.a || ""
     }))
-    .filter(f => f.question && f.answer); // skip any empty entries
+    .filter(f => f.question && f.answer);
 
   if (!normalized.length) return null;
 
@@ -195,10 +169,7 @@ function FaqSchema({ faqs }) {
     "mainEntity": normalized.map(f => ({
       "@type": "Question",
       "name": f.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": f.answer
-      }
+      "acceptedAnswer": { "@type": "Answer", "text": f.answer }
     }))
   };
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
@@ -318,16 +289,12 @@ function EmailCTABox({ countryName, whatsappUrl }) {
       <p className="text-black/70 text-xs leading-relaxed mb-5">
         Our specialists handle admission support, SOP writing, document review, and full visa application.
       </p>
-      
-      {/* Fixed Email Link */}
-      <Link 
+      <Link
         href="mailto:support@eammu.com"
         className="flex items-center justify-center gap-2 bg-black text-white py-3 rounded-xl font-black text-sm hover:bg-gray-800 transition mb-3 no-underline"
       >
         <Mail size={14} /> support@eammu.com
       </Link>
-      
-      {/* Fixed WhatsApp Link */}
       <Link
         href={whatsappUrl}
         target="_blank"
@@ -340,7 +307,7 @@ function EmailCTABox({ countryName, whatsappUrl }) {
   );
 }
 
-// ── INTERNAL LINKS SECTION (reusable, SEO-strong) ─────────────────────────────
+// ── INTERNAL LINKS SECTION ─────────────────────────────────────────────────────
 function InternalLinksSection({ currentCountry, year }) {
   const destinations = TOP_DESTINATIONS.filter(c => c !== currentCountry);
   return (
@@ -368,9 +335,7 @@ function InternalLinksSection({ currentCountry, year }) {
                 <p className="text-sm font-black text-gray-800 group-hover:text-black transition-colors">
                   Study in {c}
                 </p>
-                <p className="text-xs text-gray-400">
-                  Student Visa Guide {year}
-                </p>
+                <p className="text-xs text-gray-400">Student Visa Guide {year}</p>
               </div>
               <ArrowRight size={13} className="ml-auto text-gray-300 group-hover:text-yellow-500 group-hover:translate-x-0.5 transition-all" />
             </Link>
@@ -389,6 +354,55 @@ function InternalLinksSection({ currentCountry, year }) {
             {type.replace(/-/g," ")}
           </Link>
         ))}
+      </div>
+    </section>
+  );
+}
+
+// ── FAQ SECTION COMPONENT — plain HTML only, NO itemScope microdata ────────────
+// We rely solely on the JSON-LD FaqSchema above for structured data.
+// Using both JSON-LD and inline microdata on the same page causes Google Search
+// Console "Duplicate structured data" warnings.
+function FaqSection({ faqs, countryName, year }) {
+  if (!faqs?.length) return null;
+  return (
+    <section className="bg-white rounded-3xl border-2 border-gray-100 shadow-sm p-8 md:p-10" aria-label="Frequently asked questions">
+      <div className="flex items-center gap-3 mb-8">
+        <div className="p-2.5 bg-purple-50 rounded-xl"><HelpCircle size={22} className="text-purple-600" /></div>
+        <div>
+          <h2 className="text-2xl font-black text-gray-900">{countryName} Student Visa FAQ — Bangladesh {year}</h2>
+          <p className="text-sm text-gray-400 mt-0.5">Most asked questions from Bangladeshi students applying to {countryName}</p>
+        </div>
+      </div>
+      {/* 
+        NO itemScope / itemType="https://schema.org/FAQPage" here.
+        Structured data is handled exclusively by the <FaqSchema> JSON-LD script tag
+        injected in the <head> via the main export. Using both causes duplicate signals.
+      */}
+      <div className="space-y-4">
+        {faqs.map((faq, i) => {
+          const question = faq.question || faq.q || "";
+          const answer = faq.answer || faq.a || "";
+          if (!question || !answer) return null;
+          return (
+            <details
+              key={i}
+              className="group bg-gray-50 border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-yellow-300 transition-all"
+            >
+              <summary className="list-none flex items-center justify-between p-6 cursor-pointer">
+                <span className="font-black text-gray-800 pr-4 leading-snug text-sm">
+                  <span className="text-yellow-500 mr-2">Q.</span>{question}
+                </span>
+                <div className="w-8 h-8 bg-white border-2 border-gray-200 rounded-xl flex items-center justify-center shrink-0 group-open:bg-yellow-400 group-open:border-yellow-400 transition-all">
+                  <ChevronRight size={14} className="text-gray-500 group-open:text-black rotate-90 transition-transform" />
+                </div>
+              </summary>
+              <div className="px-6 pb-6 pt-0 text-sm text-gray-600 leading-relaxed border-t border-gray-100 ml-8">
+                {answer}
+              </div>
+            </details>
+          );
+        })}
       </div>
     </section>
   );
@@ -450,6 +464,11 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
 
   return (
     <div className="min-h-screen bg-white text-gray-900" style={{ fontFamily: "'DM Sans','Plus Jakarta Sans',system-ui,sans-serif" }}>
+      {/*
+        FaqSchema is rendered HERE inside FallbackStudentVisaPage (not in the parent export)
+        because the parent export only renders FallbackStudentVisaPage when there is no DB data (d === null).
+        In that case the parent export does NOT render FaqSchema, so there is exactly ONE FaqSchema per page.
+      */}
       <FaqSchema faqs={faqs} />
       <ArticleSchema
         countryName={countryName}
@@ -464,7 +483,6 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")` }} />
         <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-yellow-400/5 rounded-full blur-[160px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
         <div className="max-w-7xl mx-auto px-5 py-16 md:py-24 relative z-10">
-          {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" className="mb-8">
             <ol className="flex items-center gap-2 text-xs text-white/40 font-semibold flex-wrap" itemScope itemType="https://schema.org/BreadcrumbList">
               <li itemScope itemProp="itemListElement" itemType="https://schema.org/ListItem">
@@ -539,8 +557,6 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
       {/* MAIN CONTENT */}
       <div className="max-w-7xl mx-auto px-5 py-10 pb-20">
         <div className="grid lg:grid-cols-12 gap-8">
-
-          {/* MAIN COLUMN */}
           <main className="lg:col-span-8 space-y-8">
 
             {/* SEO INTRO */}
@@ -748,40 +764,8 @@ function FallbackStudentVisaPage({ country, whatsappUrl, cleanSlug }) {
               </div>
             </section>
 
-            {/* FAQ */}
-            <section className="bg-white rounded-3xl border-2 border-gray-100 shadow-sm p-8 md:p-10" aria-label="Frequently asked questions">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="p-2.5 bg-purple-50 rounded-xl"><HelpCircle size={22} className="text-purple-600" /></div>
-                <div>
-                  <h2 className="text-2xl font-black text-gray-900">{countryName} Student Visa FAQ — Bangladesh {year}</h2>
-                  <p className="text-sm text-gray-400 mt-0.5">Most asked questions from Bangladeshi students applying to {countryName}</p>
-                </div>
-              </div>
-              <div className="space-y-4" itemScope itemType="https://schema.org/FAQPage">
-                {faqs.map((faq, i) => (
-                  <details
-                    key={i}
-                    className="group bg-gray-50 border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-yellow-300 transition-all"
-                    itemScope itemProp="mainEntity" itemType="https://schema.org/Question"
-                  >
-                    <summary className="list-none flex items-center justify-between p-6 cursor-pointer">
-                      <span className="font-black text-gray-800 pr-4 leading-snug text-sm" itemProp="name">
-                        <span className="text-yellow-500 mr-2">Q.</span>{faq.question}
-                      </span>
-                      <div className="w-8 h-8 bg-white border-2 border-gray-200 rounded-xl flex items-center justify-center shrink-0 group-open:bg-yellow-400 group-open:border-yellow-400 transition-all">
-                        <ChevronRight size={14} className="text-gray-500 group-open:text-black rotate-90 transition-transform" />
-                      </div>
-                    </summary>
-                    <div
-                      className="px-6 pb-6 pt-0 text-sm text-gray-600 leading-relaxed border-t border-gray-100 ml-8"
-                      itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer"
-                    >
-                      <span itemProp="text">{faq.answer}</span>
-                    </div>
-                  </details>
-                ))}
-              </div>
-            </section>
+            {/* FAQ — uses FaqSection component (no inline microdata, JSON-LD only via FaqSchema above) */}
+            <FaqSection faqs={faqs} countryName={countryName} year={year} />
 
             {/* INTERNAL LINKS */}
             <InternalLinksSection currentCountry={countryName} year={year} />
@@ -872,7 +856,6 @@ function FullDataPage({ country, d, countryName, year, whatsappUrl, cleanSlug })
       <div className="relative bg-black py-24 overflow-hidden">
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")` }} />
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" className="mb-8">
             <ol className="flex items-center gap-2 text-xs text-white/40 font-semibold flex-wrap" itemScope itemType="https://schema.org/BreadcrumbList">
               <li itemScope itemProp="itemListElement" itemType="https://schema.org/ListItem">
@@ -942,7 +925,6 @@ function FullDataPage({ country, d, countryName, year, whatsappUrl, cleanSlug })
       <div className="max-w-7xl mx-auto px-6 pb-20">
         <div className="grid lg:grid-cols-12 gap-8">
 
-          {/* MAIN COLUMN */}
           <main className="lg:col-span-8 space-y-10">
 
             {/* SEO INTRO */}
@@ -1159,42 +1141,9 @@ function FullDataPage({ country, d, countryName, year, whatsappUrl, cleanSlug })
               </section>
             )}
 
-            {/* FAQ */}
-            {faqs.length > 0 && (
-              <section className="bg-white rounded-3xl shadow-sm p-10 border-2 border-gray-100" aria-label="Frequently asked questions">
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="p-2.5 bg-blue-50 rounded-xl"><HelpCircle size={24} className="text-blue-600" /></div>
-                  <div>
-                    <h2 className="text-2xl font-black text-gray-900">{countryName} Student Visa FAQ — Bangladesh {year}</h2>
-                    <p className="text-gray-400 text-sm mt-0.5">Most asked questions from Bangladeshi students</p>
-                  </div>
-                </div>
-                <div className="space-y-5" itemScope itemType="https://schema.org/FAQPage">
-                  {faqs.map((faq, i) => (
-                    <details
-                      key={i}
-                      className="group bg-gray-50 border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-yellow-300 transition-all"
-                      itemScope itemProp="mainEntity" itemType="https://schema.org/Question"
-                    >
-                      <summary className="list-none flex items-center justify-between p-6 cursor-pointer">
-                        <span className="font-black text-gray-900 pr-4 text-sm group-hover:text-black transition-colors" itemProp="name">
-                          <span className="text-yellow-500 mr-2">Q.</span>{faq.question}
-                        </span>
-                        <div className="w-8 h-8 bg-white border-2 border-gray-200 rounded-xl flex items-center justify-center shrink-0 group-open:bg-yellow-400 group-open:border-yellow-400 transition-all">
-                          <ChevronRight size={14} className="text-gray-500 group-open:text-black rotate-90 transition-transform" />
-                        </div>
-                      </summary>
-                      <div
-                        className="px-6 pb-6 pt-0 text-sm text-gray-600 leading-relaxed border-t border-gray-100 ml-8"
-                        itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer"
-                      >
-                        <span itemProp="text">{faq.answer}</span>
-                      </div>
-                    </details>
-                  ))}
-                </div>
-              </section>
-            )}
+            {/* FAQ — uses shared FaqSection component (plain HTML, no inline microdata) */}
+            {/* Structured data is injected via <FaqSchema> in the parent export below */}
+            <FaqSection faqs={faqs} countryName={countryName} year={year} />
 
             {/* INTERNAL LINKS */}
             <InternalLinksSection currentCountry={countryName} year={year} />
@@ -1353,15 +1302,36 @@ export default async function StudentVisaSlugPage({ params }) {
   const countryName = country.country;
   const whatsappUrl = `https://wa.me/8801631312524?text=${encodeURIComponent(`Hi, I want to apply for a ${countryName} Student Visa. I checked the guide on Eammu Holidays.`)}`;
 
+  // ── FALLBACK PATH (no DB data) ────────────────────────────────────────────
+  // FaqSchema is rendered INSIDE FallbackStudentVisaPage — not here.
+  // ArticleSchema is also rendered inside FallbackStudentVisaPage.
   if (!d) {
     return <FallbackStudentVisaPage country={country} whatsappUrl={whatsappUrl} cleanSlug={cleanSlug} />;
   }
 
+  // ── FULL DATA PATH ────────────────────────────────────────────────────────
+  // ArticleSchema and FaqSchema are rendered HERE (outside FullDataPage) so they
+  // appear exactly ONCE in the document. FullDataPage renders NO schema tags.
+  // The FAQ section inside FullDataPage uses plain HTML <details> with NO
+  // itemScope microdata — JSON-LD below is the single source of truth for Google.
   return (
     <>
-      <ArticleSchema countryName={countryName} slug={cleanSlug} flag={country.flag} description={d?.description} year={year} />
+      <ArticleSchema
+        countryName={countryName}
+        slug={cleanSlug}
+        flag={country.flag}
+        description={d?.description}
+        year={year}
+      />
       <FaqSchema faqs={d?.faq_student_edition || []} />
-      <FullDataPage country={country} d={d} countryName={countryName} year={year} whatsappUrl={whatsappUrl} cleanSlug={cleanSlug} />
+      <FullDataPage
+        country={country}
+        d={d}
+        countryName={countryName}
+        year={year}
+        whatsappUrl={whatsappUrl}
+        cleanSlug={cleanSlug}
+      />
     </>
   );
 }

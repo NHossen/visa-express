@@ -1,26 +1,9 @@
-// app/visa/visa-guide/page.jsx  (VisaGuide landing / index page)
-// ─────────────────────────────────────────────────────────────────────────────
-// URL builder convention (used everywhere in this file):
-//   buildVisaUrl(destName, originName) → `/visa/${destSlug}-to-${originSlug}`
-//   e.g. dest=Canada, origin=Bangladesh → /visa/canada-to-bangladesh
-// ─────────────────────────────────────────────────────────────────────────────
-
 "use client";
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { createSlug } from '@/app/lib/utils';
 
-// ── SEO METADATA (exported from a separate metadata file or layout) ──────────
-// For the landing page, add this to a co-located metadata.js or layout:
-//
-// export const metadata = {
-//   title: 'Visa Requirements for Bangladeshi Citizens 2026 — All Countries | Eammu Holidays',
-//   description: 'Instant embassy-verified visa requirements for 195+ countries. Documents checklist, processing time, fees and expert tips for Bangladeshi passport holders — updated 2026.',
-//   keywords: 'visa requirements Bangladesh 2026, Bangladesh visa guide, tourist visa Bangladesh citizens, visa checklist Bangladesh, Eammu Holidays visa',
-//   alternates: { canonical: '/visa/visa-guide' },
-//   openGraph: { title: 'Visa Guide for Bangladeshi Travelers 2026 | Eammu Holidays', type: 'website' },
-// };
 
 const POPULAR_ROUTES = [
   { origin: 'Bangladesh', dest: 'Canada' },
@@ -34,39 +17,35 @@ const POPULAR_ROUTES = [
 ];
 
 const STATS = [
-  { value: '195+', label: 'Countries',       icon: '🌏' },
-  { value: '98%',  label: 'Success Rate',    icon: '✅' },
+  { value: '195+', label: 'Countries',        icon: '🌏' },
+  { value: '98%',  label: 'Success Rate',     icon: '✅' },
   { value: '42K+', label: 'Travelers Helped', icon: '✈️' },
-  { value: '24/7', label: 'Expert Support',  icon: '🛡️' },
+  { value: '24/7', label: 'Expert Support',   icon: '🛡️' },
 ];
 
 const VISA_TYPES = [
-  { icon: '🏖️', label: 'Tourist',  href: '/visa/tourist-visa',                desc: 'Leisure & sightseeing visits' },
-  { icon: '💼', label: 'Business', href: '/visa/business-visa',               desc: 'Meetings, conferences, trade' },
-  { icon: '🎓', label: 'Student',  href: '/visa/student-visa',   desc: 'Academic enrollment abroad' },
-  { icon: '🧳', label: 'Transit',  href: '/visa/transit-visa',                desc: 'Layover & onward travel' },
-  { icon: '💻', label: 'E-Visa',   href: '/visa/e-visa',                    desc: 'Electronic visa application' },
+  { icon: '🏖️', label: 'Tourist',  href: '/visa/tourist-visa',  desc: 'Leisure & sightseeing visits' },
+  { icon: '💼', label: 'Business', href: '/visa/business-visa', desc: 'Meetings, conferences, trade' },
+  { icon: '🎓', label: 'Student',  href: '/visa/student-visa',  desc: 'Academic enrollment abroad' },
+  { icon: '🧳', label: 'Transit',  href: '/visa/transit-visa',  desc: 'Layover & onward travel' },
+  { icon: '💻', label: 'E-Visa',   href: '/visa/e-visa',        desc: 'Electronic visa application' },
 ];
 
-// Top destination country pages — for SEO internal link hub
 const SEO_DESTINATION_LINKS = [
-  { dest: 'Canada',         origin: 'Bangladesh', label: 'Canada Visa for Bangladeshi' },
-  { dest: 'United States',  origin: 'Bangladesh', label: 'USA Visa for Bangladeshi' },
-  { dest: 'United Kingdom', origin: 'Bangladesh', label: 'UK Visa for Bangladeshi' },
-  { dest: 'Australia',      origin: 'Bangladesh', label: 'Australia Visa for Bangladeshi' },
-  { dest: 'Germany',        origin: 'Bangladesh', label: 'Germany Visa for Bangladeshi' },
-  { dest: 'Italy',          origin: 'Bangladesh', label: 'Italy Visa for Bangladeshi' },
-  { dest: 'France',         origin: 'Bangladesh', label: 'France Visa for Bangladeshi' },
-  { dest: 'Malaysia',       origin: 'Bangladesh', label: 'Malaysia Visa for Bangladeshi' },
-  { dest: 'Thailand',       origin: 'Bangladesh', label: 'Thailand Visa for Bangladeshi' },
-  { dest: 'Japan',          origin: 'Bangladesh', label: 'Japan Visa for Bangladeshi' },
-  { dest: 'Singapore',      origin: 'Bangladesh', label: 'Singapore Visa for Bangladeshi' },
-  { dest: 'United Arab Emirates',          origin: 'Bangladesh', label: 'Dubai Visa for Bangladeshi' },
+  { dest: 'Canada',               origin: 'Bangladesh', label: 'Canada Visa for Bangladeshi' },
+  { dest: 'United States',        origin: 'Bangladesh', label: 'USA Visa for Bangladeshi' },
+  { dest: 'United Kingdom',       origin: 'Bangladesh', label: 'UK Visa for Bangladeshi' },
+  { dest: 'Australia',            origin: 'Bangladesh', label: 'Australia Visa for Bangladeshi' },
+  { dest: 'Germany',              origin: 'Bangladesh', label: 'Germany Visa for Bangladeshi' },
+  { dest: 'Italy',                origin: 'Bangladesh', label: 'Italy Visa for Bangladeshi' },
+  { dest: 'France',               origin: 'Bangladesh', label: 'France Visa for Bangladeshi' },
+  { dest: 'Malaysia',             origin: 'Bangladesh', label: 'Malaysia Visa for Bangladeshi' },
+  { dest: 'Thailand',             origin: 'Bangladesh', label: 'Thailand Visa for Bangladeshi' },
+  { dest: 'Japan',                origin: 'Bangladesh', label: 'Japan Visa for Bangladeshi' },
+  { dest: 'Singapore',            origin: 'Bangladesh', label: 'Singapore Visa for Bangladeshi' },
+  { dest: 'United Arab Emirates', origin: 'Bangladesh', label: 'Dubai Visa for Bangladeshi' },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// URL builder — destination-to-origin
-// ─────────────────────────────────────────────────────────────────────────────
 const buildVisaUrl = (destName, originName) =>
   `/visa/${createSlug(originName)}-to-${createSlug(destName)}`;
 
@@ -122,7 +101,6 @@ export default function VisaGuide() {
               Eammu Holidays · Official Visa Intelligence Portal 2026
             </span>
           </div>
-          {/* H1 — primary keyword */}
           <h1 className="text-5xl md:text-7xl font-black mb-5 tracking-tight text-slate-900 leading-[1.05]">
             Visa Requirements,<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">
@@ -162,7 +140,7 @@ export default function VisaGuide() {
               <>
                 <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
 
-                  {/* Origin / Nationality */}
+                  {/* Origin */}
                   <div className="flex-1 bg-slate-50 p-5 rounded-[1.8rem] border-2 border-slate-100 hover:border-blue-300 focus-within:border-blue-400 transition-all">
                     <label className="block text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">
                       🌍 Your Nationality / Passport
@@ -215,7 +193,7 @@ export default function VisaGuide() {
                     </div>
                   </div>
 
-                  {/* CTA — builds /visa/destination-to-origin */}
+                  {/* CTA */}
                   <Link
                     href={buildVisaUrl(destination, origin)}
                     className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-10 py-6 rounded-[1.8rem] font-black transition-all shadow-xl shadow-blue-200 active:scale-95 text-center flex items-center justify-center gap-2 group whitespace-nowrap"
@@ -272,8 +250,8 @@ export default function VisaGuide() {
           <p className="text-sm text-slate-500 mb-6">Based on real monthly search volume — updated weekly for 2026</p>
           <div className="grid sm:grid-cols-2 gap-3">
             {POPULAR_ROUTES.map((r, i) => {
-              const destEntry   = visaData.find(c => c.country === r.dest);
-              const origEntry   = visaData.find(c => c.country === r.origin);
+              const destEntry = visaData.find(c => c.country === r.dest);
+              const origEntry = visaData.find(c => c.country === r.origin);
               return (
                 <Link
                   key={i}
@@ -346,7 +324,6 @@ export default function VisaGuide() {
               ))}
           </div>
 
-          {/* Internal links hub */}
           <div className="mt-8 flex flex-wrap gap-2">
             {['visa/tourist-visa', 'visa/student-visa', 'visa/work-visa', 'visa/e-visa'].map(path => (
               <Link key={path} href={`/${path}`}
@@ -357,7 +334,7 @@ export default function VisaGuide() {
           </div>
         </motion.div>
 
-        {/* ── SEO INTERNAL LINKS HUB — Top destination pages ── */}
+        {/* ── SEO INTERNAL LINKS HUB ── */}
         <motion.div variants={itemVars} className="mb-16">
           <div className="flex items-center gap-4 mb-6">
             <h2 className="text-xl font-black tracking-tight text-slate-800 shrink-0">
@@ -432,9 +409,9 @@ export default function VisaGuide() {
               </p>
               <p>
                 Explore our{' '}
-                <Link href="/visa/tourist-visa"                 className="text-blue-600 font-bold hover:underline">tourist visa guides</Link>,{' '}
+                <Link href="/visa/tourist-visa"   className="text-blue-600 font-bold hover:underline">tourist visa guides</Link>,{' '}
                 <Link href="/visa/student-visa"   className="text-blue-600 font-bold hover:underline">student visa guides</Link>, and{' '}
-                <Link href="/scholarships"                 className="text-blue-600 font-bold hover:underline">scholarship opportunities</Link>{' '}
+                <Link href="/scholarships"        className="text-blue-600 font-bold hover:underline">scholarship opportunities</Link>{' '}
                 for Bangladeshi students.
               </p>
             </div>

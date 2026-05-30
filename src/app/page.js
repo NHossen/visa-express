@@ -3,6 +3,7 @@ import EVisaSearchMenu from '@/components/SearchMenu/EVisaSearchMenu/EVisaSearch
 import QuickAccessCards from '@/components/SearchMenu/QuickAccessCards/QuickAccessCards'
 import ScholarshipSearch from '@/components/SearchMenu/ScholarshipSearch/ScholarshipSearch';
 import VisaProcessingTime from '@/components/SearchMenu/VisaProcessingTime/VisaProcessingTime'
+import Links from '@/components/Server/Links';
 import React from 'react'
 
 // ─── HOME PAGE SEO METADATA ───────────────────────────────────────────────────
@@ -215,6 +216,8 @@ export default function Page() {
           <EVisaSearchMenu />
         </section>
       </div>
+
+    <Links />
     </>
   );
 }

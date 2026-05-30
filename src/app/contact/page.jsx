@@ -1,4 +1,5 @@
 import ContactPage from '@/components/Client/Contact/Contact'
+import Links from '@/components/Server/Links';
 import React from 'react'
 export const metadata = {
   title: "Contact Visa Express Hub | Visa Assistance in Dubai & Dhaka",
@@ -217,6 +218,7 @@ export default function page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <ContactPage />
+      <Links />
     </div>
   )
 }

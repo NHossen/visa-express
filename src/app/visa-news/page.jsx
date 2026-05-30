@@ -1,4 +1,5 @@
 // app/visa-news/page.jsx
+import Links from '@/components/Server/Links';
 import Link from 'next/link';
 
 /* ─── SEO METADATA ────────────────────────────────────────── */
@@ -542,7 +543,7 @@ export default function VisaNewsPage() {
               </Link>
             </div>
           </section>
-
+  <Links />
         </main>
       </div>
     </>

@@ -9,7 +9,7 @@ import React from 'react'
 // ─── HOME PAGE SEO METADATA ───────────────────────────────────────────────────
 export const metadata = {
   // Title is intentionally keyword-rich and action-oriented
-  title: 'Visa Requirements, Processing Times & Document Checklists for 195+ Countries',
+  title: 'Visa Express - Online Travel Agency Dubai and Bangladesh',
 
   description:
     'Visa Express Hub — Free visa requirements, real-time processing times, document checklists, SOP templates & NOC letters for tourist, student, work, and transit visas across 195+ countries. Corporate office Dubai | +971 50 707 8334 | Sponsored by Eammu Holidays.',

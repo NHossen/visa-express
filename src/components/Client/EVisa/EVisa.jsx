@@ -436,8 +436,8 @@ export default function EVISAMainPage() {
               // For destinations: link to a generic destination page
               // For nationalities: link to nationality e-visa browse page
               const href = viewMode === "destinations"
-                ? `/visa/e-visa/${natSlug}-national-e-visa-requirements-for-${destSlug}`
-                : `/visa/e-visa/${createSlug(c.country)}`;
+  ? `/visa/e-visa/${createSlug(c.country)}`  // ✅ destination page for that country
+  : `/visa/e-visa/${createSlug(c.country)}`;  // ✅ nationality browse page
               const titleText = viewMode === "destinations"
                 ? `e-Visa Requirements to Visit ${c.country} — 2026 Guide`
                 : `${c.country} Passport e-Visa Requirements — 2026 Guide`;

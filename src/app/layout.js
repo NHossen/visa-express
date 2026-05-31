@@ -20,8 +20,8 @@ const geistMono = Geist_Mono({
 // ─── COMPREHENSIVE SEO METADATA ───────────────────────────────────────────────
 export const metadata = {
   title: {
-    default: "Visa Express Hub | Global Visa Requirements, Guides & Checklists",
-    template: "%s | Visa Express Hub",
+    default: "Visa Express: Leading Travel Agency Dubai and Bangladesh",
+  
   },
   description:
     "Visa Express Hub provides visa requirements, processing times, document checklists, and application guides for tourist, student, work, and transit visas across 195+ countries. Free SOP templates, NOC letters & real-time processing tracker. Corporate office Dubai — +971 50 707 8334.",

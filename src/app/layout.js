@@ -475,6 +475,13 @@ export default function RootLayout({ children }) {
         <WhatsAppFloatingButton />
         <Scroll />
         <Footer />
+         {/* ✅ Plain <script> — no data-nscript, no warning, async so non-blocking */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3033816186833488"
+          crossOrigin="anonymous"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

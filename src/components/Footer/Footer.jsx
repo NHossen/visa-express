@@ -280,6 +280,7 @@ const Footer = () => {
               { label: 'Disclaimer',     href: '/disclaimer' },
               { label: 'Sitemap',        href: '/sitemap-index.xml' },
               { label: 'Contact',        href: '/contact' },
+              { label: 'About',          href: '/about' },
             ].map((l) => (
               <Link
                 key={l.href}

@@ -482,6 +482,7 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
           strategy="lazyOnload"
         />
+        
       </body>
     </html>
   );

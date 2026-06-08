@@ -2,1307 +2,1567 @@
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1e8.svg",
 		"country": "Ascension Island",
-		"code": "ac"
+		"code": "ac",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1e9.svg",
 		"country": "Andorra",
-		"code": "ad"
+		"code": "ad",
+		"passport_cover": "https://api.eammu.com/passports/ad.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1ea.svg",
 		"country": "United Arab Emirates",
-		"code": "ae"
+		"code": "ae",
+		"passport_cover": "https://api.eammu.com/passports/ae.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1eb.svg",
 		"country": "Afghanistan",
-		"code": "af"
+		"code": "af",
+		"passport_cover": "https://api.eammu.com/passports/af.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1ec.svg",
 		"country": "Antigua & Barbuda",
-		"code": "ag"
+		"code": "ag",
+		"passport_cover": "https://api.eammu.com/passports/ag.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1ee.svg",
 		"country": "Anguilla",
-		"code": "ai"
+		"code": "ai",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1f1.svg",
 		"country": "Albania",
-		"code": "al"
+		"code": "al",
+		"passport_cover": "https://api.eammu.com/passports/al.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1f2.svg",
 		"country": "Armenia",
-		"code": "am"
+		"code": "am",
+		"passport_cover": "https://api.eammu.com/passports/am.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1f4.svg",
 		"country": "Angola",
-		"code": "ao"
+		"code": "ao",
+		"passport_cover": "https://api.eammu.com/passports/ao.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1f6.svg",
 		"country": "Antarctica",
-		"code": "aq"
+		"code": "aq",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1f7.svg",
 		"country": "Argentina",
-		"code": "ar"
+		"code": "ar",
+		"passport_cover": "https://api.eammu.com/passports/ar.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1f8.svg",
 		"country": "American Samoa",
-		"code": "as"
+		"code": "as",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1f9.svg",
 		"country": "Austria",
-		"code": "at"
+		"code": "at",
+		"passport_cover": "https://api.eammu.com/passports/at.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1fa.svg",
 		"country": "Australia",
-		"code": "au"
+		"code": "au",
+		"passport_cover": "https://api.eammu.com/passports/au.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1fc.svg",
 		"country": "Aruba",
-		"code": "aw"
+		"code": "aw",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1fd.svg",
 		"country": "Åland Islands",
-		"code": "ax"
+		"code": "ax",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1ff.svg",
 		"country": "Azerbaijan",
-		"code": "az"
+		"code": "az",
+		"passport_cover": "https://api.eammu.com/passports/az.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1e6.svg",
 		"country": "Bosnia & Herzegovina",
-		"code": "ba"
+		"code": "ba",
+		"passport_cover": "https://api.eammu.com/passports/ba.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1e7.svg",
 		"country": "Barbados",
-		"code": "bb"
+		"code": "bb",
+		"passport_cover": "https://api.eammu.com/passports/bb.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1e9.svg",
 		"country": "Bangladesh",
-		"code": "bd"
+		"code": "bd",
+		"passport_cover": "https://api.eammu.com/passports/bd.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1ea.svg",
 		"country": "Belgium",
-		"code": "be"
+		"code": "be",
+		"passport_cover": "https://api.eammu.com/passports/be.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1eb.svg",
 		"country": "Burkina Faso",
-		"code": "bf"
+		"code": "bf",
+		"passport_cover": "https://api.eammu.com/passports/bf.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1ec.svg",
 		"country": "Bulgaria",
-		"code": "bg"
+		"code": "bg",
+		"passport_cover": "https://api.eammu.com/passports/bg.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1ed.svg",
 		"country": "Bahrain",
-		"code": "bh"
+		"code": "bh",
+		"passport_cover": "https://api.eammu.com/passports/bh.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1ee.svg",
 		"country": "Burundi",
-		"code": "bi"
+		"code": "bi",
+		"passport_cover": "https://api.eammu.com/passports/bi.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1ef.svg",
 		"country": "Benin",
-		"code": "bj"
+		"code": "bj",
+		"passport_cover": "https://api.eammu.com/passports/bj.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f1.svg",
 		"country": "St. Barthélemy",
-		"code": "bl"
+		"code": "bl",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f2.svg",
 		"country": "Bermuda",
-		"code": "bm"
+		"code": "bm",
+		"passport_cover": "https://api.eammu.com/passports/bm.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f3.svg",
 		"country": "Brunei",
-		"code": "bn"
+		"code": "bn",
+		"passport_cover": "https://api.eammu.com/passports/bn.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f4.svg",
 		"country": "Bolivia",
-		"code": "bo"
+		"code": "bo",
+		"passport_cover": "https://api.eammu.com/passports/bo.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f7.svg",
 		"country": "Brazil",
-		"code": "br"
+		"code": "br",
+		"passport_cover": "https://api.eammu.com/passports/br.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f8.svg",
 		"country": "Bahamas",
-		"code": "bs"
+		"code": "bs",
+		"passport_cover": "https://api.eammu.com/passports/bs.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f9.svg",
 		"country": "Bhutan",
-		"code": "bt"
+		"code": "bt",
+		"passport_cover": "https://api.eammu.com/passports/bt.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1fb.svg",
 		"country": "Bouvet Island",
-		"code": "bv"
+		"code": "bv",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1fc.svg",
 		"country": "Botswana",
-		"code": "bw"
+		"code": "bw",
+		"passport_cover": "https://api.eammu.com/passports/bw.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1fe.svg",
 		"country": "Belarus",
-		"code": "by"
+		"code": "by",
+		"passport_cover": "https://api.eammu.com/passports/by.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1ff.svg",
 		"country": "Belize",
-		"code": "bz"
+		"code": "bz",
+		"passport_cover": "https://api.eammu.com/passports/bz.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1e6.svg",
 		"country": "Canada",
-		"code": "ca"
+		"code": "ca",
+		"passport_cover": "https://api.eammu.com/passports/ca.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1e8.svg",
 		"country": "Cocos (Keeling) Islands",
-		"code": "cc"
+		"code": "cc",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1e9.svg",
 		"country": "Congo - Kinshasa",
-		"code": "cg"
+		"code": "cg",
+		"passport_cover": "https://api.eammu.com/passports/cg.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1eb.svg",
 		"country": "Central African Republic",
-		"code": "cf"
+		"code": "cf",
+		"passport_cover": "https://api.eammu.com/passports/cf.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1ec.svg",
 		"country": "Congo - Brazzaville",
-		"code": "cd"
+		"code": "cd",
+		"passport_cover": "https://api.eammu.com/passports/cd.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1ed.svg",
 		"country": "Switzerland",
-		"code": "ch"
+		"code": "ch",
+		"passport_cover": "https://api.eammu.com/passports/ch.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1ee.svg",
-		"country": "Côte d’Ivoire",
-		"code": "ci"
+		"country": "Côte d'Ivoire",
+		"code": "ci",
+		"passport_cover": "https://api.eammu.com/passports/ci.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1f0.svg",
 		"country": "Cook Islands",
-		"code": "ck"
+		"code": "ck",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1f1.svg",
 		"country": "Chile",
-		"code": "cl"
+		"code": "cl",
+		"passport_cover": "https://api.eammu.com/passports/cl.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1f2.svg",
 		"country": "Cameroon",
-		"code": "cm"
+		"code": "cm",
+		"passport_cover": "https://api.eammu.com/passports/cm.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1f3.svg",
 		"country": "China",
-		"code": "cn"
+		"code": "cn",
+		"passport_cover": "https://api.eammu.com/passports/cn.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1f4.svg",
 		"country": "Colombia",
-		"code": "co"
+		"code": "co",
+		"passport_cover": "https://api.eammu.com/passports/co.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1f5.svg",
 		"country": "Clipperton Island",
-		"code": "cp"
+		"code": "cp",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1f7.svg",
 		"country": "Costa Rica",
-		"code": "cr"
+		"code": "cr",
+		"passport_cover": "https://api.eammu.com/passports/cr.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1fa.svg",
 		"country": "Cuba",
-		"code": "cu"
+		"code": "cu",
+		"passport_cover": "https://api.eammu.com/passports/cu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1fb.svg",
 		"country": "Cape Verde",
-		"code": "cv"
+		"code": "cv",
+		"passport_cover": "https://api.eammu.com/passports/cv.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1fc.svg",
 		"country": "Curaçao",
-		"code": "cw"
+		"code": "cw",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1fd.svg",
 		"country": "Christmas Island",
-		"code": "cx"
+		"code": "cx",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1fe.svg",
 		"country": "Cyprus",
-		"code": "cy"
+		"code": "cy",
+		"passport_cover": "https://api.eammu.com/passports/cy.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1ff.svg",
 		"country": "Czechia",
-		"code": "cz"
+		"code": "cz",
+		"passport_cover": "https://api.eammu.com/passports/cz.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e9-1f1ea.svg",
 		"country": "Germany",
-		"code": "de"
+		"code": "de",
+		"passport_cover": "https://api.eammu.com/passports/de.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e9-1f1ec.svg",
 		"country": "Diego Garcia",
-		"code": "dg"
+		"code": "dg",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e9-1f1ef.svg",
 		"country": "Djibouti",
-		"code": "dj"
+		"code": "dj",
+		"passport_cover": "https://api.eammu.com/passports/dj.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e9-1f1f0.svg",
 		"country": "Denmark",
-		"code": "dk"
+		"code": "dk",
+		"passport_cover": "https://api.eammu.com/passports/dk.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e9-1f1f2.svg",
 		"country": "Dominica",
-		"code": "dm"
+		"code": "dm",
+		"passport_cover": "https://api.eammu.com/passports/dm.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e9-1f1f4.svg",
 		"country": "Dominican Republic",
-		"code": "do"
+		"code": "do",
+		"passport_cover": "https://api.eammu.com/passports/do.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e9-1f1ff.svg",
 		"country": "Algeria",
-		"code": "dz"
+		"code": "dz",
+		"passport_cover": "https://api.eammu.com/passports/dz.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1e6.svg",
 		"country": "Ceuta & Melilla",
-		"code": "ea"
+		"code": "ea",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1e8.svg",
 		"country": "Ecuador",
-		"code": "ec"
+		"code": "ec",
+		"passport_cover": "https://api.eammu.com/passports/ec.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1ea.svg",
 		"country": "Estonia",
-		"code": "ee"
+		"code": "ee",
+		"passport_cover": "https://api.eammu.com/passports/ee.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1ec.svg",
 		"country": "Egypt",
-		"code": "eg"
+		"code": "eg",
+		"passport_cover": "https://api.eammu.com/passports/eg.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1ed.svg",
 		"country": "Western Sahara",
-		"code": "eh"
+		"code": "eh",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1f7.svg",
 		"country": "Eritrea",
-		"code": "er"
+		"code": "er",
+		"passport_cover": "https://api.eammu.com/passports/er.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1f8.svg",
 		"country": "Spain",
-		"code": "es"
+		"code": "es",
+		"passport_cover": "https://api.eammu.com/passports/es.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1f9.svg",
 		"country": "Ethiopia",
-		"code": "et"
+		"code": "et",
+		"passport_cover": "https://api.eammu.com/passports/et.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1fa.svg",
 		"country": "European Union",
-		"code": "eu"
+		"code": "eu",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1eb-1f1ee.svg",
 		"country": "Finland",
-		"code": "fi"
+		"code": "fi",
+		"passport_cover": "https://api.eammu.com/passports/fi.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1eb-1f1ef.svg",
 		"country": "Fiji",
-		"code": "fj"
+		"code": "fj",
+		"passport_cover": "https://api.eammu.com/passports/fj.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1eb-1f1f0.svg",
 		"country": "Falkland Islands",
-		"code": "fk"
+		"code": "fk",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1eb-1f1f2.svg",
 		"country": "Micronesia",
-		"code": "fm"
+		"code": "fm",
+		"passport_cover": "https://api.eammu.com/passports/fm.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1eb-1f1f4.svg",
 		"country": "Faroe Islands",
-		"code": "fo"
+		"code": "fo",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1eb-1f1f7.svg",
 		"country": "France",
-		"code": "fr"
+		"code": "fr",
+		"passport_cover": "https://api.eammu.com/passports/fr.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1e6.svg",
 		"country": "Gabon",
-		"code": "ga"
+		"code": "ga",
+		"passport_cover": "https://api.eammu.com/passports/ga.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1e7.svg",
 		"country": "United Kingdom",
-		"code": "gb"
+		"code": "gb",
+		"passport_cover": "https://api.eammu.com/passports/gb.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1e9.svg",
 		"country": "Grenada",
-		"code": "gd"
+		"code": "gd",
+		"passport_cover": "https://api.eammu.com/passports/gd.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1ea.svg",
 		"country": "Georgia",
-		"code": "ge"
+		"code": "ge",
+		"passport_cover": "https://api.eammu.com/passports/ge.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1eb.svg",
 		"country": "French Guiana",
-		"code": "gf"
+		"code": "gf",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1ec.svg",
 		"country": "Guernsey",
-		"code": "gg"
+		"code": "gg",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1ed.svg",
 		"country": "Ghana",
-		"code": "gh"
+		"code": "gh",
+		"passport_cover": "https://api.eammu.com/passports/gh.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1ee.svg",
 		"country": "Gibraltar",
-		"code": "gi"
+		"code": "gi",
+		"passport_cover": "https://api.eammu.com/passports/gi.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f1.svg",
 		"country": "Greenland",
-		"code": "gl"
+		"code": "gl",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f2.svg",
 		"country": "Gambia",
-		"code": "gm"
+		"code": "gm",
+		"passport_cover": "https://api.eammu.com/passports/gm.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f3.svg",
 		"country": "Guinea",
-		"code": "gn"
+		"code": "gn",
+		"passport_cover": "https://api.eammu.com/passports/gn.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f5.svg",
 		"country": "Guadeloupe",
-		"code": "gp"
+		"code": "gp",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f6.svg",
 		"country": "Equatorial Guinea",
-		"code": "gq"
+		"code": "gq",
+		"passport_cover": "https://api.eammu.com/passports/gq.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f7.svg",
 		"country": "Greece",
-		"code": "gr"
+		"code": "gr",
+		"passport_cover": "https://api.eammu.com/passports/gr.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f8.svg",
-		"country": "South Georgia & South', Sandwich Islands",
-		"code": "gs"
+		"country": "South Georgia & South Sandwich Islands",
+		"code": "gs",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f9.svg",
 		"country": "Guatemala",
-		"code": "gt"
+		"code": "gt",
+		"passport_cover": "https://api.eammu.com/passports/gt.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1fa.svg",
 		"country": "Guam",
-		"code": "gu"
+		"code": "gu",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1fc.svg",
 		"country": "Guinea-Bissau",
-		"code": "gw"
+		"code": "gw",
+		"passport_cover": "https://api.eammu.com/passports/gw.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1fe.svg",
 		"country": "Guyana",
-		"code": "gy"
+		"code": "gy",
+		"passport_cover": "https://api.eammu.com/passports/gy.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ed-1f1f0.svg",
 		"country": "Hong Kong SAR China",
-		"code": "hk"
+		"code": "hk",
+		"passport_cover": "https://api.eammu.com/passports/hk.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ed-1f1f2.svg",
 		"country": "Heard & McDonald Islands",
-		"code": "hm"
+		"code": "hm",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ed-1f1f3.svg",
 		"country": "Honduras",
-		"code": "hn"
+		"code": "hn",
+		"passport_cover": "https://api.eammu.com/passports/hn.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ed-1f1f7.svg",
 		"country": "Croatia",
-		"code": "hr"
+		"code": "hr",
+		"passport_cover": "https://api.eammu.com/passports/hr.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ed-1f1f9.svg",
 		"country": "Haiti",
-		"code": "ht"
+		"code": "ht",
+		"passport_cover": "https://api.eammu.com/passports/ht.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ed-1f1fa.svg",
 		"country": "Hungary",
-		"code": "hu"
+		"code": "hu",
+		"passport_cover": "https://api.eammu.com/passports/hu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1e8.svg",
 		"country": "Canary Islands",
-		"code": "ic"
+		"code": "ic",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1e9.svg",
 		"country": "Indonesia",
-		"code": "id"
+		"code": "id",
+		"passport_cover": "https://api.eammu.com/passports/id.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1ea.svg",
 		"country": "Ireland",
-		"code": "ie"
+		"code": "ie",
+		"passport_cover": "https://api.eammu.com/passports/ie.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f1.svg",
 		"country": "Israel",
-		"code": "il"
+		"code": "il",
+		"passport_cover": "https://api.eammu.com/passports/il.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f2.svg",
 		"country": "Isle of Man",
-		"code": "im"
+		"code": "im",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f3.svg",
 		"country": "India",
-		"code": "in"
+		"code": "in",
+		"passport_cover": "https://api.eammu.com/passports/in.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f4.svg",
 		"country": "British Indian Ocean Territory",
-		"code": "io"
+		"code": "io",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f6.svg",
 		"country": "Iraq",
-		"code": "iq"
+		"code": "iq",
+		"passport_cover": "https://api.eammu.com/passports/iq.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f8.svg",
 		"country": "Iceland",
-		"code": "is"
+		"code": "is",
+		"passport_cover": "https://api.eammu.com/passports/is.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f9.svg",
 		"country": "Italy",
-		"code": "it"
+		"code": "it",
+		"passport_cover": "https://api.eammu.com/passports/it.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ef-1f1ea.svg",
 		"country": "Jersey",
-		"code": "je"
+		"code": "je",
+		"passport_cover": "https://api.eammu.com/passports/je.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ef-1f1f2.svg",
 		"country": "Jamaica",
-		"code": "jm"
+		"code": "jm",
+		"passport_cover": "https://api.eammu.com/passports/jm.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ef-1f1f4.svg",
 		"country": "Jordan",
-		"code": "jo"
+		"code": "jo",
+		"passport_cover": "https://api.eammu.com/passports/jo.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ef-1f1f5.svg",
 		"country": "Japan",
-		"code": "jp"
+		"code": "jp",
+		"passport_cover": "https://api.eammu.com/passports/jp.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1ea.svg",
 		"country": "Kenya",
-		"code": "ke"
+		"code": "ke",
+		"passport_cover": "https://api.eammu.com/passports/ke.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1ec.svg",
 		"country": "Kyrgyzstan",
-		"code": "kg"
+		"code": "kg",
+		"passport_cover": "https://api.eammu.com/passports/kg.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1ed.svg",
 		"country": "Cambodia",
-		"code": "kh"
+		"code": "kh",
+		"passport_cover": "https://api.eammu.com/passports/kh.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1ee.svg",
 		"country": "Kiribati",
-		"code": "ki"
+		"code": "ki",
+		"passport_cover": "https://api.eammu.com/passports/ki.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1f2.svg",
 		"country": "Comoros",
-		"code": "km"
+		"code": "km",
+		"passport_cover": "https://api.eammu.com/passports/km.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1f3.svg",
 		"country": "St. Kitts & Nevis",
-		"code": "kn"
+		"code": "kn",
+		"passport_cover": "https://api.eammu.com/passports/kn.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1f5.svg",
 		"country": "North Korea",
-		"code": "kp"
+		"code": "kp",
+		"passport_cover": "https://api.eammu.com/passports/kp.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1f7.svg",
 		"country": "South Korea",
-		"code": "kr"
+		"code": "kr",
+		"passport_cover": "https://api.eammu.com/passports/kr.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1fc.svg",
 		"country": "Kuwait",
-		"code": "kw"
+		"code": "kw",
+		"passport_cover": "https://api.eammu.com/passports/kw.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1fe.svg",
 		"country": "Cayman Islands",
-		"code": "ky"
+		"code": "ky",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1ff.svg",
 		"country": "Kazakhstan",
-		"code": "kz"
+		"code": "kz",
+		"passport_cover": "https://api.eammu.com/passports/kz.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1e6.svg",
 		"country": "Laos",
-		"code": "la"
+		"code": "la",
+		"passport_cover": "https://api.eammu.com/passports/la.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1e7.svg",
 		"country": "Lebanon",
-		"code": "lb"
+		"code": "lb",
+		"passport_cover": "https://api.eammu.com/passports/lb.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1e8.svg",
 		"country": "St. Lucia",
-		"code": "lc"
+		"code": "lc",
+		"passport_cover": "https://api.eammu.com/passports/lc.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1ee.svg",
 		"country": "Liechtenstein",
-		"code": "li"
+		"code": "li",
+		"passport_cover": "https://api.eammu.com/passports/li.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1f0.svg",
 		"country": "Sri Lanka",
-		"code": "lk"
+		"code": "lk",
+		"passport_cover": "https://api.eammu.com/passports/lk.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1f7.svg",
 		"country": "Liberia",
-		"code": "lr"
+		"code": "lr",
+		"passport_cover": "https://api.eammu.com/passports/lr.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1f8.svg",
 		"country": "Lesotho",
-		"code": "ls"
+		"code": "ls",
+		"passport_cover": "https://api.eammu.com/passports/ls.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1f9.svg",
 		"country": "Lithuania",
-		"code": "lt"
+		"code": "lt",
+		"passport_cover": "https://api.eammu.com/passports/lt.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1fa.svg",
 		"country": "Luxembourg",
-		"code": "lu"
+		"code": "lu",
+		"passport_cover": "https://api.eammu.com/passports/lu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1fb.svg",
 		"country": "Latvia",
-		"code": "lv"
+		"code": "lv",
+		"passport_cover": "https://api.eammu.com/passports/lv.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1fe.svg",
 		"country": "Libya",
-		"code": "ly"
+		"code": "ly",
+		"passport_cover": "https://api.eammu.com/passports/ly.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1e6.svg",
 		"country": "Morocco",
-		"code": "ma"
+		"code": "ma",
+		"passport_cover": "https://api.eammu.com/passports/ma.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1e8.svg",
 		"country": "Monaco",
-		"code": "mc"
+		"code": "mc",
+		"passport_cover": "https://api.eammu.com/passports/mc.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1e9.svg",
 		"country": "Moldova",
-		"code": "md"
+		"code": "md",
+		"passport_cover": "https://api.eammu.com/passports/md.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1ea.svg",
 		"country": "Montenegro",
-		"code": "me"
+		"code": "me",
+		"passport_cover": "https://api.eammu.com/passports/me.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1eb.svg",
 		"country": "St. Martin",
-		"code": "mf"
+		"code": "mf",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1ec.svg",
 		"country": "Madagascar",
-		"code": "mg"
+		"code": "mg",
+		"passport_cover": "https://api.eammu.com/passports/mg.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1ed.svg",
 		"country": "Marshall Islands",
-		"code": "mh"
+		"code": "mh",
+		"passport_cover": "https://api.eammu.com/passports/mh.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f0.svg",
 		"country": "North Macedonia",
-		"code": "mk"
+		"code": "mk",
+		"passport_cover": "https://api.eammu.com/passports/mk.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f1.svg",
 		"country": "Mali",
-		"code": "ml"
+		"code": "ml",
+		"passport_cover": "https://api.eammu.com/passports/ml.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f2.svg",
 		"country": "Myanmar (Burma)",
-		"code": "mm"
+		"code": "mm",
+		"passport_cover": "https://api.eammu.com/passports/mm.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f3.svg",
 		"country": "Mongolia",
-		"code": "mn"
+		"code": "mn",
+		"passport_cover": "https://api.eammu.com/passports/mn.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f4.svg",
 		"country": "Macao Sar China",
-		"code": "mo"
+		"code": "mo",
+		"passport_cover": "https://api.eammu.com/passports/mo.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f5.svg",
 		"country": "Northern Mariana Islands",
-		"code": "mp"
+		"code": "mp",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f6.svg",
 		"country": "Martinique",
-		"code": "mq"
+		"code": "mq",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f7.svg",
 		"country": "Mauritania",
-		"code": "mr"
+		"code": "mr",
+		"passport_cover": "https://api.eammu.com/passports/mr.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f8.svg",
 		"country": "Montserrat",
-		"code": "ms"
+		"code": "ms",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f9.svg",
 		"country": "Malta",
-		"code": "mt"
+		"code": "mt",
+		"passport_cover": "https://api.eammu.com/passports/mt.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1fa.svg",
 		"country": "Mauritius",
-		"code": "mu"
+		"code": "mu",
+		"passport_cover": "https://api.eammu.com/passports/mu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1fb.svg",
 		"country": "Maldives",
-		"code": "mv"
+		"code": "mv",
+		"passport_cover": "https://api.eammu.com/passports/mv.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1fc.svg",
 		"country": "Malawi",
-		"code": "mw"
+		"code": "mw",
+		"passport_cover": "https://api.eammu.com/passports/mw.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1fd.svg",
 		"country": "Mexico",
-		"code": "mx"
+		"code": "mx",
+		"passport_cover": "https://api.eammu.com/passports/mx.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1fe.svg",
 		"country": "Malaysia",
-		"code": "my"
+		"code": "my",
+		"passport_cover": "https://api.eammu.com/passports/my.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1ff.svg",
 		"country": "Mozambique",
-		"code": "mz"
+		"code": "mz",
+		"passport_cover": "https://api.eammu.com/passports/mz.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1e6.svg",
 		"country": "Namibia",
-		"code": "na"
+		"code": "na",
+		"passport_cover": "https://api.eammu.com/passports/na.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1e8.svg",
 		"country": "New Caledonia",
-		"code": "nc"
+		"code": "nc",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1ea.svg",
 		"country": "Niger",
-		"code": "ne"
+		"code": "ne",
+		"passport_cover": "https://api.eammu.com/passports/ne.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1eb.svg",
 		"country": "Norfolk Island",
-		"code": "nf"
+		"code": "nf",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1ec.svg",
 		"country": "Nigeria",
-		"code": "ng"
+		"code": "ng",
+		"passport_cover": "https://api.eammu.com/passports/ng.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1ee.svg",
 		"country": "Nicaragua",
-		"code": "ni"
+		"code": "ni",
+		"passport_cover": "https://api.eammu.com/passports/ni.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1f1.svg",
 		"country": "Netherlands",
-		"code": "nl"
+		"code": "nl",
+		"passport_cover": "https://api.eammu.com/passports/nl.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1f4.svg",
 		"country": "Norway",
-		"code": "no"
+		"code": "no",
+		"passport_cover": "https://api.eammu.com/passports/no.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1f5.svg",
 		"country": "Nepal",
-		"code": "np"
+		"code": "np",
+		"passport_cover": "https://api.eammu.com/passports/np.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1f7.svg",
 		"country": "Nauru",
-		"code": "nr"
+		"code": "nr",
+		"passport_cover": "https://api.eammu.com/passports/nr.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1fa.svg",
 		"country": "Niue",
-		"code": "nu"
+		"code": "nu",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1ff.svg",
 		"country": "New Zealand",
-		"code": "nz"
+		"code": "nz",
+		"passport_cover": "https://api.eammu.com/passports/nz.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f4-1f1f2.svg",
 		"country": "Oman",
-		"code": "om"
+		"code": "om",
+		"passport_cover": "https://api.eammu.com/passports/om.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1e6.svg",
 		"country": "Panama",
-		"code": "pa"
+		"code": "pa",
+		"passport_cover": "https://api.eammu.com/passports/pa.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1ea.svg",
 		"country": "Peru",
-		"code": "pe"
+		"code": "pe",
+		"passport_cover": "https://api.eammu.com/passports/pe.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1eb.svg",
 		"country": "French Polynesia",
-		"code": "pf"
+		"code": "pf",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1ec.svg",
 		"country": "Papua New Guinea",
-		"code": "pg"
+		"code": "pg",
+		"passport_cover": "https://api.eammu.com/passports/pg.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1ed.svg",
 		"country": "Philippines",
-		"code": "ph"
+		"code": "ph",
+		"passport_cover": "https://api.eammu.com/passports/ph.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1f0.svg",
 		"country": "Pakistan",
-		"code": "pk"
+		"code": "pk",
+		"passport_cover": "https://api.eammu.com/passports/pk.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1f1.svg",
 		"country": "Poland",
-		"code": "pl"
+		"code": "pl",
+		"passport_cover": "https://api.eammu.com/passports/pl.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1f2.svg",
 		"country": "St. Pierre & Miquelon",
-		"code": "pm"
+		"code": "pm",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1f3.svg",
 		"country": "Pitcairn Islands",
-		"code": "pn"
+		"code": "pn",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1f7.svg",
 		"country": "Puerto Rico",
-		"code": "pr"
+		"code": "pr",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1f8.svg",
 		"country": "Palestinian Territories",
-		"code": "ps"
+		"code": "ps",
+		"passport_cover": "https://api.eammu.com/passports/ps.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1f9.svg",
 		"country": "Portugal",
-		"code": "pt"
+		"code": "pt",
+		"passport_cover": "https://api.eammu.com/passports/pt.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1fc.svg",
 		"country": "Palau",
-		"code": "pw"
+		"code": "pw",
+		"passport_cover": "https://api.eammu.com/passports/pw.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1fe.svg",
 		"country": "Paraguay",
-		"code": "py"
+		"code": "py",
+		"passport_cover": "https://api.eammu.com/passports/py.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f6-1f1e6.svg",
 		"country": "Qatar",
-		"code": "qa"
+		"code": "qa",
+		"passport_cover": "https://api.eammu.com/passports/qa.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f7-1f1ea.svg",
 		"country": "Réunion",
-		"code": "re"
+		"code": "re",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f7-1f1f4.svg",
 		"country": "Romania",
-		"code": "ro"
+		"code": "ro",
+		"passport_cover": "https://api.eammu.com/passports/ro.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f7-1f1f8.svg",
 		"country": "Serbia",
-		"code": "yu"
+		"code": "rs",
+		"passport_cover": "https://api.eammu.com/passports/rs.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f7-1f1fa.svg",
 		"country": "Russia",
-		"code": "ru"
+		"code": "ru",
+		"passport_cover": "https://api.eammu.com/passports/ru.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f7-1f1fc.svg",
 		"country": "Rwanda",
-		"code": "rw"
+		"code": "rw",
+		"passport_cover": "https://api.eammu.com/passports/rw.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1e6.svg",
 		"country": "Saudi Arabia",
-		"code": "sa"
+		"code": "sa",
+		"passport_cover": "https://api.eammu.com/passports/sa.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1e7.svg",
 		"country": "Solomon Islands",
-		"code": "sb"
+		"code": "sb",
+		"passport_cover": "https://api.eammu.com/passports/sb.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1e8.svg",
 		"country": "Seychelles",
-		"code": "sc"
+		"code": "sc",
+		"passport_cover": "https://api.eammu.com/passports/sc.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1e9.svg",
 		"country": "Sudan",
-		"code": "sd"
+		"code": "sd",
+		"passport_cover": "https://api.eammu.com/passports/sd.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1ea.svg",
 		"country": "Sweden",
-		"code": "se"
+		"code": "se",
+		"passport_cover": "https://api.eammu.com/passports/se.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1ec.svg",
 		"country": "Singapore",
-		"code": "sg"
+		"code": "sg",
+		"passport_cover": "https://api.eammu.com/passports/sg.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1ed.svg",
 		"country": "St. Helena",
-		"code": "sh"
+		"code": "sh",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1ee.svg",
 		"country": "Slovenia",
-		"code": "si"
+		"code": "si",
+		"passport_cover": "https://api.eammu.com/passports/si.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1ef.svg",
 		"country": "Svalbard & Jan Mayen",
-		"code": "sj"
+		"code": "sj",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f0.svg",
 		"country": "Slovakia",
-		"code": "sk"
+		"code": "sk",
+		"passport_cover": "https://api.eammu.com/passports/sk.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f1.svg",
 		"country": "Sierra Leone",
-		"code": "sl"
+		"code": "sl",
+		"passport_cover": "https://api.eammu.com/passports/sl.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f2.svg",
 		"country": "San Marino",
-		"code": "sm"
+		"code": "sm",
+		"passport_cover": "https://api.eammu.com/passports/sm.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f3.svg",
 		"country": "Senegal",
-		"code": "sn"
+		"code": "sn",
+		"passport_cover": "https://api.eammu.com/passports/sn.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f4.svg",
 		"country": "Somalia",
-		"code": "so"
+		"code": "so",
+		"passport_cover": "https://api.eammu.com/passports/so.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f7.svg",
 		"country": "Suriname",
-		"code": "sr"
+		"code": "sr",
+		"passport_cover": "https://api.eammu.com/passports/sr.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f8.svg",
 		"country": "South Sudan",
-		"code": "ss"
+		"code": "ss",
+		"passport_cover": "https://api.eammu.com/passports/ss.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f9.svg",
 		"country": "São Tomé & Príncipe",
-		"code": "st"
+		"code": "st",
+		"passport_cover": "https://api.eammu.com/passports/st.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1fb.svg",
 		"country": "El Salvador",
-		"code": "sv"
+		"code": "sv",
+		"passport_cover": "https://api.eammu.com/passports/sv.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1fd.svg",
 		"country": "Sint Maarten",
-		"code": "sx"
+		"code": "sx",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1fe.svg",
 		"country": "Syria",
-		"code": "sy"
+		"code": "sy",
+		"passport_cover": "https://api.eammu.com/passports/sy.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1ff.svg",
 		"country": "Eswatini",
-		"code": "sz"
+		"code": "sz",
+		"passport_cover": "https://api.eammu.com/passports/sz.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1e6.svg",
 		"country": "Tristan Da Cunha",
-		"code": "sh"
+		"code": "sh",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1e8.svg",
 		"country": "Turks & Caicos Islands",
-		"code": "tc"
+		"code": "tc",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1e9.svg",
 		"country": "Chad",
-		"code": "td"
+		"code": "td",
+		"passport_cover": "https://api.eammu.com/passports/td.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1eb.svg",
 		"country": "French Southern Territories",
-		"code": "tf"
+		"code": "tf",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1ec.svg",
 		"country": "Togo",
-		"code": "tg"
+		"code": "tg",
+		"passport_cover": "https://api.eammu.com/passports/tg.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1ed.svg",
 		"country": "Thailand",
-		"code": "th"
+		"code": "th",
+		"passport_cover": "https://api.eammu.com/passports/th.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1ef.svg",
 		"country": "Tajikistan",
-		"code": "tj"
+		"code": "tj",
+		"passport_cover": "https://api.eammu.com/passports/tj.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1f0.svg",
 		"country": "Tokelau",
-		"code": "tk"
+		"code": "tk",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1f1.svg",
 		"country": "Timor-Leste",
-		"code": "tl"
+		"code": "tl",
+		"passport_cover": "https://api.eammu.com/passports/tl.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1f2.svg",
 		"country": "Turkmenistan",
-		"code": "tm"
+		"code": "tm",
+		"passport_cover": "https://api.eammu.com/passports/tm.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1f3.svg",
 		"country": "Tunisia",
-		"code": "tn"
+		"code": "tn",
+		"passport_cover": "https://api.eammu.com/passports/tn.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1f4.svg",
 		"country": "Tonga",
-		"code": "to"
+		"code": "to",
+		"passport_cover": "https://api.eammu.com/passports/to.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1f7.svg",
 		"country": "Turkey",
-		"code": "tr"
+		"code": "tr",
+		"passport_cover": "https://api.eammu.com/passports/tr.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1f9.svg",
 		"country": "Trinidad & Tobago",
-		"code": "tt"
+		"code": "tt",
+		"passport_cover": "https://api.eammu.com/passports/tt.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1fb.svg",
 		"country": "Tuvalu",
-		"code": "tv"
+		"code": "tv",
+		"passport_cover": "https://api.eammu.com/passports/tv.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1fc.svg",
 		"country": "Taiwan",
-		"code": "tw"
+		"code": "tw",
+		"passport_cover": "https://api.eammu.com/passports/tw.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1ff.svg",
 		"country": "Tanzania",
-		"code": "tz"
+		"code": "tz",
+		"passport_cover": "https://api.eammu.com/passports/tz.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fa-1f1e6.svg",
 		"country": "Ukraine",
-		"code": "ua"
+		"code": "ua",
+		"passport_cover": "https://api.eammu.com/passports/ua.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fa-1f1ec.svg",
 		"country": "Uganda",
-		"code": "ug"
+		"code": "ug",
+		"passport_cover": "https://api.eammu.com/passports/ug.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fa-1f1f2.svg",
 		"country": "U.S. Outlying Islands",
-		"code": "um"
+		"code": "um",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fa-1f1f3.svg",
 		"country": "United Nations",
-		"code": "un"
+		"code": "un",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fa-1f1f8.svg",
 		"country": "United States",
-		"code": "us"
+		"code": "us",
+		"passport_cover": "https://api.eammu.com/passports/us.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fa-1f1fe.svg",
 		"country": "Uruguay",
-		"code": "uy"
+		"code": "uy",
+		"passport_cover": "https://api.eammu.com/passports/uy.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fa-1f1ff.svg",
 		"country": "Uzbekistan",
-		"code": "uz"
+		"code": "uz",
+		"passport_cover": "https://api.eammu.com/passports/uz.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fb-1f1e6.svg",
 		"country": "Vatican City",
-		"code": "va"
+		"code": "va",
+		"passport_cover": "https://api.eammu.com/passports/va.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fb-1f1e8.svg",
 		"country": "St. Vincent & Grenadines",
-		"code": "vc"
+		"code": "vc",
+		"passport_cover": "https://api.eammu.com/passports/vc.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fb-1f1ea.svg",
 		"country": "Venezuela",
-		"code": "ve"
+		"code": "ve",
+		"passport_cover": "https://api.eammu.com/passports/ve.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fb-1f1ec.svg",
 		"country": "British Virgin Islands",
-		"code": "vg"
+		"code": "vg",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fb-1f1ee.svg",
 		"country": "U.S. Virgin Islands",
-		"code": "vi"
+		"code": "vi",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fb-1f1f3.svg",
 		"country": "Vietnam",
-		"code": "vn"
+		"code": "vn",
+		"passport_cover": "https://api.eammu.com/passports/vn.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fb-1f1fa.svg",
 		"country": "Vanuatu",
-		"code": "vu"
+		"code": "vu",
+		"passport_cover": "https://api.eammu.com/passports/vu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fc-1f1eb.svg",
 		"country": "Wallis & Futuna",
-		"code": "wf"
+		"code": "wf",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fc-1f1f8.svg",
 		"country": "Samoa",
-		"code": "ws"
+		"code": "ws",
+		"passport_cover": "https://api.eammu.com/passports/ws.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fd-1f1f0.svg",
 		"country": "Kosovo",
-		"code": "xk"
+		"code": "xk",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fe-1f1ea.svg",
 		"country": "Yemen",
-		"code": "ye"
+		"code": "ye",
+		"passport_cover": "https://api.eammu.com/passports/ye.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1fe-1f1f9.svg",
 		"country": "Mayotte",
-		"code": "yt"
+		"code": "yt",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ff-1f1e6.svg",
 		"country": "South Africa",
-		"code": "za"
+		"code": "za",
+		"passport_cover": "https://api.eammu.com/passports/za.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ff-1f1f2.svg",
 		"country": "Zambia",
-		"code": "zm"
+		"code": "zm",
+		"passport_cover": "https://api.eammu.com/passports/zm.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ff-1f1fc.svg",
 		"country": "Zimbabwe",
-		"code": "zw"
+		"code": "zw",
+		"passport_cover": "https://api.eammu.com/passports/zw.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f3f4-e0067-e0062-e0065-e006e-e0067-e007f.svg",
 		"country": "England",
-		"code": "uk"
+		"code": "uk",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.svg",
 		"country": "Scotland",
-		"code": "uk"
+		"code": "uk",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
 	{
 		"flag": "https://twemoji.maxcdn.com/2/svg/1f3f4-e0067-e0062-e0077-e006c-e0073-e007f.svg",
 		"country": "Wales",
-		"code": "uk"
+		"code": "uk",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
 	},
-   
-   {
-     "flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f7.svg",
-     "country": "Iran",
-     "code": "ir"
-   },
-   {
-     "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f6.svg",
-     "country": "Caribbean Netherlands",
-     "code": "bq"
-   }
+	{
+		"flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f7.svg",
+		"country": "Iran",
+		"code": "ir",
+		"passport_cover": "https://api.eammu.com/passports/ir.png"
+	},
+	{
+		"flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f6.svg",
+		"country": "Caribbean Netherlands",
+		"code": "bq",
+		"passport_cover": "https://api.eammu.com/passports/eammu.png"
+	}
 ]

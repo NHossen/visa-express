@@ -1,9 +1,12 @@
 import HeroSection from '@/components/HeroSection/HeroSection'
+import CountrySearchBar from '@/components/SearchMenu/Countrysearchbar/Countrysearchbar';
 import EVisaSearchMenu from '@/components/SearchMenu/EVisaSearchMenu/EVisaSearchMenu';
 import QuickAccessCards from '@/components/SearchMenu/QuickAccessCards/QuickAccessCards'
 import ScholarshipSearch from '@/components/SearchMenu/ScholarshipSearch/ScholarshipSearch';
 import VisaProcessingTime from '@/components/SearchMenu/VisaProcessingTime/VisaProcessingTime'
 import Links from '@/components/Server/Links';
+import VisaCheckerHome from '@/components/Visacheckerhome/Visacheckerhome';
+
 import React from 'react'
 
 // ─── HOME PAGE SEO METADATA ───────────────────────────────────────────────────
@@ -201,6 +204,10 @@ export default function Page() {
             anchor links improve crawlability */}
         <HeroSection />
 
+        <VisaCheckerHome />
+
+         {/* Bottom carousel sits below the hero */}
+           <CountrySearchBar />
         <section id="visa-processing-time-tracker" aria-label="Visa Processing Time Tracker">
           <VisaProcessingTime />
         </section>

@@ -1,4 +1,4 @@
-import CountrySearchBar from '../SearchMenu/Countrysearchbar/Countrysearchbar';
+
 import BackgroundSlider from './BackgroundSlider';
 import BottomCarousel from './BottomCarousel';
 import TravelMenu from './TravelMenu';
@@ -20,8 +20,7 @@ const HeroSection = () => {
 
       </div>
 
-      {/* Bottom carousel sits below the hero */}
-      <CountrySearchBar />
+     
       <BottomCarousel />
 
     </div>

@@ -524,7 +524,7 @@ export default function CountrySearchBar({ mode = "student", className = "" }) {
   return (
     <>
       {/* ── SEARCH PILL ─────────────────────────────────────────────────── */}
-      <div ref={pillRef} className={`relative w-full max-w-7xl mt-8 p-2 mx-auto ${className}`}>
+      <div ref={pillRef} className={`relative w-full max-w-7xl my-8 p-2 mx-auto ${className}`}>
         <div className={`
           relative flex items-stretch bg-white rounded-2xl transition-all duration-300
           ${open

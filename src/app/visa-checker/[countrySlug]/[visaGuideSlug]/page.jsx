@@ -128,7 +128,7 @@ export async function generateMetadata({ params }) {
   const label = guide?.label || visaMeta.label;
 
   const title = destName
-    ? `${from} to ${to} – ${label} Guide | Visa Checker`
+    ? `${from} to ${to} Visa - Price, Requirements and Application – ${label} Guide`
     : `${label} Guide | Visa Checker`;
 
   const description =

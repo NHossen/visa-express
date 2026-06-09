@@ -320,7 +320,7 @@ export default function VisaCheckerHome() {
       if (pp) setPassport(pp);
       if (dd) setDestination(dd);
     });
-  }, []); // eslint-disable-line react-ddhooks/exhaustive-deps
+  }, []);
 
   const recentPassports    = recentList.map((r) => r.passport);
   const recentDestinations = recentList.map((r) => r.destination);

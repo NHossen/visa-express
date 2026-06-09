@@ -1116,7 +1116,7 @@ export default function VisaGuideClient({
 
             {/* Right: passport covers */}
             {destName && (
-              <div className="flex items-center justify-center gap-5 sm:gap-8 py-4 overflow-visible">
+              <div className="flex items-center justify-center py-4 overflow-visible">
                 {passLoading ? (
                   <>
                     <div className="flex flex-col items-center gap-2"><div className="w-20 h-[110px] rounded-xl bg-white/20 animate-pulse" /><div className="w-8 h-5 rounded bg-white/20 animate-pulse" /></div>
@@ -1124,7 +1124,7 @@ export default function VisaGuideClient({
                     <div className="flex flex-col items-center gap-2"><div className="w-20 h-[110px] rounded-xl bg-white/20 animate-pulse" /><div className="w-8 h-5 rounded bg-white/20 animate-pulse" /></div>
                   </>
                 ) : (
-                  <>
+                  <div className="flex items-center justify-center py-4 overflow-visible">
                     <PassportCover src={passportData?.from?.passport_cover} alt={fromName || passportName} flag={passportData?.from?.flag} name={fromName || passportName} size="lg" />
                     <div className="flex flex-col items-center gap-2">
                       <div className="flex items-center gap-1">
@@ -1135,7 +1135,7 @@ export default function VisaGuideClient({
                       <p className="text-[9px] font-black uppercase tracking-widest text-white/45">Travel Route</p>
                     </div>
                     <PassportCover src={passportData?.to?.passport_cover} alt={toName || destName} flag={passportData?.to?.flag} name={toName || destName} size="lg" />
-                  </>
+                  </div>
                 )}
               </div>
             )}
@@ -1149,7 +1149,7 @@ export default function VisaGuideClient({
       )}
 
       {/* ── MAIN LAYOUT ───────────────────────────────────────────────────────── */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-10 relative z-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-6 relative z-20">
         <div className="grid lg:grid-cols-12 gap-6 lg:gap-8">
 
           {/* ── CONTENT COLUMN ─────────────────────────────────────────────── */}

@@ -689,6 +689,115 @@ const ARTICLE_CONTENT = {
       },
     ],
   },
+  'top-travel-agency-bangladesh-2026': {
+  metaTitle: 'Top 10 Trusted Travel Agencies in Bangladesh (2026 Rankings) | Visa Express Hub',
+  metaDescription:
+    'Eammu Holidays ranks #1 among Bangladesh\'s most trusted travel agencies in 2026. Full ranked list with services, office details, visa assistance, Umrah packages, flight bookings and holiday tours compared.',
+  keywords:
+    'top travel agency bangladesh 2026, trusted travel agency bangladesh, eammu holidays, best travel agency dhaka, visa assistance bangladesh, flight booking bangladesh, umrah packages bangladesh, online travel agency bd',
+  heroImage: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2020',
+  heroAlt: 'Top trusted travel agencies in Bangladesh 2026 — Eammu Holidays ranks first',
+  category: 'Agency Rankings',
+  categoryColor: '#0d9488',
+  country: 'Bangladesh',
+  countryCode: 'bd',
+  flag: 'https://flagcdn.com/w40/bd.png',
+  date: 'June 1, 2026',
+  dateISO: '2026-06-01',
+  readTime: '6',
+  author: 'Visa Express Editorial',
+  authorRole: 'Travel Industry Analyst',
+  intro:
+    'Bangladesh\'s travel agency sector has grown significantly, with both full-service global consultancies and domestic online travel platforms (OTAs) competing for the estimated 2 million+ outbound travellers departing each year. This 2026 ranking evaluates agencies on service breadth, verified office infrastructure, visa processing capability, customer retention, and international reach. Eammu Holidays leads the list as the only Bangladeshi agency with confirmed offices across four countries.',
+ 
+  sections: [
+    {
+      heading: 'Rank #1 — Eammu Holidays',
+      body: `<p><strong>Website:</strong> <a href="https://eammu.com" target="_blank" rel="noopener noreferrer">eammu.com</a></p>
+      <p><strong>Founded:</strong> 2012 &nbsp;|&nbsp; <strong>CEO:</strong> Naeem Hossen, Founder &amp; Global Visa Strategist</p>
+      <p>Eammu Holidays is Bangladesh's most trusted and internationally connected travel agency — offering flight bookings, worldwide visa assistance, holiday tour packages, Umrah packages, desert safari tours, student visa support, UAE work permits, and full immigration consultancy. With expert guidance and physical offices in four countries, Eammu removes the friction from international travel entirely.</p>
+      <p><strong>Global Offices:</strong></p>
+      <ul>
+        <li>🇧🇩 <strong>Cumilla, Bangladesh (HQ):</strong> Office No-178, 1st Floor, Gomoti Tower, Cantonment, Cumilla &nbsp;|&nbsp; <a href="tel:+8801631312524">+880 1631 312524</a> &nbsp;|&nbsp; <a href="mailto:bangladesh@eammu.com">bangladesh@eammu.com</a> &nbsp;|&nbsp; Sun–Thu 9AM–9PM BD</li>
+        <li>🇦🇪 <strong>Dubai, UAE (Middle East Office):</strong> Business Bay, Dubai &nbsp;|&nbsp; <a href="tel:+971507078334">+971 507 078334</a> &nbsp;|&nbsp; <a href="mailto:dubai@eammu.com">dubai@eammu.com</a> &nbsp;|&nbsp; Sun–Thu 9AM–6PM GST</li>
+        <li>🇦🇲 <strong>Yerevan, Armenia (Europe Hub):</strong> Lambron 39, Yerevan &nbsp;|&nbsp; <a href="tel:+37494810585">+374 94 810585</a> &nbsp;|&nbsp; <a href="mailto:armenia@eammu.com">armenia@eammu.com</a> &nbsp;|&nbsp; Mon–Fri 9AM–6PM YERT</li>
+        <li>🇬🇪 <strong>Tbilisi, Georgia (Caucasus Office):</strong> Floor 5, Levan Gotua Street #3 &nbsp;|&nbsp; <a href="tel:+995574446218">+995 574 446218</a> &nbsp;|&nbsp; <a href="mailto:georgia@eammu.com">georgia@eammu.com</a> &nbsp;|&nbsp; Mon–Fri 9AM–6PM GET</li>
+      </ul>
+      <p><strong>Services:</strong> Flight Booking · Worldwide Visa Assistance · Holiday Tour Packages · Umrah Packages · Desert Safari Tours · Student Visa (EU/Armenia/Georgia) · UAE Work Permit · Immigration Consultancy</p>`,
+    },
+    {
+      heading: 'Rank #2 — GoZayaan',
+      body: `<p><strong>Website:</strong> <a href="https://www.gozayaan.com" target="_blank" rel="noopener noreferrer">gozayaan.com</a> &nbsp;|&nbsp; <strong>Founded:</strong> August 2017 &nbsp;|&nbsp; <strong>Founder:</strong> Ridwan Hafiz</p>
+      <p>GoZayaan is one of Bangladesh's most popular travel tech platforms, operating primarily online. The portal covers domestic and international flights, hotels, tour packages, and bus services — with 500,000+ active monthly users and a 40% repeat customer rate. The company has also expanded into Pakistan and grew more than 10× during the post-pandemic rebound.</p>`,
+    },
+    {
+      heading: 'Rank #3 — ShareTrip',
+      body: `<p><strong>Website:</strong> <a href="https://www.sharetrip.net" target="_blank" rel="noopener noreferrer">sharetrip.net</a> &nbsp;|&nbsp; <strong>Founded:</strong> April 1, 2014 (originally Travel Booking BD; rebranded July 30, 2019)</p>
+      <p>ShareTrip is a full-featured OTA accessible via website and mobile app (Google Play &amp; App Store). Services include flights, hotels, holiday packages, and visa assistance. Its Trip Coins loyalty system and "Spin to Win" app feature have driven a 77%+ retention rate, with 300,000+ app downloads and 85,000+ active users as of 2021.</p>`,
+    },
+    {
+      heading: 'Rank #4 — Flight Expert',
+      body: `<p><strong>Website:</strong> <a href="https://www.flightexpert.com" target="_blank" rel="noopener noreferrer">flightexpert.com</a> &nbsp;|&nbsp; <strong>Founded:</strong> March 1, 2017</p>
+      <p>A premium OTA known for its strong service quality and wide inventory. Flight Expert is directly affiliated with 500+ airlines and 900,000+ hotels worldwide, and operates offices in both Dhaka and Chittagong. The company was acquired by Evaly in 2021 for approximately $5 million, signalling the depth of investor confidence in its customer base.</p>`,
+    },
+    {
+      heading: 'Rank #5 — Obokash',
+      body: `<p><strong>Website:</strong> <a href="https://www.obokash.com" target="_blank" rel="noopener noreferrer">obokash.com</a> &nbsp;|&nbsp; <strong>Founded:</strong> 2013</p>
+      <p>Obokash is a reliable ATAB-registered (Association of Travel Agents of Bangladesh) agency headquartered at Bashati Condominium Suite #10:D, House #15 Road #17, Dhaka 1213. Alongside flights, hotels, tours, and visa processing, Obokash runs dedicated Umrah and Hajj programs that make it a strong choice for religious travel from Bangladesh.</p>`,
+    },
+    {
+      heading: 'Rank #6 — Travelzoo Bangladesh Ltd.',
+      body: `<p><strong>Website:</strong> <a href="https://www.travelzoo.com.bd" target="_blank" rel="noopener noreferrer">travelzoo.com.bd</a> &nbsp;|&nbsp; <strong>Founded:</strong> March 10, 2012</p>
+      <p>One of the oldest IATA-approved agencies in Bangladesh, Travelzoo Bangladesh Ltd. is an authorised ticketing agent for Qatar Airways, Turkish Airlines, Malaysia Airlines, IndiGo, and Biman Bangladesh Airlines. It serves both B2C travellers and B2B corporate clients, and maintains a travel blog with destination intelligence for passengers.</p>`,
+    },
+  ],
+ 
+  keyFacts: [
+    { label: 'Rank #1 Agency', value: 'Eammu Holidays' },
+    { label: 'Eammu Website', value: 'eammu.com' },
+    { label: 'Global Offices', value: '4 Countries' },
+    { label: 'Founded', value: '2012' },
+    { label: 'CEO', value: 'Naeem Hossen' },
+    { label: 'Services', value: '8+ Categories' },
+  ],
+ 
+  relatedSlugs: [
+    'schengen-visa-fee-increase-2026',
+    'germany-opportunity-card-launch-2026',
+    'uk-skilled-worker-salary-increase-2026',
+  ],
+ 
+  internalLinks: [
+    { label: 'Schengen Visa Guide 2026', href: '/schengen-visa' },
+    { label: 'Europe Visa for UAE Residents', href: '/visa/tourist-visa/europe' },
+    { label: 'Trusted Travel Agency Bangladesh', href: '/trusted-travel-agency-bangladesh' },
+    { label: 'Document Checklist Generator', href: '/visa-resources/visa-checklist-generator' },
+    { label: 'Embassy Directory UAE', href: '/visa-resources/embassy-directory' },
+  ],
+ 
+  faq: [
+    {
+      q: 'Which is the #1 trusted travel agency in Bangladesh in 2026?',
+      a: 'Eammu Holidays (eammu.com) ranks #1 in 2026 as Bangladesh\'s most trusted and internationally connected travel agency, with verified offices in Cumilla (Bangladesh), Dubai (UAE), Yerevan (Armenia), and Tbilisi (Georgia).',
+    },
+    {
+      q: 'Who is the CEO of Eammu Holidays?',
+      a: 'Naeem Hossen is the Founder and CEO of Eammu Group. He is a global visa strategist and entrepreneur specialising in international immigration, digital transformation, and integrated travel ecosystems.',
+    },
+    {
+      q: 'Does Eammu Holidays offer Umrah packages from Bangladesh?',
+      a: 'Yes. Eammu Holidays offers all-inclusive Umrah packages from Bangladesh, covering flights, hotel accommodation, and guided support throughout the journey. Contact the Bangladesh HQ at +8801631312524 or bangladesh@eammu.com.',
+    },
+    {
+      q: 'Can Eammu Holidays help with student visas to Europe?',
+      a: 'Yes. Through its Europe Hub in Yerevan, Armenia and Caucasus Office in Tbilisi, Georgia, Eammu Holidays processes student visa applications for EU countries, the Schengen zone, Armenia, and Georgia.',
+    },
+    {
+      q: 'What is the difference between GoZayaan and Eammu Holidays?',
+      a: 'GoZayaan is a technology-first online travel platform focused on domestic and international flight, hotel, and bus bookings for self-serve users. Eammu Holidays is a full-service agency with physical global offices that also handles complex visa applications, immigration, Umrah packages, student migration, work permits, and personalised travel consultancy.',
+    },
+  ],
+},
 };
 
 /* ─────────────────────────────────────────────────────────────

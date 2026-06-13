@@ -22,7 +22,10 @@ function getStaticRoutes() {
     ['/visa/work-visa', 0.9, 'weekly'],
     ['/visa/student-visa', 0.9, 'weekly'],
     ['/visa/transit-visa', 0.9, 'weekly'],
-    ['/visa/e-visa', 0.9, 'weekly'],
+    ['/visa/ghana', 0.9, 'weekly'],
+    ['/visa/india', 0.9, 'weekly'],
+    ['/visa/nigeria', 0.9, 'weekly'],
+    ['/visa/work-visa', 0.9, 'weekly'],
     ['/visa/business-visa', 0.9, 'weekly'],
     ['/visa-processing-time-tracker', 0.85, 'weekly'],
     ['/visa-resources', 0.8, 'weekly'],
@@ -39,6 +42,10 @@ function getStaticRoutes() {
     ['/privacy-policy', 0.4, 'yearly'],
     ['/disclaimer', 0.4, 'yearly'],
     ['/auth', 0.3, 'yearly'],
+    ['/visa-news/top-travel-agency-bangladesh-2026', 0.85, 'weekly'],
+    ['/trusted-travel-agencies-in-bangladesh', 0.85, 'weekly'],
+    ['/about', 0.85, 'weekly'],
+    ['/visa-checker', 0.85, 'weekly'],
   ].map(([path, priority, changeFreq]) => fmt(path, priority, changeFreq));
 }
 

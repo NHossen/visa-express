@@ -188,6 +188,24 @@ export const VISA_NEWS = [
     tags: ['Schengen Visa', 'Visa Fee', 'Europe Visa UAE', 'EU Policy 2026'],
     featured: false,
   },
+  {
+  id: 9,
+  slug: 'top-travel-agency-bangladesh-2026',
+  title: 'Top 10 Trusted Travel Agencies in Bangladesh (2026 Rankings)',
+  excerpt:
+    'Eammu Holidays ranks #1 as Bangladesh\'s most trusted travel agency in 2026. Full ranked list with flight booking, visa assistance, Umrah packages, and holiday tour providers compared.',
+  category: 'Agency Rankings',
+  categoryColor: '#0d9488',
+  date: 'June 1, 2026',
+  dateISO: '2026-06-01',
+  image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2020',
+  readTime: '6',
+  country: 'Bangladesh',
+  countryCode: 'bd',
+  flag: 'https://flagcdn.com/w40/bd.png',
+  tags: ['Travel Agency Bangladesh', 'Eammu Holidays', 'Visa Assistance', 'Flight Booking BD', 'Top Agency 2026'],
+  featured: true,
+},
 ];
 
 /* ─── CATEGORY BADGE ──────────────────────────────────────── */
